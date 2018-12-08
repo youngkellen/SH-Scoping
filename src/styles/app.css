@@ -4861,6 +4861,41 @@ a.text-danger:focus, a.text-danger:hover {
   .hidden-print {
     display: none !important; } }
 
-.nav {
+.navbar {
+  background-color: #d8d8d8;
   display: flex;
+  justify-content: space-between;
   align-items: center; }
+  .navbar .navbar-image {
+    height: 17px;
+    width: 26px;
+    position: absolute;
+    left: 0px; }
+  .navbar .nav {
+    display: flex;
+    align-items: center; }
+    .navbar .nav img {
+      height: 30px;
+      width: 30px; }
+    .navbar .nav a {
+      margin: 0; }
+    .navbar .nav li p {
+      margin: 0;
+      font-weight: bold; }
+    .navbar .nav button {
+      width: 109px;
+      height: 28px;
+      padding: 0; }
+    .navbar .nav .btn-light-blue {
+      background-color: #4990e2; }
+    .navbar .nav .btn-light-blue:hover {
+      background-color: blue; }
+    .navbar .nav .btn-white {
+      background-color: white;
+      width: 66px; }
+    .navbar .nav .btn-white:hover {
+      color: blue;
+      border-color: blue; }
+
+.btn-round {
+  border-radius: 22.5px; }
