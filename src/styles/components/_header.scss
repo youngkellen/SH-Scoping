@@ -1,4 +1,51 @@
-.nav {
+$navbar-color: #d8d8d8;
+$button-color: #4990e2;
+
+.navbar {
+  background-color: $navbar-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .navbar-image {
+    height: 17px;
+    width: 26px;
+    position: absolute;
+    left: 0px;
+  }
+  .nav {
     display: flex;
     align-items: center;
+    img {
+      height: 30px;
+      width: 30px;
+    }
+    a {
+      margin: 0;
+    }
+    li {
+      p {
+        margin: 0;
+        font-weight: bold;
+      }
+    }
+    button {
+      width: 109px;
+      height: 28px;
+      padding: 0;
+    }
+    .btn-light-blue {
+      background-color: $button-color;
+    }
+    .btn-light-blue:hover {
+      background-color: blue;
+    }
+    .btn-white {
+      background-color: white;
+      width: 66px;
+    }
+    .btn-white:hover {
+      color: blue;
+      border-color: blue;
+    }
   }
+}
