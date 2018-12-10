@@ -2,9 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { store } from '../store';
 import { push } from 'react-router-redux';
-const mapStateToProps = state => ({ auth: state.auth, common: state.common });
-
-const mapDispatchToProps = dispatch => ({})
 
 class Entry extends React.Component {
   constructor() {
@@ -14,7 +11,7 @@ class Entry extends React.Component {
   componentDidMount() {
     if (this.props) {
       // this will be used for login functionality
-      // store.dispatch(push('/'));
+      store.dispatch(push('/dashboard'));
     } else {
       store.dispatch(push('/dashboard'));
     }
@@ -25,4 +22,4 @@ class Entry extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Entry);
+export default Entry;

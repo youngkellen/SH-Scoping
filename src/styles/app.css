@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*!
  * Bootstrap v4.0.0-alpha.2 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -4896,6 +4897,103 @@ a.text-danger:focus, a.text-danger:hover {
     .navbar .nav .btn-white:hover {
       color: blue;
       border-color: blue; }
+
+.builder input[type="search"], .builder textarea {
+  background-color: #4990e2;
+  color: white; }
+
+.builder input[type="search"]::placeholder {
+  color: lightgray; }
+
+.builder .layout-splitter {
+  width: 3px; }
+
+.builder .splitter-layout {
+  max-height: 90vh; }
+  .builder .splitter-layout .layout-pane {
+    overflow-x: hidden; }
+  .builder .splitter-layout .column_head {
+    border-top: solid #aaa 2px;
+    border-bottom: solid #aaa 2px;
+    padding: 10px;
+    margin: 0;
+    background-color: #ececec; }
+
+.builder .collapsible {
+  margin-left: 15px;
+  background-color: #ececec;
+  color: black;
+  cursor: pointer;
+  width: 100%;
+  border-bottom: solid #aaa 2px;
+  text-align: start;
+  outline: none;
+  font-size: 15px;
+  position: relative; }
+
+.builder ul {
+  list-style-type: none; }
+  .builder ul li {
+    border-bottom: solid #aaa 2px;
+    background-color: #ececec;
+    border-radius: 25px;
+    padding-left: 10px;
+    cursor: pointer; }
+  .builder ul li:hover {
+    background-color: lightgray; }
+
+.builder .collapsible::after {
+  color: #444;
+  left: 0;
+  content: ' ▾'; }
+
+.builder .active, .builder .collapsible:hover {
+  background-color: lightgray; }
+
+.builder .content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box; }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #cee5ff;
+  color: black;
+  text-align: center;
+  height: 5vh;
+  border: solid #4990e2 2px;
+  font-size: 12px;
+  overflow: hidden;
+  padding-left: 10px; }
+  .footer .row {
+    box-sizing: border-box;
+    border-collapse: collapse;
+    display: flex;
+    align-items: center; }
+    .footer .row div:first-child {
+      text-align: left; }
+    .footer .row #view_settings {
+      background-color: #d8d8d8;
+      height: 5vh;
+      max-height: inherit; }
+      .footer .row #view_settings .row {
+        height: 100%; }
+        .footer .row #view_settings .row p {
+          margin: 0 auto;
+          background-color: white;
+          text-align: center;
+          cursor: pointer; }
 
 .btn-round {
   border-radius: 22.5px; }

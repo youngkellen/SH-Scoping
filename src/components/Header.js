@@ -1,12 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { MODE_CHANGE } from '../constants/actionTypes'
+
+const mapStateToProps = state => ({viewMode: state.viewMode})
 
 class Header extends React.Component {
-    state = {
-      mode: "Search Mode",
+  constructor(props){
+    super(props)
+    this.state = {
+      mode: this.props.viewMode.mode === "search" ? "Search Mode" : "Builder Mode",
       projectName: "PROJECT NAME"
     }
+  }
+   
+
+
 
     renderMode(){
       if (this.state.mode === "Search Mode") {
@@ -27,14 +36,15 @@ class Header extends React.Component {
     }
 
     changeMode() {
-      if (this.state.mode === "Search Mode") {
+      let { mode } = this.props.viewMode;
+      if (mode === "search" ) {
         this.setState({
           mode: "Builder Mode"
-        })
+        }, () => this.props.dispatch({ type: MODE_CHANGE, payload: "builder" }))
       } else {
         this.setState({
           mode: "Search Mode"
-        })
+        }, () => this.props.dispatch({ type: MODE_CHANGE, payload: "search" }))
       }
     }
   
@@ -42,7 +52,7 @@ class Header extends React.Component {
       console.log('header props', this.props)
       return (
         <nav className="navbar navbar-default" style={{width: "100%"}}>
-          <div class="navbar-brand">
+          <div className="navbar-brand">
             <ul className="nav navbar-nav">
               <li className="nav-item">
                 <Link to="/" className="navbar-brand" >
@@ -67,9 +77,12 @@ class Header extends React.Component {
               <li className="nav-item">
                 <button className="btn btn-outline-primary btn-round btn-white ">Edit</button> 
               </li>
+              <li className="nav-item">
+                <button className="btn btn-outline-primary btn-round btn-white ">Create</button> 
+              </li>
             </ul>
           </div>
-          <div class="navbar-brand navbar-right mode-select" style={{marginLeft: "100px", position: "relative"}}>
+          <div className="navbar-brand navbar-right mode-select" style={{marginLeft: "100px", position: "relative"}}>
             <ul className="nav navbar-nav">
               <Link to="/">
                 {this.renderMode()}
@@ -81,5 +94,5 @@ class Header extends React.Component {
     }
   }
   
-  export default Header;
+  export default connect(mapStateToProps, null)(Header);
   
