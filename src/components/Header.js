@@ -37,7 +37,7 @@ class Header extends React.Component {
 
     changeMode() {
       let { mode } = this.props.viewMode;
-      if (this.state.mode === "Search Mode") {
+      if (mode === "search" ) {
         this.setState({
           mode: "Builder Mode"
         }, () => this.props.dispatch({ type: MODE_CHANGE, payload: "builder" }))
