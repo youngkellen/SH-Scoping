@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MODE_CHANGE } from '../constants/actionTypes';
+import { MODE_CHANGE, SPLIT_CHANGE } from '../constants/actionTypes';
 import CreateModal from './CreateModal.js'
 
 const mapStateToProps = state => ({viewMode: state.viewMode})
@@ -38,16 +38,27 @@ class Header extends React.Component {
       }
     }
 
+    async builderMode(){
+      await this.props.dispatch({ type: SPLIT_CHANGE, payload: false })
+      await this.props.dispatch({ type: MODE_CHANGE, payload: "builder" })
+    }
+
+    async searchMode(){
+      await this.props.dispatch({ type: SPLIT_CHANGE, payload: false })
+      await this.props.dispatch({ type: MODE_CHANGE, payload: "search" })
+    }
+
+
     changeMode() {
       let { mode } = this.props.viewMode;
       if (mode === "search" ) {
         this.setState({
           mode: "Builder Mode"
-        }, () => this.props.dispatch({ type: MODE_CHANGE, payload: "builder" }))
+        }, async () => this.builderMode() )
       } else {
         this.setState({
           mode: "Search Mode"
-        }, () => this.props.dispatch({ type: MODE_CHANGE, payload: "search" }))
+        }, async () => this.searchMode() )
       }
     }
 

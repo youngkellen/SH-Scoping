@@ -11,17 +11,17 @@ const mapStatetoProps = state => ({viewMode: state.viewMode})
 class Dashboard extends Component {
 
 renderMode() {
-  const { mode } = this.props.viewMode;
+  const { mode, split } = this.props.viewMode;
   console.log(mode, "mode bro")
-  if (mode === "builder") {
+  if (mode === "builder" && !split) {
     return (
       <Builder/>
     )
-  } else if (mode === "search") {
+  } else if (mode === "search"  && !split) {
     return (
       <Search/>
     )
-  }  else if (mode === "split"){
+  }  else if (split){
     return (
       <div  style={{height: "90vh"}}>
             <SplitterLayout
