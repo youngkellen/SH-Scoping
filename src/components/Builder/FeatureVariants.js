@@ -13,6 +13,9 @@ class FeatureVariants extends Component {
           <div className ="row column_head" style={{textAlign: "center"}}>
             Feature Variants
           </div>
+          <div className="row layout-pane-scroll">
+
+          </div>
           </div>
         </div>
       );

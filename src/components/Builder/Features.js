@@ -29,7 +29,7 @@ class Feature extends Component {
             <div className ="row column_head" style={{textAlign: "center"}}>
               Feature 
             </div>
-            <div className="row ">
+            <div className="row layout-pane-scroll">
             </div>
           </div>
         </div>

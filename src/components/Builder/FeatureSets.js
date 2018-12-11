@@ -18,10 +18,42 @@ class FeatureSets extends Component {
           <div className ="row column_head" style={{textAlign: "center"}}>
             Feature Sets
           </div>
-          <div className="row ">
+          <div className="row layout-pane-scroll">
               <button className="collapsible" onClick={() => this.getElementHeight()}>General</button>
               
               <div className="content" id="General">
+                <ul>
+                  <li>Content</li>
+                  <li>Content</li>
+                  <li>Content</li>
+                </ul>
+              </div>
+              <button className="collapsible">E-Commerce</button>
+              <div className="content">
+                <ul>
+                  <li>Content</li>
+                  <li>Content</li>
+                  <li>Content</li>
+                </ul>
+              </div>
+              <button className="collapsible">E-Commerce</button>
+              <div className="content">
+                <ul>
+                  <li>Content</li>
+                  <li>Content</li>
+                  <li>Content</li>
+                </ul>
+              </div>
+              <button className="collapsible">E-Commerce</button>
+              <div className="content">
+                <ul>
+                  <li>Content</li>
+                  <li>Content</li>
+                  <li>Content</li>
+                </ul>
+              </div>
+              <button className="collapsible">E-Commerce</button>
+              <div className="content">
                 <ul>
                   <li>Content</li>
                   <li>Content</li>

@@ -4911,7 +4911,11 @@ a.text-danger:focus, a.text-danger:hover {
 .builder .splitter-layout {
   max-height: 90vh; }
   .builder .splitter-layout .layout-pane {
-    overflow-x: hidden; }
+    overflow: hidden; }
+  .builder .splitter-layout .layout-pane-scroll {
+    overflow-y: scroll;
+    max-height: 75%;
+    padding-bottom: 15px; }
   .builder .splitter-layout .column_head {
     border-top: solid #aaa 2px;
     border-bottom: solid #aaa 2px;
