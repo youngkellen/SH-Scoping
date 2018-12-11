@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MODE_CHANGE } from '../constants/actionTypes'
+import { MODE_CHANGE } from '../constants/actionTypes';
+import CreateModal from './CreateModal.js'
 
 const mapStateToProps = state => ({viewMode: state.viewMode})
 
@@ -10,8 +11,10 @@ class Header extends React.Component {
     super(props)
     this.state = {
       mode: this.props.viewMode.mode === "search" ? "Search Mode" : "Builder Mode",
-      projectName: "PROJECT NAME"
+      projectName: "PROJECT NAME",
+      createModalOpen: false
     }
+    this.modalChange = this.modalChange.bind(this);
   }
    
 
@@ -47,11 +50,21 @@ class Header extends React.Component {
         }, () => this.props.dispatch({ type: MODE_CHANGE, payload: "search" }))
       }
     }
+
+    modalChange(){
+      this.setState(prevState => ({
+        createModalOpen: !prevState.createModalOpen
+      }))
+    }
   
     render() {
       console.log('header props', this.props)
       return (
         <nav className="navbar navbar-default" style={{width: "100%"}}>
+         <CreateModal 
+                    createModalOpen={this.state.createModalOpen}
+                    closeModal={this.modalChange}
+                  />
           <div className="navbar-brand">
             <ul className="nav navbar-nav">
               <li className="nav-item">
@@ -78,7 +91,7 @@ class Header extends React.Component {
                 <button className="btn btn-outline-primary btn-round btn-white ">Edit</button> 
               </li>
               <li className="nav-item">
-                <button className="btn btn-outline-primary btn-round btn-white ">Create</button> 
+                <button className="btn btn-outline-primary btn-round btn-white " onClick={() => this.modalChange()}>Create</button> 
               </li>
             </ul>
           </div>

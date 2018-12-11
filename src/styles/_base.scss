@@ -50,3 +50,42 @@ html, body {
 .btn-round {
     border-radius: 22.5px;
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(7, 29, 53, 0.5);
+  
+}
+
+.modal-create {
+    position: absolute;
+    top: 40px;
+    left: 15%;
+    right: 15%;
+    background-color: white;
+    box-shadow: -10px 10px 20px 0 rgba(30, 30, 30, 0.05);
+    border-radius: 30px;
+    .container {
+        padding: 40px;
+        overflow-y: scroll;
+        height: 100%;
+        padding-bottom: 60px;
+        max-height: 100vh;
+        img {
+            width: 100%;
+            margin-bottom: 20px;
+            width: 96px;
+            height: 96px;
+            object-fit: contain;    
+            cursor: pointer;      
+        }
+        p {
+            cursor: pointer;
+            text-align: center
+        }
+    }
+}
