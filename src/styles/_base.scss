@@ -1,6 +1,7 @@
 $footer-blue : #cee5ff;
 $footer-border: #4990e2;
 $footer-right: #d8d8d8;
+$input-background: #fbfbfb;
 
 html, body {
     margin: 0;
@@ -87,5 +88,45 @@ html, body {
             cursor: pointer;
             text-align: center
         }
+    }
+    .modal-platform{
+        display: flex; 
+        flex-direction: column;
+         justify-content: center; 
+         align-items: center;
+         .project-info{
+            div {
+                margin-bottom: 20px;
+            }
+            p{
+                text-align: left;
+            }
+        }
+         .Rectangle{
+            width: 315px;
+            height: 39px;
+         }
+         .Rectangle_Big{
+            width: 315px;
+            height:128px;
+            background-color : $input-background; 
+         }
+         .Square{
+            width: 128px;
+            height:128px;
+            background-color : $input-background; 
+            display: flex;
+            justify-content: center;
+            align-items: center
+         }
+         input[type="text"], textarea {
+            background-color : $input-background; 
+            border: none;
+          }
+          textarea {
+            background-color : $input-background; 
+            border: none;
+            resize: none;
+          }
     }
 }

@@ -5030,3 +5030,33 @@ html, body {
     .modal-create .container p {
       cursor: pointer;
       text-align: center; }
+  .modal-create .modal-platform {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+    .modal-create .modal-platform .project-info div {
+      margin-bottom: 20px; }
+    .modal-create .modal-platform .project-info p {
+      text-align: left; }
+    .modal-create .modal-platform .Rectangle {
+      width: 315px;
+      height: 39px; }
+    .modal-create .modal-platform .Rectangle_Big {
+      width: 315px;
+      height: 128px;
+      background-color: #fbfbfb; }
+    .modal-create .modal-platform .Square {
+      width: 128px;
+      height: 128px;
+      background-color: #fbfbfb;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+    .modal-create .modal-platform input[type="text"], .modal-create .modal-platform textarea {
+      background-color: #fbfbfb;
+      border: none; }
+    .modal-create .modal-platform textarea {
+      background-color: #fbfbfb;
+      border: none;
+      resize: none; }
