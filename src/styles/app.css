@@ -4911,7 +4911,11 @@ a.text-danger:focus, a.text-danger:hover {
 .builder .splitter-layout {
   max-height: 90vh; }
   .builder .splitter-layout .layout-pane {
-    overflow-x: hidden; }
+    overflow: hidden; }
+  .builder .splitter-layout .layout-pane-scroll {
+    overflow-y: scroll;
+    max-height: 75%;
+    padding-bottom: 15px; }
   .builder .splitter-layout .column_head {
     border-top: solid #aaa 2px;
     border-bottom: solid #aaa 2px;
@@ -4997,3 +5001,68 @@ html, body {
 
 .btn-round {
   border-radius: 22.5px; }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(7, 29, 53, 0.5); }
+
+.modal-create {
+  position: absolute;
+  top: 40px;
+  left: 15%;
+  right: 15%;
+  background-color: white;
+  box-shadow: -10px 10px 20px 0 rgba(30, 30, 30, 0.05);
+  border-radius: 30px; }
+  .modal-create .container {
+    padding: 40px;
+    overflow-y: scroll;
+    height: 100%;
+    max-height: 100vh; }
+    .modal-create .container img {
+      width: 100%;
+      margin-bottom: 20px;
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      cursor: pointer; }
+    .modal-create .container p {
+      cursor: pointer;
+      text-align: center; }
+  .modal-create .modal-platform {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+    .modal-create .modal-platform .project-info div {
+      margin-bottom: 20px; }
+    .modal-create .modal-platform .project-info p {
+      text-align: left; }
+    .modal-create .modal-platform .Rectangle {
+      width: 315px;
+      height: 39px; }
+    .modal-create .modal-platform .Rectangle_Big {
+      width: 315px;
+      height: 128px;
+      background-color: #fbfbfb; }
+    .modal-create .modal-platform .Square {
+      width: 128px;
+      height: 128px;
+      background-color: #fbfbfb;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+    .modal-create .modal-platform .Empty_Square {
+      width: 128px;
+      height: 128px; }
+    .modal-create .modal-platform input[type="text"], .modal-create .modal-platform textarea {
+      background-color: #fbfbfb;
+      border: none; }
+    .modal-create .modal-platform textarea {
+      background-color: #fbfbfb;
+      border: none;
+      resize: none; }

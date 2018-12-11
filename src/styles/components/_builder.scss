@@ -17,8 +17,13 @@ $scope-gray: #ececec;
       .splitter-layout {
           max-height: 90vh;
           .layout-pane {
-              overflow-x:hidden;
+              overflow:hidden;
           }
+          .layout-pane-scroll {
+            overflow-y:scroll;
+            max-height: 75%;
+            padding-bottom: 15px;
+        }
           .column_head{
             border-top: solid #aaa 2px;
             border-bottom: solid #aaa 2px;

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { store } from '../store';
 import { push } from 'react-router-redux';
-import { MODE_CHANGE } from '../constants/actionTypes';
+import { MODE_CHANGE, SPLIT_CHANGE } from '../constants/actionTypes';
 
 class Footer extends React.Component {
   constructor() {
@@ -11,19 +11,19 @@ class Footer extends React.Component {
 
   handleFullView(){
     const { dispatch } = this.props;
-    dispatch({ type: MODE_CHANGE, payload: "builder" })
+    dispatch({ type: SPLIT_CHANGE, payload: false })
   }
 
   handleSplitView(){
     const { dispatch } = this.props;
-    dispatch({ type: MODE_CHANGE, payload: "split"})
+    dispatch({ type: SPLIT_CHANGE, payload: true })
   }
 
   componentDidMount() {
   }
 
   render() {
-      let { mode } = this.props.viewMode;
+      let { mode, split } = this.props.viewMode;
       let buttonBlue = "#4990e2";
       return (
         <div className="footer">
@@ -48,10 +48,10 @@ class Footer extends React.Component {
             <div className="col-md-3" id="view_settings">
                 <div className="container row">
                 <div className="col-md-4" >
-                    <p onClick={() => this.handleFullView()} style={mode === "split" ? {} : {backgroundColor: buttonBlue}}>Full View</p> 
+                    <p onClick={() => this.handleFullView()} style={split ? {} : {backgroundColor: buttonBlue}}>Full View</p> 
                 </div>
                 <div className="col-md-4">
-                    <p onClick={() => this.handleSplitView()} style={mode === "split" ? {backgroundColor: buttonBlue} : {}}>Split View</p>
+                    <p onClick={() => this.handleSplitView()} style={split ? {backgroundColor: buttonBlue} : {}}>Split View</p>
                 </div>
                 <div className="col-md-4">
                     <p>Collapsed</p>
