@@ -14,9 +14,7 @@ class CreateModal extends React.Component {
     super();
     this.state = {
       choosePlatform: true,
-      projectInfo: false,
-      projectImage: "",
-      referenceFiles: [1,2],
+      projectInfoModal: false,
       selected: {
         iOS: false,
         Android: false,
@@ -25,6 +23,16 @@ class CreateModal extends React.Component {
         BE: false,
         Design: false,
         QA: false
+      },
+      projectInfo: {
+        name: "",
+        description: "",
+        clientName: "",
+        notes: "",
+        logo: "",
+        projectCreator: "",
+        opportunity: "",
+        referenceFiles: [{value: ""}]
       }
     }
     this.choosePlatform = this.choosePlatform.bind(this);
@@ -55,11 +63,11 @@ class CreateModal extends React.Component {
     if (task === "choosePlatform") {
       this.setState({
         choosePlatform: false,
-        projectInfo: true
+        projectInfoModal: true
       })
     } else if (task == "projectInfo") {
        this.setState({
-         projectInfo: false
+         projectInfoModal: false
        })
     }
   }
@@ -68,7 +76,7 @@ class CreateModal extends React.Component {
     console.log(files, "files")
     let ext = files[0].type.split("/").pop()
     this.setState({
-      projectImage: files[0]
+      projectInfo: Object.assign({}, this.state.projectInfo, {logo: files[0]} )
     })
   }
 
@@ -120,88 +128,249 @@ class CreateModal extends React.Component {
           </div>
         </div>
       )
+    } else {
+      return null
     }
   }
 
   renderReferenceFiles(){
-    let { referenceFiles } = this.state;
-    return referenceFiles.map(file => {
-      return (
-        <div style={{marginBottom: "10px"}}>
-         <input style={{display:"inline", width: "240px", margin: "0 10px 0 0"}} type="text" className="Rectangle"></input> 
-          <img src={removeImage}  style={{display: "inline", height: "30px", width: "30px", margin: 0}}></img>
-        </div>
-       
-      )
-    })
+    let { referenceFiles } = this.state.projectInfo;
+    console.log(referenceFiles, "shit head")
+    if (referenceFiles){
+      return referenceFiles.map((file, i)=> {
+        console.log(file, "file shit")
+        console.log(i)
+        if (i > 0){
+          return (
+            <div style={{marginBottom: "10px"}} key={i}>
+              <input 
+                style={{display:"inline", width: "240px", margin: "0 10px 0 0"}}
+                type="text" 
+                className="Rectangle"
+                onChange={e => this.changeReferenceValue(i, e.target.value)}
+                value={file.value}
+              >
+              </input> 
+              <img 
+                src={removeImage}  
+                style={{display: "inline", height: "30px", width: "30px", margin: 0}} 
+                onClick={()=>this.removeReferenceFile(i)}
+              >
+              </img>
+            </div>
+           
+          )
+        }
+      })
+   
+    }
   }
 
-  projectInfo(){
-    let { projectImage } = this.state;
-    if (this.state.projectInfo){
+  addReferenceFile(){
+    this.setState(prevState => ({
+      projectInfo: Object.assign({}, prevState.projectInfo, { referenceFiles: [ ...prevState.projectInfo.referenceFiles, {value: ""} ]})
+    }))
+    console.log(this.state.projectInfo.referenceFiles, "files before")
+
+    //this.state.projectInfo.referenceFiles.push({id: 2})
+    console.log(this.state.projectInfo.referenceFiles, "files after")
+  }
+
+  removeReferenceFile(index){
+   console.log(index, "remove input index")
+    let files = [...this.state.projectInfo.referenceFiles];
+    files.splice(index, 1)
+    console.log(files, "new files")
+    this.setState(prevState => ({
+      projectInfo: Object.assign({}, prevState.projectInfo, { referenceFiles: files })
+    }))
+  }
+
+  removeLogo(){
+    this.setState(prevState => ({
+      projectInfo: Object.assign({}, prevState.projectInfo, { logo: "" })
+    }))
+  }
+
+  changeReferenceValue(index, value){
+    console.log(index, "index")
+    console.log(value, "val")
+    let { referenceFiles } = this.state.projectInfo;
+    let file = referenceFiles[index];
+    file.value = value;
+    referenceFiles[index] = file
+    this.setState(prevState => ({
+      projectInfo: Object.assign({}, prevState.projectInfo, { referenceFiles })
+    }))
+  }
+
+  projectInfoModal(){
+    let { name, description, clientName, notes, logo, projectCreator, opportunity, referenceFiles } = this.state.projectInfo;
+    if (this.state.projectInfoModal){
       return (
         <div className="container modal-platform ">
-          <div className="row" style={{ marginBottom: "50px"}}>
+          <div className="row" style={{ marginBottom: "30px"}}>
             <h2>Project Information</h2>
           </div>
           <div className="row">
             <div className="col-md-5 project-info" style={{marginRight: "50px"}}>
               <div className="row">
                 <p>Name</p> 
-                <input type="text" className="Rectangle"></input>
+                <input
+                  type="text"
+                  className="Rectangle"
+                  onChange={e => this.changeName(e.target.value)}
+                >
+                </input>
               </div>
               <div className="row">
                 <p>Description</p>
-                <textarea className="Rectangle_Big"></textarea>
+                <textarea 
+                  className="Rectangle_Big"
+                  onChange={e => this.changeDescription(e.target.value)}
+                  value={description}
+                >
+                 </textarea>
               </div>
               <div className="row">
                 <p>Client Name</p> 
-                <input type="text" className="Rectangle"></input>
+                <input 
+                  type="text"
+                  className="Rectangle"
+                  onChange={e => this.changeClientName(e.target.value)}
+                  value={clientName}
+                >
+                </input>
               </div>
               <div className="row">
                 <p>Notes </p>
-                <textarea className="Rectangle_Big"></textarea>
+                <textarea 
+                  className="Rectangle_Big"
+                  onChange={e => this.changeNotes(e.target.value)}
+                  value={notes}
+                >
+                </textarea>
               </div>
             </div>
             <div className="col-md-5 project-info" >
-              <div className="row">
+              <div className="row"  style={{marginBottom: 0}}>
                 <p>LOGO </p>
-                <Dropzone className="Square" style={{border: "none", cursor: "pointer" }} onDrop={this.onDrop}>
-                  <img src={ projectImage ? projectImage.preview : imagePlaceholder } 
-                    style={{height: "32px", margin: "auto"}}
-                    onError={e => { 
-                    e.target.src = imagePlaceholder}}
+                <div className="row" style={{margin: 0, display: "flex", alignItems: "center"}}>
+
+                <div className="col-md-9">
+                  <Dropzone className={ logo ? "" : "Square"} style={{border: "none", cursor: "pointer", marginBottom: 0 }} onDrop={this.onDrop}>
+                    <img className = { logo ? "Empty_Square" : "" } src={ logo ? logo.preview : imagePlaceholder } 
+                      style={ logo ? {marginBottom: 0 } : {height: "32px", margin: "auto"}}
+                      onError={e => { 
+                      e.target.src = imagePlaceholder}}
+                    />
+                  </Dropzone>
+                </div>
+               <div className="col-md-3"> 
+               <img src={ removeImage } 
+                    style={ logo ? {height: "32px", display: "inline"} : {display: "none"}}
+                    onClick={() => this.removeLogo()}
                   />
-                </Dropzone>
+               </div>
+                
+                
+                   </div>
+                
               </div>
               <div className="row ">
                 <p>PROJECT CREATOR </p>
-                <input type="text" className="Rectangle"></input>
+                <input 
+                  type="text"
+                  className="Rectangle"
+                  onChange={e => this.changeProjectCreator(e.target.value)}
+                  value={projectCreator}
+                >
+                </input>
               </div>
               <div className="row">
-                 <p>OPPURTUNITY</p> 
-                <input type="text" className="Rectangle"></input>
+                 <p>OPPORTUNITY</p> 
+                <input 
+                  type="text"
+                  className="Rectangle"
+                  onChange={e => this.changeOpportunity(e.target.value)}
+                  value={opportunity}
+                >
+                </input>
               </div>
               <div className="row">
                   <p>REFERENCE FILES</p>
-                  <input style={{display:"inline", width: "240px", margin: "0 10px 0 0", marginBottom: "10px"}} type="text" className="Rectangle"></input> 
-                  <img src={imagePlaceholder}  style={{display: "inline", height: "30px", width: "30px", margin: 0}}></img>
+                  <input 
+                    style={{display:"inline", width: "240px", margin: "0 10px 0 0", marginBottom: "10px"}} 
+                    type="text" 
+                    className="Rectangle"
+                    onChange={e => this.changeReferenceValue(0, e.target.value)}
+                    value={referenceFiles[0].value}
+                  >
+                  </input> 
+                  <img 
+                    src={imagePlaceholder}
+                    style={{display: "inline", height: "30px", width: "30px", margin: 0}}
+                    onClick={()=>this.addReferenceFile()}
+                  >
+                    
+                  </img>
                   {this.renderReferenceFiles()}
               </div>
           </div>
         </div>
       </div>
       )
+    } else {
+      return null
     }
-   
-   
+  }
+
+  changeName(name){
+    this.setState({
+      projectInfo: Object.assign({}, this.state.projectInfo, {name: name })
+    })
+  }
+  
+  changeDescription(description){
+    this.setState({
+      projectInfo: Object.assign({}, this.state.projectInfo, {description: description })
+    })
+  }
+
+  changeClientName(clientName){
+    this.setState({
+      projectInfo: Object.assign({}, this.state.projectInfo, {clientName: clientName })
+    })
+  }
+
+  changeClientName(clientName){
+    this.setState({
+      projectInfo: Object.assign({}, this.state.projectInfo, {clientName: clientName })
+    })
+  }
+
+  changeNotes(notes){
+    this.setState({
+      projectInfo: Object.assign({}, this.state.projectInfo, {notes: notes })
+    })
+  }
+
+  changeOpportunity(opportunity){
+    this.setState({
+      projectInfo: Object.assign({}, this.state.projectInfo, {opportunity: opportunity })
+    })
+  }
+
+  changeProjectCreator(projectCreator){
+    this.setState({
+      projectInfo: Object.assign({}, this.state.projectInfo, {projectCreator: projectCreator })
+    })
   }
 
   requestClose(){
     this.setState({
       choosePlatform: true,
-      projectInfo: false,
-      projectImage: "",
+      projectInfoModal: false,
       selected: {
         iOS: false,
         Android: false,
@@ -210,11 +379,22 @@ class CreateModal extends React.Component {
         BE: false,
         Design: false,
         QA: false
+      },
+      projectInfo: {
+        name: "",
+        description: "",
+        clientName: "",
+        notes: "",
+        logo: "",
+        projectCreator: "",
+        opportunity: "",
+        referenceFiles: [{value: ""}]
       }
     }, () => {this.props.closeModal()})
   }
 
   render() {
+    console.log(this.state, "render state")
       return (
         <Modal
           isOpen={this.props.createModalOpen}
@@ -223,7 +403,7 @@ class CreateModal extends React.Component {
           overlayClassName="modal-overlay"
         >
           {this.choosePlatform()}
-          {this.projectInfo()}
+          {this.projectInfoModal()}
         </Modal>
       )
   }

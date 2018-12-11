@@ -5018,7 +5018,6 @@ html, body {
     padding: 40px;
     overflow-y: scroll;
     height: 100%;
-    padding-bottom: 60px;
     max-height: 100vh; }
     .modal-create .container img {
       width: 100%;
@@ -5053,6 +5052,9 @@ html, body {
       display: flex;
       justify-content: center;
       align-items: center; }
+    .modal-create .modal-platform .Empty_Square {
+      width: 128px;
+      height: 128px; }
     .modal-create .modal-platform input[type="text"], .modal-create .modal-platform textarea {
       background-color: #fbfbfb;
       border: none; }

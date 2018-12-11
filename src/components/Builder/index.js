@@ -23,7 +23,7 @@ class Builder extends Component {
                 primaryIndex={0}
                 secondaryInitialSize={80}
                 >
-                   <Features/>
+                    <FeatureSets/>
                     <SplitterLayout
                     percentage
                     primaryIndex={1}
@@ -31,7 +31,7 @@ class Builder extends Component {
                     secondaryInitialSize={30}
 
     >
-                         <FeatureSets/>
+                         <Features/>
                          <FeatureVariants/>
                     </SplitterLayout>
                 </SplitterLayout>
