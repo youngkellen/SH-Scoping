@@ -1,0 +1,144 @@
+
+$input-background: #fbfbfb;
+$type-background: #efefef;
+$type-color: #4990e2;
+
+.ReactModalPortal {
+    z-index: 4;
+    position: absolute;
+}
+.modal-create {
+    position: absolute;
+    top: 40px;
+    left: 15%;
+    right: 15%;
+    background-color: white;
+    box-shadow: -10px 10px 20px 0 rgba(30, 30, 30, 0.05);
+    border-radius: 30px;
+    z-index: 10;
+    .container {
+        padding: 30px;
+        overflow-y: scroll;
+        height: 100%;
+        max-height: 100vh;
+        img {
+            width: 100%;
+            margin-bottom: 20px;
+            width: 96px;
+            height: 96px;
+            object-fit: contain;    
+            cursor: pointer;      
+        }
+        p {
+            cursor: pointer;
+            text-align: center
+        }
+    }
+    .modal-platform {
+        display: flex; 
+        flex-direction: column;
+         justify-content: center; 
+         align-items: center;
+         .project-info{
+            div {
+                margin-bottom: 20px;
+            }
+            p{
+                text-align: left;
+            }
+        }
+         .Rectangle{
+            width: 315px;
+            height: 39px;
+         }
+         .Rectangle_Big{
+            width: 315px;
+            height:128px;
+            background-color : $input-background; 
+         }
+         .Rectangle_Full{
+            width: 100%;
+            height: 39px;
+            background-color : $type-background; 
+            border: none;
+         }
+         .Square{
+            width: 128px;
+            height:128px;
+            background-color : $input-background; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+         .Empty_Square{
+            width: 128px;
+            height:128px;
+         }
+         input[type="text"], textarea {
+            background-color : $input-background; 
+            border: none;
+          }
+          textarea {
+            background-color : $input-background; 
+            border: none;
+            resize: none;
+          }
+        
+        .type_left{
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            background-color: $type-background; 
+            overflow: auto;
+        }
+        input[type="search"]::placeholder{
+            color: $type-color
+        }
+        .type_right_filter{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            input[type="radio"]{
+                margin-bottom: 10px;
+            }
+            p {
+                text-align: left;
+                font-size: 12px;
+                cursor: auto;
+            }
+        }
+        .type_right{
+            background-color: $type-background; 
+            display: flex;
+            flex-direction: column;
+            height: 396px;
+            overflow: auto;
+            padding: 10px;
+            p {
+                cursor: auto;
+                text-align: left;
+            }
+        }
+        .type-btn{
+            width: 60px; 
+            font-size: 10px;
+            text-align: center;
+        }
+        .search_terms {
+            border-bottom: solid black 1px;
+            border-color: #979797;
+            margin: 10px;
+            .search-dates{
+                font-size: 12px;
+                color: $type-color;
+            }
+            p {
+                text-align: left;
+                cursor: auto;
+            }
+            .search-info{
+                font-size: 10px;
+            }
+        }
+    }
+}

@@ -21,21 +21,20 @@ class Header extends React.Component {
 
 
     renderMode(){
-      if (this.state.mode === "Search Mode") {
+      let { mode } = this.state;
+      let buttonColor = "lightblue";
         return (
-          <div onClick={() => this.changeMode()}>
-             <p style={{display: "inline-block", backgroundColor: "white", width: "170px", margin: 0, textAlign: "center", fontSize: "18px"}}>{this.state.mode}</p>
+          <div style={{display: "flex"}}>
+          <div onClick={() => this.changeMode()} style={{position: "relative"}}>
+             <p className="mode-btn" style={mode === "Search Mode" ? {backgroundColor: buttonColor} : {} }>Search Mode</p>
              <img className="navbar-image" src={require("../assets/search-icon.png")}/>
           </div>
-        )
-      } else {
-        return (
-          <div onClick={() => this.changeMode()}>
-             <p style={{display: "inline-block", backgroundColor: "white", width: "170px", margin: 0, textAlign: "center", fontSize: "18px"}}>{this.state.mode}</p>
+          <div onClick={() => this.changeMode()} style={{position: "relative"}}>
+             <p className="mode-btn" style={mode === "Builder Mode" ? {backgroundColor: buttonColor} : {} }>Builder Mode</p>
              <img className="navbar-image" src={require("../assets/builder-icon.png")}/>
           </div>
+          </div>
         )
-      }
     }
 
     async builderMode(){

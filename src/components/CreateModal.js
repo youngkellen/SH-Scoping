@@ -13,8 +13,9 @@ class CreateModal extends React.Component {
   constructor() {
     super();
     this.state = {
-      choosePlatform: true,
-      projectInfoModal: false,
+      choosePlatform: false,
+      projectInfoModal: true,
+      typeSelectModal: false,
       selected: {
         iOS: false,
         Android: false,
@@ -33,6 +34,9 @@ class CreateModal extends React.Component {
         projectCreator: "",
         opportunity: "",
         referenceFiles: [{value: ""}]
+      },
+      types: {
+        selectedTypes: []
       }
     }
     this.choosePlatform = this.choosePlatform.bind(this);
@@ -62,13 +66,18 @@ class CreateModal extends React.Component {
   finishTask(task){
     if (task === "choosePlatform") {
       this.setState({
-        choosePlatform: false,
-        projectInfoModal: true
+        choosePlatform: true,
+        projectInfoModal: false
       })
-    } else if (task == "projectInfo") {
+    } else if (task === "projectInfo") {
        this.setState({
          projectInfoModal: false
        })
+    } else if (task === "typeSelect") {
+      this.setState({
+        choosePlatform: false,
+        typeSelectModal: true
+      })
     }
   }
 
@@ -124,7 +133,7 @@ class CreateModal extends React.Component {
             </div>
           </div>
           <div className="row">
-            <button type="button" className="btn btn-lg btn-outline-primary" onClick={() => this.finishTask("choosePlatform")}>Next</button>
+            <button type="button" className="btn btn-lg btn-outline-primary" onClick={() => this.finishTask("typeSelect")}>Next</button>
           </div>
         </div>
       )
@@ -207,121 +216,176 @@ class CreateModal extends React.Component {
   projectInfoModal(){
     let { name, description, clientName, notes, logo, projectCreator, opportunity, referenceFiles } = this.state.projectInfo;
     if (this.state.projectInfoModal){
-      return (
-        <div className="container modal-platform ">
-          <div className="row" style={{ marginBottom: "30px"}}>
+      return <div className="container modal-platform " style={{padding: "15px"}}>
+          <div className="row" style={{ marginBottom: "30px" }}>
             <h2>Project Information</h2>
           </div>
           <div className="row">
-            <div className="col-md-5 project-info" style={{marginRight: "50px"}}>
+            <div className="col-md-5 project-info" style={{ marginRight: "50px" }}>
               <div className="row">
-                <p>Name</p> 
-                <input
-                  type="text"
-                  className="Rectangle"
-                  onChange={e => this.changeName(e.target.value)}
-                >
-                </input>
+                <p>Name</p>
+                <input type="text" className="Rectangle" onChange={e => this.changeName(e.target.value)} />
               </div>
               <div className="row">
                 <p>Description</p>
-                <textarea 
-                  className="Rectangle_Big"
-                  onChange={e => this.changeDescription(e.target.value)}
-                  value={description}
-                >
-                 </textarea>
+                <textarea className="Rectangle_Big" onChange={e => this.changeDescription(e.target.value)} value={description} />
               </div>
               <div className="row">
-                <p>Client Name</p> 
-                <input 
-                  type="text"
-                  className="Rectangle"
-                  onChange={e => this.changeClientName(e.target.value)}
-                  value={clientName}
-                >
-                </input>
+                <p>Client Name</p>
+                <input type="text" className="Rectangle" onChange={e => this.changeClientName(e.target.value)} value={clientName} />
               </div>
               <div className="row">
                 <p>Notes </p>
-                <textarea 
-                  className="Rectangle_Big"
-                  onChange={e => this.changeNotes(e.target.value)}
-                  value={notes}
-                >
-                </textarea>
+                <textarea className="Rectangle_Big" onChange={e => this.changeNotes(e.target.value)} value={notes} />
               </div>
             </div>
-            <div className="col-md-5 project-info" >
-              <div className="row"  style={{marginBottom: 0}}>
+            <div className="col-md-5 project-info">
+              <div className="row" style={{ marginBottom: 0 }}>
                 <p>LOGO </p>
-                <div className="row" style={{margin: 0, display: "flex", alignItems: "center"}}>
-
-                <div className="col-md-9">
-                  <Dropzone className={ logo ? "" : "Square"} style={{border: "none", cursor: "pointer", marginBottom: 0 }} onDrop={this.onDrop}>
-                    <img className = { logo ? "Empty_Square" : "" } src={ logo ? logo.preview : imagePlaceholder } 
-                      style={ logo ? {marginBottom: 0 } : {height: "32px", margin: "auto"}}
-                      onError={e => { 
-                      e.target.src = imagePlaceholder}}
-                    />
-                  </Dropzone>
+                <div className="row" style={{ margin: 0, display: "flex", alignItems: "center" }}>
+                  <div className="col-md-9" style={{padding: 0}}>
+                    <Dropzone className={logo ? "" : "Square"} style={{ border: "none", cursor: "pointer", marginBottom: 0 }} onDrop={this.onDrop}>
+                      <img className={logo ? "Empty_Square" : ""} src={logo ? logo.preview : imagePlaceholder} style={logo ? { marginBottom: 0 } : { height: "32px", margin: "auto" }} onError={e => {
+                          e.target.src = imagePlaceholder;
+                        }} />
+                    </Dropzone>
+                  </div>
+                  <div className="col-md-3">
+                    <img src={removeImage} style={logo ? { height: "32px", display: "inline" } : { display: "none" }} onClick={() => this.removeLogo()} />
+                  </div>
                 </div>
-               <div className="col-md-3"> 
-               <img src={ removeImage } 
-                    style={ logo ? {height: "32px", display: "inline"} : {display: "none"}}
-                    onClick={() => this.removeLogo()}
-                  />
-               </div>
-                
-                
-                   </div>
-                
               </div>
               <div className="row ">
                 <p>PROJECT CREATOR </p>
-                <input 
-                  type="text"
-                  className="Rectangle"
-                  onChange={e => this.changeProjectCreator(e.target.value)}
-                  value={projectCreator}
-                >
-                </input>
+                <input type="text" className="Rectangle" onChange={e => this.changeProjectCreator(e.target.value)} value={projectCreator} />
               </div>
               <div className="row">
-                 <p>OPPORTUNITY</p> 
-                <input 
-                  type="text"
-                  className="Rectangle"
-                  onChange={e => this.changeOpportunity(e.target.value)}
-                  value={opportunity}
-                >
-                </input>
+                <p>OPPORTUNITY</p>
+                <input type="text" className="Rectangle" onChange={e => this.changeOpportunity(e.target.value)} value={opportunity} />
               </div>
               <div className="row">
-                  <p>REFERENCE FILES</p>
-                  <input 
-                    style={{display:"inline", width: "240px", margin: "0 10px 0 0", marginBottom: "10px"}} 
-                    type="text" 
-                    className="Rectangle"
-                    onChange={e => this.changeReferenceValue(0, e.target.value)}
-                    value={referenceFiles[0].value}
-                  >
-                  </input> 
-                  <img 
-                    src={imagePlaceholder}
-                    style={{display: "inline", height: "30px", width: "30px", margin: 0}}
-                    onClick={()=>this.addReferenceFile()}
-                  >
-                    
-                  </img>
-                  {this.renderReferenceFiles()}
+                <p>REFERENCE FILES</p>
+                <input style={{ display: "inline", width: "240px", margin: "0 10px 0 0", marginBottom: "10px" }} type="text" className="Rectangle" onChange={e => this.changeReferenceValue(0, e.target.value)} value={referenceFiles[0].value} />
+                <img src={imagePlaceholder} style={{ display: "inline", height: "30px", width: "30px", margin: 0 }} onClick={() => this.addReferenceFile()} />
+                {this.renderReferenceFiles()}
               </div>
+            </div>
+          </div>
+          <div className="row">
+            <button type="button" className="btn btn-lg btn-outline-primary" onClick={() => this.finishTask("choosePlatform")}>
+              Next
+            </button>
           </div>
         </div>
-      </div>
-      )
     } else {
       return null
+    }
+  }
+
+  addSearchTerm(term){
+    console.log(term, "term bro")
+      this.setState({
+        types: Object.assign({}, this.state.types, {selectedTypes: [...this.state.types.selectedTypes, term] })
+      })
+  }
+
+  removeTerm(index){
+    let terms = [...this.state.types.selectedTypes];
+    console.log(terms, "terms before")
+    terms.splice(index, 1)
+    console.log(terms, "remove terms")
+    this.setState(prevState => ({
+      types: Object.assign({}, prevState.types, {selectedTypes: [ ...terms] })
+    }))
+  }
+
+  addedTerms(){
+    let { selectedTypes } = this.state.types;
+    console.log(selectedTypes, "terms added")
+    if (selectedTypes) {
+      return selectedTypes.map((type, i) => {
+        return (
+          <div className="row" key={i}>
+            <div className="col-md-7">
+              <p style={{fontSize: "12px", fontWeight: "bold"}}>{type.term}</p>
+            </div>
+            <div className="col-md-1"></div>
+            <div className="col-md-4">
+              <button className="btn btn-primary btn-sm type-btn" onClick={() => this.removeTerm(i)}>REMOVE</button>
+            </div>
+    
+          </div>
+        )
+      })
+    }
+  }
+
+  searchTerms(){
+    let searchTerms = [{term: "E-commerce", date: "10/10/10", content: "Blah blah blah"}, {term: "Bit Coin", date: "11/11/11", content: "Lorem Ipsum"}]
+    if (searchTerms){
+      return searchTerms.map((searchTerm, i) => {
+        return (
+          <div className="row search_terms" key={i}>
+            <div className="col-md-9">
+              <div className="row">
+                <div className="col-md-10">
+                  <p style={{fontSize: "12px", fontWeight: "bold"}}>{searchTerm.term}</p>
+                </div>
+                <div className="col-md-2">
+                 <p className="search-dates">{searchTerm.date}</p>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <p className="search-info">{searchTerm.content}</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-1"></div>
+            <div className="col-md-2">
+              <button className="btn btn-primary btn-sm type-btn" onClick={() => this.addSearchTerm(searchTerm)}>Add</button>
+            </div>
+    
+          </div>
+        )
+      })
+    } else {
+      return null
+    }
+   
+  }
+
+  typeSelectModal(){
+    if (this.state.typeSelectModal) {
+      return (
+        <div className="container modal-platform type_modal">
+          <div className="row" style={{ marginBottom: "30px" }}>
+            <h2>Type(s)</h2>
+          </div>
+          <div className="row" style={{width: "90%"}}>
+            <div className="col-md-8">
+              <div className="row" style={{marginBottom: "20px"}}>
+                <input type="search" className="Rectangle_Full" placeholder="ENTER SEARCH TERMS"/>
+              </div>
+              <div className="row type_left">
+                {this.searchTerms()}
+              </div>
+            </div>
+            <div className="col-md-1"></div>
+            <div className="col-md-3 ">
+              <p style={{textAlign: "left"}}>Filter/Sort</p>
+              <div className="row type_right_filter" >
+                <p><input type="radio" value="A-Z" name="filter"/> Alphabetical A-Z</p>
+                <p><input type="radio" value="Z-A" name="filter"/> Alphabetical Z-A</p>
+                <p><input type="radio" value="recent" name="filter"/> Most recent</p>
+              </div>
+              <div className="row type_right">
+                {this.addedTerms()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
     }
   }
 
@@ -369,8 +433,9 @@ class CreateModal extends React.Component {
 
   requestClose(){
     this.setState({
-      choosePlatform: true,
-      projectInfoModal: false,
+      choosePlatform: false,
+      projectInfoModal: true,
+      typeSelectModal: false,
       selected: {
         iOS: false,
         Android: false,
@@ -389,6 +454,9 @@ class CreateModal extends React.Component {
         projectCreator: "",
         opportunity: "",
         referenceFiles: [{value: ""}]
+      },
+      types: {
+        selectedTypes: []
       }
     }, () => {this.props.closeModal()})
   }
@@ -402,8 +470,9 @@ class CreateModal extends React.Component {
           className="modal-create"
           overlayClassName="modal-overlay"
         >
-          {this.choosePlatform()}
           {this.projectInfoModal()}
+          {this.choosePlatform()}
+          {this.typeSelectModal()}
         </Modal>
       )
   }

@@ -4875,6 +4875,13 @@ a.text-danger:focus, a.text-danger:hover {
   .navbar .nav {
     display: flex;
     align-items: center; }
+    .navbar .nav .mode-btn {
+      display: inline-block;
+      background-color: white;
+      width: 170px;
+      margin: 0;
+      text-align: center;
+      font-size: 18px; }
     .navbar .nav img {
       height: 30px;
       width: 30px; }
@@ -4897,6 +4904,117 @@ a.text-danger:focus, a.text-danger:hover {
     .navbar .nav .btn-white:hover {
       color: blue;
       border-color: blue; }
+
+.ReactModalPortal {
+  z-index: 4;
+  position: absolute; }
+
+.modal-create {
+  position: absolute;
+  top: 40px;
+  left: 15%;
+  right: 15%;
+  background-color: white;
+  box-shadow: -10px 10px 20px 0 rgba(30, 30, 30, 0.05);
+  border-radius: 30px;
+  z-index: 10; }
+  .modal-create .container {
+    padding: 30px;
+    overflow-y: scroll;
+    height: 100%;
+    max-height: 100vh; }
+    .modal-create .container img {
+      width: 100%;
+      margin-bottom: 20px;
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      cursor: pointer; }
+    .modal-create .container p {
+      cursor: pointer;
+      text-align: center; }
+  .modal-create .modal-platform {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+    .modal-create .modal-platform .project-info div {
+      margin-bottom: 20px; }
+    .modal-create .modal-platform .project-info p {
+      text-align: left; }
+    .modal-create .modal-platform .Rectangle {
+      width: 315px;
+      height: 39px; }
+    .modal-create .modal-platform .Rectangle_Big {
+      width: 315px;
+      height: 128px;
+      background-color: #fbfbfb; }
+    .modal-create .modal-platform .Rectangle_Full {
+      width: 100%;
+      height: 39px;
+      background-color: #efefef;
+      border: none; }
+    .modal-create .modal-platform .Square {
+      width: 128px;
+      height: 128px;
+      background-color: #fbfbfb;
+      display: flex;
+      justify-content: center;
+      align-items: center; }
+    .modal-create .modal-platform .Empty_Square {
+      width: 128px;
+      height: 128px; }
+    .modal-create .modal-platform input[type="text"], .modal-create .modal-platform textarea {
+      background-color: #fbfbfb;
+      border: none; }
+    .modal-create .modal-platform textarea {
+      background-color: #fbfbfb;
+      border: none;
+      resize: none; }
+    .modal-create .modal-platform .type_left {
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+      background-color: #efefef;
+      overflow: auto; }
+    .modal-create .modal-platform input[type="search"]::placeholder {
+      color: #4990e2; }
+    .modal-create .modal-platform .type_right_filter {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around; }
+      .modal-create .modal-platform .type_right_filter input[type="radio"] {
+        margin-bottom: 10px; }
+      .modal-create .modal-platform .type_right_filter p {
+        text-align: left;
+        font-size: 12px;
+        cursor: auto; }
+    .modal-create .modal-platform .type_right {
+      background-color: #efefef;
+      display: flex;
+      flex-direction: column;
+      height: 396px;
+      overflow: auto;
+      padding: 10px; }
+      .modal-create .modal-platform .type_right p {
+        cursor: auto;
+        text-align: left; }
+    .modal-create .modal-platform .type-btn {
+      width: 60px;
+      font-size: 10px;
+      text-align: center; }
+    .modal-create .modal-platform .search_terms {
+      border-bottom: solid black 1px;
+      border-color: #979797;
+      margin: 10px; }
+      .modal-create .modal-platform .search_terms .search-dates {
+        font-size: 12px;
+        color: #4990e2; }
+      .modal-create .modal-platform .search_terms p {
+        text-align: left;
+        cursor: auto; }
+      .modal-create .modal-platform .search_terms .search-info {
+        font-size: 10px; }
 
 .builder input[type="search"], .builder textarea {
   background-color: #4990e2;
@@ -4979,7 +5097,8 @@ html, body {
   border: solid #4990e2 2px;
   font-size: 12px;
   overflow: hidden;
-  padding-left: 10px; }
+  padding-left: 10px;
+  z-index: 2; }
   .footer .row {
     box-sizing: border-box;
     border-collapse: collapse;
@@ -5009,60 +5128,3 @@ html, body {
   right: 0;
   bottom: 0;
   background-color: rgba(7, 29, 53, 0.5); }
-
-.modal-create {
-  position: absolute;
-  top: 40px;
-  left: 15%;
-  right: 15%;
-  background-color: white;
-  box-shadow: -10px 10px 20px 0 rgba(30, 30, 30, 0.05);
-  border-radius: 30px; }
-  .modal-create .container {
-    padding: 40px;
-    overflow-y: scroll;
-    height: 100%;
-    max-height: 100vh; }
-    .modal-create .container img {
-      width: 100%;
-      margin-bottom: 20px;
-      width: 96px;
-      height: 96px;
-      object-fit: contain;
-      cursor: pointer; }
-    .modal-create .container p {
-      cursor: pointer;
-      text-align: center; }
-  .modal-create .modal-platform {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; }
-    .modal-create .modal-platform .project-info div {
-      margin-bottom: 20px; }
-    .modal-create .modal-platform .project-info p {
-      text-align: left; }
-    .modal-create .modal-platform .Rectangle {
-      width: 315px;
-      height: 39px; }
-    .modal-create .modal-platform .Rectangle_Big {
-      width: 315px;
-      height: 128px;
-      background-color: #fbfbfb; }
-    .modal-create .modal-platform .Square {
-      width: 128px;
-      height: 128px;
-      background-color: #fbfbfb;
-      display: flex;
-      justify-content: center;
-      align-items: center; }
-    .modal-create .modal-platform .Empty_Square {
-      width: 128px;
-      height: 128px; }
-    .modal-create .modal-platform input[type="text"], .modal-create .modal-platform textarea {
-      background-color: #fbfbfb;
-      border: none; }
-    .modal-create .modal-platform textarea {
-      background-color: #fbfbfb;
-      border: none;
-      resize: none; }

@@ -15,25 +15,24 @@ class Builder extends Component {
         <div className="builder row">
           <div className="col-md-12"  style={{height: "100vh"}}>
             <div className="row form-group" style={{margin: 0, padding: 0}}>
-            <input type="search" className="form-control" id="exampleInputPassword1" placeholder="ENTER SEARCH TERMS"/>
+            <input type="search" className="form-control" placeholder="ENTER SEARCH TERMS"/>
             </div>
             <div className="row" style={{margin: 0, padding: 0}}>
                 <SplitterLayout
-                percentage
-                primaryIndex={0}
-                secondaryInitialSize={80}
+                  percentage
+                  primaryIndex={0}
+                  secondaryInitialSize={80}
                 >
-                    <FeatureSets/>
-                    <SplitterLayout
+                  <FeatureSets/>
+                  <SplitterLayout
                     percentage
                     primaryIndex={1}
                     primaryInitialSize={70}
                     secondaryInitialSize={30}
-
-    >
-                         <Features/>
-                         <FeatureVariants/>
-                    </SplitterLayout>
+                  >
+                    <Features/>
+                    <FeatureVariants/>
+                  </SplitterLayout>
                 </SplitterLayout>
             </div>
           </div>

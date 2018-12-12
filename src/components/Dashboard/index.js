@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Builder from '../Builder';
 import Search from '../Search';
+import Excel from '../Excel';
 import SplitterLayout from 'react-splitter-layout';
 import Footer from '../Footer.js'
 

@@ -1,7 +1,7 @@
 $footer-blue : #cee5ff;
 $footer-border: #4990e2;
 $footer-right: #d8d8d8;
-$input-background: #fbfbfb;
+
 
 html, body {
     margin: 0;
@@ -23,6 +23,7 @@ html, body {
     font-size: 12px;
     overflow:hidden;
     padding-left: 10px;
+    z-index: 2;
     .row {
         box-sizing:border-box;
         border-collapse: collapse;
@@ -60,76 +61,4 @@ html, body {
     bottom: 0;
     background-color: rgba(7, 29, 53, 0.5);
   
-}
-
-.modal-create {
-    position: absolute;
-    top: 40px;
-    left: 15%;
-    right: 15%;
-    background-color: white;
-    box-shadow: -10px 10px 20px 0 rgba(30, 30, 30, 0.05);
-    border-radius: 30px;
-    .container {
-        padding: 40px;
-        overflow-y: scroll;
-        height: 100%;
-        max-height: 100vh;
-        img {
-            width: 100%;
-            margin-bottom: 20px;
-            width: 96px;
-            height: 96px;
-            object-fit: contain;    
-            cursor: pointer;      
-        }
-        p {
-            cursor: pointer;
-            text-align: center
-        }
-    }
-    .modal-platform{
-        display: flex; 
-        flex-direction: column;
-         justify-content: center; 
-         align-items: center;
-         .project-info{
-            div {
-                margin-bottom: 20px;
-            }
-            p{
-                text-align: left;
-            }
-        }
-         .Rectangle{
-            width: 315px;
-            height: 39px;
-         }
-         .Rectangle_Big{
-            width: 315px;
-            height:128px;
-            background-color : $input-background; 
-         }
-         .Square{
-            width: 128px;
-            height:128px;
-            background-color : $input-background; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-         }
-         .Empty_Square{
-            width: 128px;
-            height:128px;
-         }
-         input[type="text"], textarea {
-            background-color : $input-background; 
-            border: none;
-          }
-          textarea {
-            background-color : $input-background; 
-            border: none;
-            resize: none;
-          }
-    }
 }
