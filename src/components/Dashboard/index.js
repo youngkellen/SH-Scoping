@@ -10,10 +10,46 @@ import Footer from '../Footer.js'
 const mapStatetoProps = state => ({viewMode: state.viewMode})
 
 class Dashboard extends Component {
+  constructor(){
+    super()
+    this.state = {
+      excelHeight: 0,
+      split: false,
+      full: false
+    }
+    this.getHeight = this.getHeight.bind(this);
+    this.resetHeight = this.resetHeight.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps, "dashboard will props")
+    const { split, full } = nextProps.viewMode;
+    this.setState({
+      split,
+      full
+    })
+  }
+
+  getHeight(){
+    let length = document.getElementsByClassName("layout-pane").length
+    console.log(length, "length")
+    let height = document.getElementsByClassName("layout-pane")[length - 1].style.height
+    console.log(height, "height")
+    this.setState({
+      excelHeight: height
+    })
+  }
+
+  resetHeight(){
+    this.setState({
+      excelHeight: 0
+    })
+  }
 
 renderMode() {
-  const { mode, split } = this.props.viewMode;
+  const { mode, split, full } = this.props.viewMode;
   console.log(mode, "mode bro")
+
   if (mode === "builder" && !split) {
     return (
       <Builder/>
@@ -23,13 +59,16 @@ renderMode() {
       <Search/>
     )
   }  else if (split){
+
     return (
       <div  style={{height: "90vh"}}>
             <SplitterLayout
                 vertical
+                onDragEnd={()=> this.getHeight()}
+                secondaryInitialSize={full ? 10000 : 400}
             >
                  <Builder/>
-                 <Search/>
+                 <Excel excelHeight={this.state.excelHeight} resetHeight={this.resetHeight} />
             </SplitterLayout>
         </div>
     )
@@ -50,7 +89,6 @@ renderMode() {
               {this.renderMode()}
             </div>
           </div>
-          <Footer/>
       </div>
       );
     }

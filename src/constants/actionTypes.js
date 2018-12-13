@@ -6,3 +6,4 @@ export const ASYNC_START = 'ASYNC_START';
 export const ASYNC_END = 'ASYNC_END';
 export const MODE_CHANGE = 'MODE_CHANGE';
 export const SPLIT_CHANGE = 'SPLIT_CHANGE';
+export const FULL_VIEW = 'FULL_VIEW';

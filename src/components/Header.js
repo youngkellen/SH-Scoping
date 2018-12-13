@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MODE_CHANGE, SPLIT_CHANGE } from '../constants/actionTypes';
+import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW } from '../constants/actionTypes';
 import CreateModal from './CreateModal.js'
 
 const mapStateToProps = state => ({viewMode: state.viewMode})
@@ -22,7 +22,7 @@ class Header extends React.Component {
 
     renderMode(){
       let { mode } = this.state;
-      let buttonColor = "lightblue";
+      let buttonColor = "#cee5ff";
         return (
           <div style={{display: "flex"}}>
           <div onClick={() => this.changeMode()} style={{position: "relative"}}>
@@ -38,8 +38,10 @@ class Header extends React.Component {
     }
 
     async builderMode(){
-      await this.props.dispatch({ type: SPLIT_CHANGE, payload: false })
-      await this.props.dispatch({ type: MODE_CHANGE, payload: "builder" })
+      const { dispatch } = this.props;
+      await dispatch({ type: SPLIT_CHANGE, payload: false })
+      await dispatch({ type: FULL_VIEW, payload: false })
+      await dispatch({ type: MODE_CHANGE, payload: "builder" })
     }
 
     async searchMode(){

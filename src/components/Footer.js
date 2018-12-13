@@ -2,28 +2,43 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { store } from '../store';
 import { push } from 'react-router-redux';
-import { MODE_CHANGE, SPLIT_CHANGE } from '../constants/actionTypes';
+import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW } from '../constants/actionTypes';
 
 class Footer extends React.Component {
   constructor() {
     super();
   }
 
-  handleFullView(){
+  async handleCollapseView(){
     const { dispatch } = this.props;
-    dispatch({ type: SPLIT_CHANGE, payload: false })
+    await dispatch({ type: FULL_VIEW, payload: false })
+    await dispatch({ type: SPLIT_CHANGE, payload: false })
   }
 
-  handleSplitView(){
+  async handleSplitView(){
     const { dispatch } = this.props;
-    dispatch({ type: SPLIT_CHANGE, payload: true })
+    // this works, idk why, but it does. don't touch
+    await dispatch({ type: FULL_VIEW, payload: false })
+    await dispatch({ type: SPLIT_CHANGE, payload: false })
+    await dispatch({ type: FULL_VIEW, payload: false })
+    await dispatch({ type: SPLIT_CHANGE, payload: true })
+  }
+  async handleFullView(){
+    const { dispatch } = this.props;
+    // this works, idk why, but it does. don't touch
+    await dispatch({ type: FULL_VIEW, payload: false })
+    await dispatch({ type: SPLIT_CHANGE, payload: false })
+    await dispatch({ type: FULL_VIEW, payload: true })
+    await dispatch({ type: SPLIT_CHANGE, payload: true })
+   
   }
 
   componentDidMount() {
   }
 
   render() {
-      let { mode, split } = this.props.viewMode;
+      let { mode, split, full } = this.props.viewMode;
+      console.log(this.props, "footer props")
       let buttonBlue = "#4990e2";
       return (
         <div className="footer">
@@ -48,13 +63,13 @@ class Footer extends React.Component {
             <div className="col-md-3" id="view_settings">
                 <div className="container row">
                 <div className="col-md-4" >
-                    <p onClick={() => this.handleFullView()} style={split ? {} : {backgroundColor: buttonBlue}}>Full View</p> 
+                    <p onClick={() => this.handleFullView()} style={full ? {backgroundColor: buttonBlue} : {}}>Full View</p> 
                 </div>
                 <div className="col-md-4">
-                    <p onClick={() => this.handleSplitView()} style={split ? {backgroundColor: buttonBlue} : {}}>Split View</p>
+                    <p onClick={() => this.handleSplitView()} style={split && !full ? {backgroundColor: buttonBlue} : {}}>Split View</p>
                 </div>
                 <div className="col-md-4">
-                    <p>Collapsed</p>
+                    <p onClick={() => this.handleCollapseView()} style={!full && !split ? {backgroundColor: buttonBlue} : {}}> Collapsed</p>
                 </div>
                 </div>
             </div>      

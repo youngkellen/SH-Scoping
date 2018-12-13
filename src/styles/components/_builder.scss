@@ -15,13 +15,11 @@ $scope-gray: #ececec;
         width: 3px;
       }
       .splitter-layout {
-          max-height: 90vh;
           .layout-pane {
               overflow:hidden;
           }
           .layout-pane-scroll {
             overflow-y:scroll;
-            max-height: 75%;
             padding-bottom: 15px;
         }
           .column_head{

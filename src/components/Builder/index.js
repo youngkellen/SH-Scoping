@@ -5,6 +5,7 @@ import SplitterLayout from 'react-splitter-layout';
 import Features from './Features';
 import FeatureSets from './FeatureSets';
 import FeatureVariants from './FeatureVariants'
+import Footer from '../Footer';
 
 const mapStatetoProps = state => ({viewMode: state.viewMode})
 
@@ -35,6 +36,7 @@ class Builder extends Component {
                   </SplitterLayout>
                 </SplitterLayout>
             </div>
+            <Footer/>
           </div>
         </div>
       );

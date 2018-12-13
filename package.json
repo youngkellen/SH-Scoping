@@ -17,6 +17,7 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "react-scripts": "2.1.1",
     "react-splitter-layout": "^3.0.1",
+    "react-tooltip": "^3.9.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.7",
     "redux-logger": "^3.0.6",
