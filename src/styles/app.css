@@ -5016,66 +5016,63 @@ a.text-danger:focus, a.text-danger:hover {
       .modal-create .modal-platform .search_terms .search-info {
         font-size: 10px; }
 
-.builder input[type="search"], .builder textarea {
-  background-color: #4990e2;
-  color: white; }
-
-.builder input[type="search"]::placeholder {
-  color: lightgray; }
-
-.builder .layout-splitter {
-  width: 3px; }
-
-.builder .splitter-layout .layout-pane {
+.splitter-layout {
   overflow: hidden; }
+  .splitter-layout .layout-pane-primary {
+    overflow: hidden; }
 
-.builder .splitter-layout .layout-pane-scroll {
-  overflow-y: scroll;
-  padding-bottom: 15px; }
-
-.builder .splitter-layout .column_head {
-  border-top: solid #aaa 2px;
-  border-bottom: solid #aaa 2px;
-  padding: 10px;
-  margin: 0;
-  background-color: #ececec; }
-
-.builder .collapsible {
-  margin-left: 15px;
-  background-color: #ececec;
-  color: black;
-  cursor: pointer;
-  width: 100%;
-  border-bottom: solid #aaa 2px;
-  text-align: start;
-  outline: none;
-  font-size: 15px;
-  position: relative; }
-
-.builder ul {
-  list-style-type: none; }
-  .builder ul li {
+.builder {
+  overflow: hidden; }
+  .builder input[type="search"], .builder textarea {
+    background-color: #4990e2;
+    color: white; }
+  .builder input[type="search"]::placeholder {
+    color: lightgray; }
+  .builder .layout-splitter {
+    width: 3px; }
+  .builder .splitter-layout .layout-pane {
+    overflow: hidden; }
+  .builder .splitter-layout .layout-pane-scroll {
+    overflow-y: hidden;
+    padding-bottom: 100px; }
+  .builder .splitter-layout .column_head {
+    border-top: solid #aaa 2px;
     border-bottom: solid #aaa 2px;
+    padding: 10px;
+    margin: 0;
+    background-color: #ececec; }
+  .builder .collapsible {
+    margin-left: 15px;
     background-color: #ececec;
-    border-radius: 25px;
-    padding-left: 10px;
-    cursor: pointer; }
-  .builder ul li:hover {
+    color: black;
+    cursor: pointer;
+    width: 100%;
+    border-bottom: solid #aaa 2px;
+    text-align: start;
+    outline: none;
+    font-size: 15px;
+    position: relative; }
+  .builder ul {
+    list-style-type: none; }
+    .builder ul li {
+      border-bottom: solid #aaa 2px;
+      background-color: #ececec;
+      border-radius: 25px;
+      padding-left: 10px;
+      cursor: pointer; }
+    .builder ul li:hover {
+      background-color: lightgray; }
+  .builder .collapsible::after {
+    color: #444;
+    left: 0;
+    content: ' ▾'; }
+  .builder .active, .builder .collapsible:hover {
     background-color: lightgray; }
-
-.builder .collapsible::after {
-  color: #444;
-  left: 0;
-  content: ' ▾'; }
-
-.builder .active, .builder .collapsible:hover {
-  background-color: lightgray; }
-
-.builder .content {
-  padding: 0 18px;
-  display: none;
-  overflow: hidden;
-  background-color: #f1f1f1; }
+  .builder .content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1; }
 
 .excel_table {
   margin: 0;
