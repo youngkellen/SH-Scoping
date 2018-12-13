@@ -1,9 +1,11 @@
 $search-color: #4990e2;
 $scope-gray: #ececec;
+$arrow-gray: #979797;
 
 
 .splitter-layout {
   overflow: hidden;
+  background-color: $scope-gray;
   .layout-pane-primary{
     overflow: hidden;
   }
@@ -11,6 +13,7 @@ $scope-gray: #ececec;
 
 .builder {
       overflow: hidden;
+      min-width: 1400px;
     input[type="search"], textarea {
 
         background-color : $search-color; 
@@ -43,6 +46,7 @@ $scope-gray: #ececec;
         margin-left: 15px;
         background-color: $scope-gray;
         color: black;
+        display: inline-block;
         cursor: pointer;
         width: 100%;
         border-bottom: solid #aaa 2px;
@@ -50,6 +54,27 @@ $scope-gray: #ececec;
         outline: none;
         font-size: 15px;
         position: relative;
+        overflow-x: hidden;
+        .arrow-up {
+          width: 0; 
+          height: 0; 
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          display: inline-block;
+          border-bottom: 5px solid $arrow-gray;
+          margin-left: 20px;
+        }
+        .arrow-down {
+          width: 0; 
+          height: 0; 
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          display: inline-block;
+          border-top: 5px solid $arrow-gray;
+          margin-left: 20px;
+        }
+        
+        
       }
     ul {
         list-style-type: none;
@@ -64,11 +89,11 @@ $scope-gray: #ececec;
             background-color: lightgray;
         }
     }
-      .collapsible::after{
-        color: #444;
-        left: 0;
-        content: ' ▾';
-      }
+      // .collapsible::after{
+      //   color: #444;
+      //   left: 0;
+      //   content: ' ▾';
+      // }
       .active, .collapsible:hover {
         background-color: lightgray;
       }

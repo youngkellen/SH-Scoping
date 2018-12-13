@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*!
  * Bootstrap v4.0.0-alpha.2 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -5017,12 +5016,14 @@ a.text-danger:focus, a.text-danger:hover {
         font-size: 10px; }
 
 .splitter-layout {
-  overflow: hidden; }
+  overflow: hidden;
+  background-color: #ececec; }
   .splitter-layout .layout-pane-primary {
     overflow: hidden; }
 
 .builder {
-  overflow: hidden; }
+  overflow: hidden;
+  min-width: 1400px; }
   .builder input[type="search"], .builder textarea {
     background-color: #4990e2;
     color: white; }
@@ -5045,13 +5046,31 @@ a.text-danger:focus, a.text-danger:hover {
     margin-left: 15px;
     background-color: #ececec;
     color: black;
+    display: inline-block;
     cursor: pointer;
     width: 100%;
     border-bottom: solid #aaa 2px;
     text-align: start;
     outline: none;
     font-size: 15px;
-    position: relative; }
+    position: relative;
+    overflow-x: hidden; }
+    .builder .collapsible .arrow-up {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      display: inline-block;
+      border-bottom: 5px solid #979797;
+      margin-left: 20px; }
+    .builder .collapsible .arrow-down {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      display: inline-block;
+      border-top: 5px solid #979797;
+      margin-left: 20px; }
   .builder ul {
     list-style-type: none; }
     .builder ul li {
@@ -5062,10 +5081,6 @@ a.text-danger:focus, a.text-danger:hover {
       cursor: pointer; }
     .builder ul li:hover {
       background-color: lightgray; }
-  .builder .collapsible::after {
-    color: #444;
-    left: 0;
-    content: ' ▾'; }
   .builder .active, .builder .collapsible:hover {
     background-color: lightgray; }
   .builder .content {
@@ -5096,6 +5111,10 @@ a.text-danger:focus, a.text-danger:hover {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 200px; }
+  .excel_table .full_view {
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: clip; }
   .excel_table th {
     position: sticky;
     top: 0;

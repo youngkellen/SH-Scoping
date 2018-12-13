@@ -27,6 +27,11 @@ $excel-hover: #fdffe2;
         text-overflow: ellipsis;
         max-width: 200px;
     }
+    .full_view {
+        overflow: hidden ;
+        white-space: normal;
+        text-overflow: clip;
+    }
     th { position: sticky; top: 0;  z-index: 0;  background-color: white; }
     .table{
         overflow-y: hidden;

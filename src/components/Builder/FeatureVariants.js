@@ -8,7 +8,7 @@ class FeatureVariants extends Component {
 
     render() {
       return (
-        <div className="row">
+        <div className="row" style={{minWidth: "400px"}}>
           <div className="col-md-12"  style={{height: "100vh"}}>
           <div className ="row column_head" style={{textAlign: "center"}}>
             Feature Variants

@@ -19,6 +19,7 @@ class Excel extends Component {
     }
 
     componentWillUnmount(){
+        // needed to reset the table size on re opening this component
         this.props.resetHeight()
     }
 
@@ -49,6 +50,7 @@ class Excel extends Component {
     }
 
     renderRows() {
+        const { full } = this.props.viewMode;
         let data = [
             { id: 1, inQuote: "x", platform: "iOS", featureSet: "User Account fdsafdsafasddfsafdsafadsafsdafdsafsd", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
             { id: 2, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious blah blah blah blah blah", assumptions: "", notes: "" },
@@ -67,49 +69,49 @@ class Excel extends Component {
             return data.map((d, i) => {
                 return (
                     <tr key={i} id={`tr${i}`} onClick={() =>this.selectRow(`tr${i}`)}>
-                        <td scope="row" >
+                        <td scope="row" className={ full ? "full_view" : ""} >
                             <a data-tip data-for={`${d.id}i`}>{d.id}</a>
                             <ReactTooltip id={`${d.id}i`} place="bottom" type='light' effect='solid'>
                                 {d.id}
                             </ReactTooltip>
                         </td>
-                        <td>
+                        <td className={ full ? "full_view" : ""}>
                             <a data-tip data-for={`${d.id}q`}>{d.inQuote}</a>
                             <ReactTooltip id={`${d.id}q`} place="bottom" type='light' effect='solid'>
                                 {d.inQuote}
                             </ReactTooltip>
                         </td>
-                        <td>
+                        <td className={ full ? "full_view" : ""}>
                             <a data-tip data-for={`${d.id}p`}>{d.platform}</a>
                             <ReactTooltip id={`${d.id}p`} place="bottom" type='light' effect='solid'>
                                 {d.platform}
                             </ReactTooltip>
                         </td>
-                        <td>
+                        <td className={ full ? "full_view" : ""}>
                             <a data-tip data-for={`${d.id}fs`}>{d.featureSet}</a>
                             <ReactTooltip id={`${d.id}fs`} place="bottom" type='light' effect='solid'>
                                 {d.featureSet}
                             </ReactTooltip>
                         </td>
-                        <td>
+                        <td className={ full ? "full_view" : ""}>
                             <a data-tip data-for={`${d.id}f`}>{d.feature}</a>
                             <ReactTooltip id={`${d.id}f`} place="bottom" type='light' effect='solid'>
                                 {d.feature}
                             </ReactTooltip>
                         </td>
-                        <td>
+                        <td className={ full ? "full_view" : ""}>
                             <a data-tip data-for={`${d.id}fd`}>{d.featureDescription}</a>
                             <ReactTooltip id={`${d.id}fd`} place="bottom" type='light' effect='solid'>
                                 {d.featureDescription}
                             </ReactTooltip>
                         </td>
-                        <td>
+                        <td className={ full ? "full_view" : ""}>
                             <a data-tip data-for={`${d.id}a`}>{d.assumptions}</a>
                             <ReactTooltip id={`${d.id}a`} place="bottom" type='light' effect='solid'>
                                 {d.assumptions}
                             </ReactTooltip>
                         </td>
-                        <td>
+                        <td className={ full ? "full_view" : ""}>
                             <a data-tip data-for={`${d.id}a`}>{d.notes}</a>
                             <ReactTooltip id={`${d.id}a`} place="bottom" type='light' effect='solid'>
                                 {d.notes}

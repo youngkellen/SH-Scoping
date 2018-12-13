@@ -7,31 +7,22 @@ const mapStatetoProps = state => ({viewMode: state.viewMode})
 class FeatureSets extends Component {
   
   getElementHeight(){
-    let height = document.getElementById("General").getBoundingClientRect().height
-    console.log(height, "height bitch")
+    // let height = document.getElementById("General").getBoundingClientRect().height
   }
 
     render() {
       let { viewMode } = this.props;
       let height = viewMode.split ? "40vh" : "76vh"
       return (
-        <div className="row">
-         <div className ="row column_head" style={{textAlign: "center"}}>
+        <div className="row" style={{ minWidth: 400 }}>
+          <div className="row column_head" style={{ textAlign: "center" }}>
             Feature Sets
           </div>
-          <div className="col-md-12"  style={{height: height, overflow: "scroll"}}>
-         
-          <div className="row layout-pane-scroll"  style={{overflowY: "scroll"}}>
-              <button className="collapsible" onClick={() => this.getElementHeight()}>General</button>
-              
-              <div className="content" id="General">
-                <ul>
-                  <li>Content</li>
-                  <li>Content</li>
-                  <li>Content</li>
-                </ul>
-              </div>
-              <button className="collapsible">E-Commerce</button>
+          <div className="col-md-12" style={{ height: height, overflow: "scroll" }}>
+            <div className="row layout-pane-scroll" style={{ overflowY: "scroll" }}>
+              <button className="collapsible" onClick={() => this.getElementHeight()}>
+                General<div className="arrow-up" />
+              </button>
               <div className="content">
                 <ul>
                   <li>Content</li>
@@ -39,7 +30,9 @@ class FeatureSets extends Component {
                   <li>Content</li>
                 </ul>
               </div>
-              <button className="collapsible">E-Commerce</button>
+              <button className="collapsible" onClick={() => this.getElementHeight()}>
+                General<div className="arrow-up" />
+              </button>
               <div className="content">
                 <ul>
                   <li>Content</li>
@@ -47,7 +40,9 @@ class FeatureSets extends Component {
                   <li>Content</li>
                 </ul>
               </div>
-              <button className="collapsible">E-Commerce</button>
+              <button className="collapsible" onClick={() => this.getElementHeight()}>
+                General<div className="arrow-up" />
+              </button>
               <div className="content">
                 <ul>
                   <li>Content</li>
@@ -55,7 +50,9 @@ class FeatureSets extends Component {
                   <li>Content</li>
                 </ul>
               </div>
-              <button className="collapsible">E-Commerce</button>
+              <button className="collapsible" onClick={() => this.getElementHeight()}>
+                General<div className="arrow-up" />
+              </button>
               <div className="content">
                 <ul>
                   <li>Content</li>
@@ -63,7 +60,19 @@ class FeatureSets extends Component {
                   <li>Content</li>
                 </ul>
               </div>
-              <button className="collapsible">E-Commerce</button>
+              <button className="collapsible" onClick={() => this.getElementHeight()}>
+                General<div className="arrow-up" />
+              </button>
+              <div className="content">
+                <ul>
+                  <li>Content</li>
+                  <li>Content</li>
+                  <li>Content</li>
+                </ul>
+              </div>
+              <button className="collapsible" onClick={() => this.getElementHeight()}>
+                General<div className="arrow-up" />
+              </button>
               <div className="content">
                 <ul>
                   <li>Content</li>
@@ -72,12 +81,11 @@ class FeatureSets extends Component {
                 </ul>
               </div>
             </div>
-          <div className ="row">
-          
-          </div>
+            
+            <div className="row" />
           </div>
         </div>
-      );
+      )
     }
   }
   

@@ -13,10 +13,16 @@ class Feature extends Component {
       coll[i].addEventListener("click", function() {
         this.classList.toggle("active");
         let content = this.nextElementSibling;
+        console.log(content, "content bro")
+        let arrow = this.children[0]
         if (content.style.display === "block") {
           content.style.display = "none";
+         arrow.classList.remove("arrow-down")
+         arrow.classList.add("arrow-up")
         } else {
           content.style.display = "block";
+          arrow.classList.remove("arrow-up")
+          arrow.classList.add("arrow-down")
         }
       });
     }
@@ -24,7 +30,7 @@ class Feature extends Component {
 
     render() {
       return (
-        <div className="row " >
+        <div className="row" style={{minWidth: "400px"}}>
           <div className="col-md-12"  style={{height: "100vh"}}>
             <div className ="row column_head" style={{textAlign: "center"}}>
               Feature 
