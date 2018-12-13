@@ -7,10 +7,25 @@ $excel-hover: #fdffe2;
     display: flex;
     flex-direction: column;
     align-items: space-between;
+    .selected {
+            background-color: $excel-hover;
+        td {
+            overflow: hidden ;
+            white-space: normal;
+        text-overflow: clip;
+
+        }
+    }
     thead{
         z-index: 0;
         background-color: white;
         position: sticky;
+    }
+    td {
+        white-space: nowrap;
+        overflow: hidden ;
+        text-overflow: ellipsis;
+        max-width: 200px;
     }
     th { position: sticky; top: 0;  z-index: 0;  background-color: white; }
     .table{

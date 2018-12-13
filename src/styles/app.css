@@ -5084,10 +5084,21 @@ a.text-danger:focus, a.text-danger:hover {
   display: flex;
   flex-direction: column;
   align-items: space-between; }
+  .excel_table .selected {
+    background-color: #fdffe2; }
+    .excel_table .selected td {
+      overflow: hidden;
+      white-space: normal;
+      text-overflow: clip; }
   .excel_table thead {
     z-index: 0;
     background-color: white;
     position: sticky; }
+  .excel_table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px; }
   .excel_table th {
     position: sticky;
     top: 0;

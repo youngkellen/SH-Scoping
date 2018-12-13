@@ -7,6 +7,13 @@ import shortenText from '../../helper/shortenText';
 const mapStatetoProps = state => ({ viewMode: state.viewMode })
 
 class Excel extends Component {
+    constructor(){
+        super()
+        this.state = {
+            selected: ""
+        }
+        this.selectRow = this.selectRow.bind(this);
+    }
 
     componentDidMount() {
     }
@@ -15,10 +22,36 @@ class Excel extends Component {
         this.props.resetHeight()
     }
 
+    selectRow(id){
+        let { selected } = this.state
+            if (selected === id){
+                let remove = document.getElementById(selected)
+                remove.classList.remove(("selected"))
+                this.setState({
+                    selected: ""
+                })
+            } else if (selected) {
+                let remove = document.getElementById(selected)
+                remove.classList.remove(("selected"))
+                let row = document.getElementById(id)
+                row.classList.add(("selected"))
+                this.setState({
+                    selected: id
+                })
+            } else {
+                let row = document.getElementById(id)
+                row.classList.add(("selected"))
+                this.setState({
+                    selected: id
+                })
+            }
+      
+    }
+
     renderRows() {
         let data = [
-            { id: 1, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
-            { id: 2, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
+            { id: 1, inQuote: "x", platform: "iOS", featureSet: "User Account fdsafdsafasddfsafdsafadsafsdafdsafsd", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
+            { id: 2, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious blah blah blah blah blah", assumptions: "", notes: "" },
             { id: 3, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
             { id: 4, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
             { id: 5, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
@@ -33,8 +66,8 @@ class Excel extends Component {
         if (data) {
             return data.map((d, i) => {
                 return (
-                    <tr key={i} >
-                        <td scope="row">
+                    <tr key={i} id={`tr${i}`} onClick={() =>this.selectRow(`tr${i}`)}>
+                        <td scope="row" >
                             <a data-tip data-for={`${d.id}i`}>{d.id}</a>
                             <ReactTooltip id={`${d.id}i`} place="bottom" type='light' effect='solid'>
                                 {d.id}
@@ -65,7 +98,7 @@ class Excel extends Component {
                             </ReactTooltip>
                         </td>
                         <td>
-                            <a data-tip data-for={`${d.id}fd`}>{shortenText(d.featureDescription)}</a>
+                            <a data-tip data-for={`${d.id}fd`}>{d.featureDescription}</a>
                             <ReactTooltip id={`${d.id}fd`} place="bottom" type='light' effect='solid'>
                                 {d.featureDescription}
                             </ReactTooltip>
