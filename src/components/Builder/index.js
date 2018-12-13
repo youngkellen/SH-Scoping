@@ -7,41 +7,37 @@ import FeatureSets from './FeatureSets';
 import FeatureVariants from './FeatureVariants'
 import Footer from '../Footer';
 
-const mapStatetoProps = state => ({viewMode: state.viewMode})
+const mapStatetoProps = state => ({ viewMode: state.viewMode })
 
 class Builder extends Component {
 
-    render() {
-      return (
-        <div className="builder row">
-          <div className="col-md-12"  style={{height: "100vh"}}>
-            <div className="row form-group" style={{margin: 0, padding: 0}}>
-            <input type="search" className="form-control" placeholder="ENTER SEARCH TERMS"/>
-            </div>
-            <div className="row" style={{margin: 0, padding: 0}}>
-                <SplitterLayout
-                  percentage
-                  primaryIndex={0}
-                  secondaryInitialSize={80}
-                >
-                  <FeatureSets/>
-                  <SplitterLayout
-                    percentage
-                    primaryIndex={1}
-                    primaryInitialSize={70}
-                    secondaryInitialSize={30}
-                  >
-                    <Features/>
-                    <FeatureVariants/>
-                  </SplitterLayout>
-                </SplitterLayout>
-            </div>
-            <Footer/>
+  render() {
+    return (
+      <div className="builder row">
+        <div className="col-md-12" style={{ height: "100vh" }}>
+          <div className="row" style={{ margin: 0, padding: 0 }}>
+            <SplitterLayout
+              percentage
+              primaryIndex={0}
+              secondaryInitialSize={80}
+            >
+              <FeatureSets />
+              <SplitterLayout
+                percentage
+                primaryIndex={1}
+                primaryInitialSize={70}
+                secondaryInitialSize={30}
+              >
+                <Features />
+                <FeatureVariants />
+              </SplitterLayout>
+            </SplitterLayout>
           </div>
+          <Footer />
         </div>
-      );
-    }
+      </div>
+    );
   }
-  
-  export default connect(mapStatetoProps)(Builder);
-  
+}
+
+export default connect(mapStatetoProps)(Builder);

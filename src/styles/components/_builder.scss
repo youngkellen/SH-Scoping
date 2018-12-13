@@ -14,7 +14,7 @@ $arrow-gray: #979797;
 .builder {
       overflow: hidden;
       min-width: 1400px;
-    input[type="search"], textarea {
+      input[type="search"], textarea {
 
         background-color : $search-color; 
         color: white
@@ -27,19 +27,22 @@ $arrow-gray: #979797;
         width: 3px;
       }
       .splitter-layout {
+        min-width: 1000px;
           .layout-pane {
               overflow:hidden;
           }
           .layout-pane-scroll {
             overflow-y:hidden;
             padding-bottom: 100px;
+            padding-left: 13px;
         }
           .column_head{
             border-top: solid #aaa 2px;
             border-bottom: solid #aaa 2px;
-            padding: 10px;
+            padding: 5px;
             margin: 0;
             background-color: $scope-gray;
+            min-width: 300px;
         }
       }
       .collapsible {
@@ -52,7 +55,7 @@ $arrow-gray: #979797;
         border-bottom: solid #aaa 2px;
         text-align: start;
         outline: none;
-        font-size: 15px;
+        font-size: 1em;
         position: relative;
         overflow-x: hidden;
         .arrow-up {
@@ -103,5 +106,30 @@ $arrow-gray: #979797;
         display: none;
         overflow: hidden;
         background-color: #f1f1f1;
+      }
+      .feature_variant {
+        background-color: white;
+        min-height: 100px;
+        padding: 20px 20px;
+        min-width: 550px;
+        font-size: 10px;
+        margin: 10px 55px 10px 15px;
+        .variant_row {
+          img {
+            height: 10px;
+            margin-right: 3px;
+          }
+          p {
+            min-width: 20px;
+            display: inline-block;
+            margin-right: 1px;
+            font-size: 10px;
+          }
+        }
+        .Rectangle {
+          width: 80%;
+          background-color : $input-background;
+          display: inline-block; 
+        }
       }
 }

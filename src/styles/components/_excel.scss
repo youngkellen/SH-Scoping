@@ -7,6 +7,7 @@ $excel-hover: #fdffe2;
     display: flex;
     flex-direction: column;
     align-items: space-between;
+    min-width: 1400px;
     .selected {
             background-color: $excel-hover;
         td {

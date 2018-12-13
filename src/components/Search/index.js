@@ -15,6 +15,9 @@ class Search extends Component {
       return (
         <div className="builder row">
           <div className="col-md-12"  style={{height: "100vh"}}>
+          <div className="row form-group" style={{ margin: 0, padding: 0 }}>
+            <input type="search" className="form-control" placeholder="ENTER SEARCH TERMS" />
+          </div>
             <div className="row" style={{margin: 0, padding: 0}}>
                 <SplitterLayout
                   percentage

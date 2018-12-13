@@ -7,52 +7,18 @@ html, body {
     margin: 0;
      height: 100%;
       max-height: 100%; 
-      min-width: 60%;
+      min-width: 1400px;
       min-height: 60%;
       overflow: hidden;
-      box-sizing: border-box; }
-
-.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: $footer-blue;
-    color: black;
-    text-align: center;
-    height: 5vh;
-    border: solid $footer-border 2px;
-    font-size: 12px;
-    overflow:hidden;
-    padding-left: 10px;
-    z-index: 2;
-    .row {
-        box-sizing:border-box;
-        border-collapse: collapse;
-        display: flex;
-        align-items: center;
-        div:first-child {
-            text-align: left;
-        }
-        #view_settings {
-            background-color: $footer-right;
-            height: 5vh;
-            max-height: inherit;
-            .row {
-                height: 100%;
-                p {
-                    margin: 0 auto;
-                    background-color: white;
-                    text-align: center;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
- }
+      box-sizing: border-box;
+    font-size: 12px; }
 
 .btn-round {
     border-radius: 22.5px;
+}
+
+.mode {
+    min-width: 1400px;
 }
 
 .modal-overlay {

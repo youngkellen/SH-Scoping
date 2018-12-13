@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Variant from './Variant';
 
 const mapStatetoProps = state => ({viewMode: state.viewMode})
 
@@ -14,7 +15,7 @@ class FeatureVariants extends Component {
             Feature Variants
           </div>
           <div className="row layout-pane-scroll">
-
+            <Variant/>
           </div>
           </div>
         </div>
