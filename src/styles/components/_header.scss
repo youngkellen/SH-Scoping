@@ -6,6 +6,8 @@ $button-color: #4990e2;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 5vh;
+  min-height: 40px;
   .navbar-image {
     height: 17px;
     width: 26px;
@@ -18,10 +20,14 @@ $button-color: #4990e2;
     .mode-btn{
       display: inline-block;
       background-color: white;
-      width: 170px;
+      width: 150px;
       margin: 0;
       text-align: center;
-      font-size: 18px;
+      font-size: 15px;
+      + img {
+        height: 20px;
+        width: 20px;
+      }
     }
     img {
       height: 30px;

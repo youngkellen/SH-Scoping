@@ -7,8 +7,10 @@ const mapStatetoProps = state => ({ viewMode: state.viewMode });
 
 class FeatureVariants extends Component {
 
-  
+
   render() {
+    let { viewMode } = this.props;
+    let height = viewMode.split ? "40vh" : "76vh"
     return (
       <div className="row">
         <div
@@ -18,13 +20,20 @@ class FeatureVariants extends Component {
           <div className="row column_head" style={{ textAlign: "center" }}>
             Feature Variants
           </div>
-          <div className="row layout-pane-scroll ">
-           <Variant/>
-           <Variant/>
-           <Variant/>
-           <Variant/>
-           
+          <div className="col-md-12" style={{ height: height, overflow: "scroll" }}>
+            <div className="row layout-pane-scroll" style={{ overflowY: "scroll" }}>
+              <Variant />
+              <Variant />
+              <Variant />
+              <Variant />
+              <Variant />
+              <Variant />
+              <Variant />
+              <Variant />
+
+            </div>
           </div>
+
         </div>
       </div>
     );

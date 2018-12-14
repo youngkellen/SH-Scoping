@@ -4865,7 +4865,9 @@ a.text-danger:focus, a.text-danger:hover {
   background-color: #d8d8d8;
   display: flex;
   justify-content: space-between;
-  align-items: center; }
+  align-items: center;
+  height: 5vh;
+  min-height: 40px; }
   .navbar .navbar-image {
     height: 17px;
     width: 26px;
@@ -4877,10 +4879,13 @@ a.text-danger:focus, a.text-danger:hover {
     .navbar .nav .mode-btn {
       display: inline-block;
       background-color: white;
-      width: 170px;
+      width: 150px;
       margin: 0;
       text-align: center;
-      font-size: 18px; }
+      font-size: 15px; }
+      .navbar .nav .mode-btn + img {
+        height: 20px;
+        width: 20px; }
     .navbar .nav img {
       height: 30px;
       width: 30px; }
@@ -5096,17 +5101,26 @@ a.text-danger:focus, a.text-danger:hover {
     background-color: white;
     min-height: 100px;
     padding: 20px 20px;
-    min-width: 550px;
+    min-width: 670px;
     font-size: 10px;
     margin: 10px 55px 10px 15px; }
     .builder .feature_variant .variant_row img {
       height: 10px;
-      margin-right: 3px; }
+      margin-right: 3px;
+      cursor: pointer; }
     .builder .feature_variant .variant_row p {
       min-width: 20px;
       display: inline-block;
       margin-right: 1px;
       font-size: 10px; }
+    .builder .feature_variant .dropdown-menu {
+      background-color: #656565;
+      opacity: 0.9;
+      color: lightgray; }
+    .builder .feature_variant .dropdown-item:hover {
+      background-color: gray;
+      color: white;
+      cursor: pointer; }
     .builder .feature_variant .Rectangle {
       width: 80%;
       background-color: #fbfbfb;
@@ -5175,8 +5189,8 @@ a.text-danger:focus, a.text-danger:hover {
   overflow: hidden;
   padding-left: 10px;
   z-index: 2;
-  min-width: 1200px;
-  min-height: 25px; }
+  min-width: 1400px;
+  min-height: 30px; }
   .footer .row {
     box-sizing: border-box;
     border-collapse: collapse;
@@ -5187,11 +5201,13 @@ a.text-danger:focus, a.text-danger:hover {
     .footer .row #view_settings {
       background-color: #d8d8d8;
       height: 5vh;
-      max-height: inherit; }
+      max-height: inherit;
+      min-height: 30px; }
       .footer .row #view_settings .row {
-        height: 100%; }
+        height: 100%;
+        min-height: 35px; }
         .footer .row #view_settings .row p {
-          margin: 0 auto;
+          margin: 0;
           background-color: white;
           text-align: center;
           cursor: pointer; }
