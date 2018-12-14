@@ -43,7 +43,7 @@ $dropdown-color:#656565;
             padding: 5px;
             margin: 0;
             background-color: $scope-gray;
-            min-width: 300px;
+            min-width: 200px;
         }
       }
       .collapsible {
@@ -144,4 +144,27 @@ $dropdown-color:#656565;
           display: inline-block; 
         }
       }
+}
+
+@media (max-width: 767px) {
+  .builder {
+    min-width: 1400px;
+    .layout-pane-scroll {
+      padding-bottom: 100px;
+      padding-left: 80px;
+      margin-left: 30px;
+    }
+  .splitter-layout {
+    min-width: 1400px;
+  }
+  .feature_variant {
+    overflow: auto;
+    max-height: 200px;
+    div {
+       display: inline-block;
+       min-width: 200px;
+       min-height: 30px;
+    }
+  }
+}
 }

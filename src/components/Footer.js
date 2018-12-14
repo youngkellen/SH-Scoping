@@ -43,36 +43,38 @@ class Footer extends React.Component {
       return (
         <div className="footer">
             <div className="row" >
-            <div className="col-md-2 text-center">
-                SCOPE SUMMARY 
-            </div>
-            <div className="col-md-1">
-                Design Hours
-            </div>
-            <div className="col-md-1">
-                Engineer Hours
-            </div>
-            <div className="col-md-1">
-                Total Hours
-            </div>
-            <div className="col-md-1">
-                Billable
-            </div>
-            <div className="col-md-3">
-            </div>
-            <div className="col-md-3" id="view_settings">
-                <div className="container row">
-                <div className="col-md-4" >
-                    <p onClick={() => this.handleFullView()} style={full ? {backgroundColor: buttonBlue} : {}}>Full View</p> 
+                <div className="col-md-9 scope_summary"> 
+                <div className="col-md-2 text-center">
+                    SCOPE SUMMARY 
                 </div>
-                <div className="col-md-4">
-                    <p onClick={() => this.handleSplitView()} style={split && !full ? {backgroundColor: buttonBlue} : {}}>Split View</p>
+                <div className="col-md-2">
+                    Design Hours
                 </div>
-                <div className="col-md-4">
-                    <p onClick={() => this.handleCollapseView()} style={!full && !split ? {backgroundColor: buttonBlue} : {}}> Collapsed</p>
+                <div className="col-md-2">
+                    Engineer Hours
+                </div>
+                <div className="col-md-2">
+                    Total Hours
+                </div>
+                <div className="col-md-2">
+                    Billable
+                </div>
+                <div className="col-md-2">
                 </div>
                 </div>
-            </div>      
+                <div className="col-md-3 view_settings">
+                    <div className="container row">
+                    <div className="col-md-4" >
+                        <p onClick={() => this.handleFullView()} style={full ? {backgroundColor: buttonBlue} : {}}>Full View</p> 
+                    </div>
+                    <div className="col-md-4">
+                        <p onClick={() => this.handleSplitView()} style={split && !full ? {backgroundColor: buttonBlue} : {}}>Split View</p>
+                    </div>
+                    <div className="col-md-4">
+                        <p onClick={() => this.handleCollapseView()} style={!full && !split ? {backgroundColor: buttonBlue} : {}}> Collapsed</p>
+                    </div>
+                    </div>
+                </div>      
             </div>
         </div>
       )

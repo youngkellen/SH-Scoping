@@ -10,7 +10,7 @@ class FeatureVariants extends Component {
 
   render() {
     let { viewMode } = this.props;
-    let height = viewMode.split ? "40vh" : "76vh"
+    let height = viewMode.split ? "40vh" : "90vh"
     return (
       <div className="row">
         <div

@@ -11,7 +11,7 @@ class Feature extends Component {
 
     render() {
       return (
-        <div className="row" style={{minWidth: "400px"}}>
+        <div className="row" style={{minWidth: 200}}>
           <div className="col-md-12"  style={{height: "100vh"}}>
             <div className ="row column_head" style={{textAlign: "center"}}>
               Feature 

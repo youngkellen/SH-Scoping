@@ -18,7 +18,7 @@ class Set extends Component {
         return (
             <div className="row" >
                 <button className="collapsible" onClick={() => this.setState(prevState =>({selected: !prevState.selected}))}>
-                    General<div className={selected ? "arrow-down" : "arrow-up"} />
+                    General<div className={selected ? "arrow-up" : "arrow-down"} />
                 </button>
                 <div className="content" style={ selected ? {display: "block"} : {display: "none"}}>
                     <ul>

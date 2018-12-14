@@ -13,9 +13,9 @@ class FeatureSets extends Component {
 
   render() {
     let { viewMode } = this.props;
-    let height = viewMode.split ? "40vh" : "76vh"
+    let height = viewMode.split ? "40vh" : "90vh"
     return (
-      <div className="row" style={{ minWidth: 300 }}>
+      <div className="row" style={{ minWidth: 200 }}>
         <div className="row column_head" style={{ textAlign: "center" }}>
           Feature Sets
           </div>

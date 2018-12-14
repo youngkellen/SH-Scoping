@@ -5050,7 +5050,7 @@ a.text-danger:focus, a.text-danger:hover {
       padding: 5px;
       margin: 0;
       background-color: #ececec;
-      min-width: 300px; }
+      min-width: 200px; }
   .builder .collapsible {
     margin-left: 15px;
     background-color: #ececec;
@@ -5126,6 +5126,23 @@ a.text-danger:focus, a.text-danger:hover {
       background-color: #fbfbfb;
       display: inline-block; }
 
+@media (max-width: 767px) {
+  .builder {
+    min-width: 1400px; }
+    .builder .layout-pane-scroll {
+      padding-bottom: 100px;
+      padding-left: 80px;
+      margin-left: 30px; }
+    .builder .splitter-layout {
+      min-width: 1400px; }
+    .builder .feature_variant {
+      overflow: auto;
+      max-height: 200px; }
+      .builder .feature_variant div {
+        display: inline-block;
+        min-width: 200px;
+        min-height: 30px; } }
+
 .excel_table {
   margin: 0;
   padding: 0;
@@ -5196,21 +5213,28 @@ a.text-danger:focus, a.text-danger:hover {
     border-collapse: collapse;
     display: flex;
     align-items: center; }
-    .footer .row div:first-child {
-      text-align: left; }
-    .footer .row #view_settings {
+    .footer .row .scope_summary {
+      text-align: left;
+      min-width: 1000px; }
+    .footer .row .view_settings {
       background-color: #d8d8d8;
       height: 5vh;
       max-height: inherit;
-      min-height: 30px; }
-      .footer .row #view_settings .row {
+      min-height: 30px;
+      min-width: 100px; }
+      .footer .row .view_settings .row {
         height: 100%;
         min-height: 35px; }
-        .footer .row #view_settings .row p {
+        .footer .row .view_settings .row p {
           margin: 0;
           background-color: white;
           text-align: center;
           cursor: pointer; }
+
+@media (max-width: 767px) {
+  .footer .scope_summary div {
+    display: inline;
+    margin: 0 30px; } }
 
 html, body {
   margin: 0;
