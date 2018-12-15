@@ -22,14 +22,15 @@ class Search extends Component {
                 <SplitterLayout
                   percentage
                   primaryIndex={0}
-                  secondaryInitialSize={80}
+                  secondaryInitialSize={85}
+                  
                 >
                   <FeatureSets/>
                   <SplitterLayout
                     percentage
                     primaryIndex={1}
-                    primaryInitialSize={70}
-                    secondaryInitialSize={30}
+                    primaryInitialSize={80}
+                    secondaryInitialSize={20}
                   >
                     <Features/>
                     <FeatureVariants/>

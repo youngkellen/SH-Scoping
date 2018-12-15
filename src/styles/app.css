@@ -5164,7 +5164,8 @@ a.text-danger:focus, a.text-danger:hover {
     .builder .feature_variant .Rectangle {
       width: 80%;
       background-color: #fbfbfb;
-      display: inline-block; }
+      display: inline-block;
+      border: none; }
 
 @media (max-width: 767px) {
   .builder {

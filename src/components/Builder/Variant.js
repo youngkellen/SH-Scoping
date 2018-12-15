@@ -127,7 +127,7 @@ class Variant extends Component {
                 <div className="row variant_row">
                     <div className="col-md-3">
                         <p>T:</p>
-                        <div className="Rectangle">Feature </div>
+                        <input className="Rectangle" defaultValue={"Feature"}></input>
                     </div>
                     <div className="col-md-3">
                         <img src={require("../../assets/check-gray.png")} />
@@ -158,11 +158,11 @@ class Variant extends Component {
                 <div className="row variant_row">
                     <div className="col-md-6">
                         <p>FD:</p>
-                        <div className="Rectangle">Feature Description</div>
+                        <input className="Rectangle" defaultValue={"Feature Description"}></input>
                     </div>
                     <div className="col-md-6">
                         <p>A:</p>
-                        <div className="Rectangle">Add to Scope</div>
+                        <input className="Rectangle" defaultValue={"Add to Scope"}></input>
                     </div>
                 </div>
                 <div className="row variant_row">
