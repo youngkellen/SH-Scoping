@@ -4885,10 +4885,12 @@ a.text-danger:focus, a.text-danger:hover {
       font-size: 15px; }
       .navbar .nav .mode-btn + img {
         height: 20px;
-        width: 20px; }
+        width: 20px;
+        object-fit: contain; }
     .navbar .nav img {
       height: 30px;
-      width: 30px; }
+      width: 30px;
+      object-fit: contain; }
     .navbar .nav a {
       margin: 0; }
     .navbar .nav li p {
@@ -5080,16 +5082,6 @@ a.text-danger:focus, a.text-danger:hover {
       display: inline-block;
       border-top: 5px solid #979797;
       margin-left: 20px; }
-  .builder ul {
-    list-style-type: none; }
-    .builder ul li {
-      border-bottom: solid #aaa 2px;
-      background-color: #ececec;
-      border-radius: 25px;
-      padding-left: 10px;
-      cursor: pointer; }
-    .builder ul li:hover {
-      background-color: lightgray; }
   .builder .active, .builder .collapsible:hover {
     background-color: lightgray; }
   .builder .content {
@@ -5097,6 +5089,16 @@ a.text-danger:focus, a.text-danger:hover {
     display: none;
     overflow: hidden;
     background-color: #f1f1f1; }
+    .builder .content ul {
+      list-style-type: none; }
+      .builder .content ul li {
+        border-bottom: solid #aaa 2px;
+        background-color: #ececec;
+        border-radius: 25px;
+        padding-left: 10px;
+        cursor: pointer; }
+      .builder .content ul li:hover {
+        background-color: lightgray; }
   .builder .feature_variant {
     background-color: white;
     min-height: 100px;
@@ -5107,12 +5109,50 @@ a.text-danger:focus, a.text-danger:hover {
     .builder .feature_variant .variant_row img {
       height: 10px;
       margin-right: 3px;
-      cursor: pointer; }
+      cursor: pointer;
+      object-fit: contain; }
     .builder .feature_variant .variant_row p {
       min-width: 20px;
       display: inline-block;
       margin-right: 1px;
       font-size: 10px; }
+    .builder .feature_variant .variant_row .arrow-up {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      display: inline-block;
+      border-bottom: 5px solid #979797;
+      margin-left: 20px; }
+    .builder .feature_variant .variant_row .arrow-down {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      display: inline-block;
+      border-top: 5px solid #979797;
+      margin-left: 20px; }
+    .builder .feature_variant .variant_row .estimate_content {
+      width: 100%; }
+      .builder .feature_variant .variant_row .estimate_content .content_row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px; }
+        .builder .feature_variant .variant_row .estimate_content .content_row img {
+          margin: 0; }
+        .builder .feature_variant .variant_row .estimate_content .content_row div p {
+          text-align: center;
+          margin: 0;
+          padding: 0; }
+        .builder .feature_variant .variant_row .estimate_content .content_row div input {
+          margin: 0;
+          padding: 0;
+          width: 30px;
+          text-align: right;
+          background-color: #fbfbfb;
+          border: none; }
     .builder .feature_variant .dropdown-menu {
       background-color: #656565;
       opacity: 0.9;

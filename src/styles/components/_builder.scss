@@ -2,6 +2,7 @@ $search-color: #4990e2;
 $scope-gray: #ececec;
 $arrow-gray: #979797;
 $dropdown-color:#656565;
+$input-background: #fbfbfb;
 
 
 .splitter-layout {
@@ -80,19 +81,6 @@ $dropdown-color:#656565;
         
         
       }
-    ul {
-        list-style-type: none;
-        li {
-            border-bottom: solid #aaa 2px;
-            background-color: $scope-gray;
-            border-radius: 25px;
-            padding-left: 10px;
-            cursor: pointer;
-        }
-        li:hover{
-            background-color: lightgray;
-        }
-    }
       // .collapsible::after{
       //   color: #444;
       //   left: 0;
@@ -107,6 +95,19 @@ $dropdown-color:#656565;
         display: none;
         overflow: hidden;
         background-color: #f1f1f1;
+        ul {
+          list-style-type: none;
+          li {
+              border-bottom: solid #aaa 2px;
+              background-color: $scope-gray;
+              border-radius: 25px;
+              padding-left: 10px;
+              cursor: pointer;
+          }
+          li:hover{
+              background-color: lightgray;
+          }
+      }
       }
       .feature_variant {
         background-color: white;
@@ -120,12 +121,59 @@ $dropdown-color:#656565;
             height: 10px;
             margin-right: 3px;
             cursor: pointer;
+            object-fit: contain;
           }
           p {
             min-width: 20px;
             display: inline-block;
             margin-right: 1px;
             font-size: 10px;
+          }
+          .arrow-up {
+            width: 0; 
+            height: 0; 
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            display: inline-block;
+            border-bottom: 5px solid $arrow-gray;
+            margin-left: 20px;
+          }
+          .arrow-down {
+            width: 0; 
+            height: 0; 
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            display: inline-block;
+            border-top: 5px solid $arrow-gray;
+            margin-left: 20px;
+          }
+          .estimate_content {
+            width: 100%;
+            .content_row{
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             margin-right: 10px;
+             img {
+               margin: 0;
+             }
+             div {
+               p {
+                  text-align: center;
+                  margin:0;
+                  padding: 0;
+               }
+               input {
+                margin:0;
+                padding: 0;
+                width: 30px;
+                text-align: right;
+                background-color: $input-background;
+                border: none;
+               }
+             }
+            }
           }
         }
         .dropdown-menu {
@@ -143,6 +191,7 @@ $dropdown-color:#656565;
           background-color : $input-background;
           display: inline-block; 
         }
+       
       }
 }
 
