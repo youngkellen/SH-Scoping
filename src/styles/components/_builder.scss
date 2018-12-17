@@ -238,17 +238,20 @@ $addnew-hover:#cee5ff;
       padding-left: 80px;
       margin-left: 30px;
     }
-  .splitter-layout {
-    min-width: 1400px;
-  }
-  .feature_variant {
-    overflow: auto;
-    max-height: 200px;
-    div {
-       display: inline-block;
-       min-width: 200px;
-       min-height: 30px;
+    .splitter-layout {
+      min-width: 1400px;
+    }
+    .feature_variant {
+      overflow: auto;
+      max-height: 200px;
+      div {
+        display: inline-block;
+        min-width: 200px;
+        min-height: 30px;
+      }
+    }
+    .add_new {
+      margin-left: 15px;
     }
   }
-}
 }

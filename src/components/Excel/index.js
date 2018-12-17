@@ -136,13 +136,13 @@ class Excel extends Component {
                         <table className="table table-bordered table-hover">
                             <thead >
                                 <tr >
-                                    <th scope="col">ID</th>
-                                    <th scope="col" width="100">In Quote</th>
-                                    <th scope="col">Platform</th>
-                                    <th scope="col">Feature Set</th>
-                                    <th scope="col">Feature</th>
-                                    <th scope="col" width="300">Feature Description</th>
-                                    <th scope="col">Assumptions</th>
+                                    <th scope="col" width="50">ID</th>
+                                    <th scope="col" width="50">In Quote</th>
+                                    <th scope="col" width="50">Platform</th>
+                                    <th scope="col" width="100">Feature Set</th>
+                                    <th scope="col" width="100">Feature</th>
+                                    <th scope="col" width="500">Feature Description</th>
+                                    <th scope="col" width="250">Assumptions</th>
                                     <th scope="col">Notes</th>
                                 </tr>
                             </thead>

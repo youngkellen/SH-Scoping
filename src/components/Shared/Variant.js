@@ -12,6 +12,7 @@ class Variant extends Component {
             duplicate: false,
             menuClick: false,
             estimate: false,
+            addNotes: false,
             buttonData:[
                 {hours: 2, platform: "iOS", select: true}, 
                 {hours: 0, platform: "Android"},
@@ -117,6 +118,24 @@ class Variant extends Component {
         })
     }
 
+    renderNotes(){
+        if (this.state.addNotes){
+            return (
+                <div >
+                     <p>N:</p>
+                     <input className="Rectangle" placeholder={"Notes"}></input>
+                </div>
+            )
+        } else {
+            return (
+                <div >
+                    <img src={require("../../assets/plus-black.png")} onClick={()=>this.setState({addNotes: true})}/>
+                    <p>Notes</p>
+                </div>
+            )
+        }
+    }
+
     searchVariant(){
         let { menuClick, estimate } = this.state;
         let dropDownColor = "#656565"
@@ -125,7 +144,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>T:</p>
-                            <div className="Rectangle">Feature </div>
+                            <div className="Rectangle">Title</div>
                         </div>
                         <div className="col-md-3">
                             <img src={require("../../assets/check-gray.png")} />
@@ -180,7 +199,7 @@ class Variant extends Component {
                 <div className="row variant_row">
                     <div className="col-md-3">
                         <p>T:</p>
-                        <input className="Rectangle" placeholder={"Feature"}></input>
+                        <input className="Rectangle" placeholder={"Title"}/>
                     </div>
                     <div className="col-md-3">
                         <img src={require("../../assets/check-gray.png")} />
@@ -220,8 +239,7 @@ class Variant extends Component {
                 </div>
                 <div className="row variant_row">
                     <div className="col-md-10">
-                        <img src={require("../../assets/plus-black.png")} />
-                        <p>notes</p>
+                        {this.renderNotes()}
                     </div>
                     <div className="col-md-2" style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ estimate: !prevState.estimate }))} >
                         <p>Estimates</p>
