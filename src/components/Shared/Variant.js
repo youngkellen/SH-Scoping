@@ -117,17 +117,70 @@ class Variant extends Component {
         })
     }
 
-
-    render() {
+    searchVariant(){
         let { menuClick, estimate } = this.state;
         let dropDownColor = "#656565"
-        console.log(menuClick, "menu click")
+            return (
+                <div className="feature_variant">
+                    <div className="row variant_row">
+                        <div className="col-md-6">
+                            <p>T:</p>
+                            <div className="Rectangle">Feature </div>
+                        </div>
+                        <div className="col-md-3">
+                            <img src={require("../../assets/check-gray.png")} />
+                            <p>Include in Quote</p>
+                        </div>
+                        <div className="col-md-3">
+                            {this.renderAddToScope()}
+                        </div>
+                    </div>
+                    <div className="row variant_row">
+                        <div className="col-md-6">
+                            <p>FD:</p>
+                            <div className="Rectangle">Feature Description</div>
+                        </div>
+                        <div className="col-md-6">
+                            <p>A:</p>
+                            <div className="Rectangle">Add to Scope</div>
+                        </div>
+                    </div>
+                    <div className="row variant_row">
+                        <div className="col-md-10">
+                            <img src={require("../../assets/plus-black.png")} />
+                            <p>notes</p>
+                        </div>
+                        <div className="col-md-2" style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ estimate: !prevState.estimate }))} >
+                            <p>Estimates</p>
+                            <div className={estimate ? "arrow-up" : "arrow-down"}></div>
+                        </div>
+                    </div>
+                    <div className="container row variant_row">
+                        <div className="col-md-12 estimate_content" style={estimate ? { display: "block" } : { display: "none" }}>
+                            <div className="row">
+                                <p>Estimates (HOURS):</p>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6">
+                                {this.renderEstimateButtons()}
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            )
+    }
+
+    builderVariant(){
+        let { menuClick, estimate } = this.state;
+        let dropDownColor = "#656565"
         return (
             <div className="feature_variant">
                 <div className="row variant_row">
                     <div className="col-md-3">
                         <p>T:</p>
-                        <input className="Rectangle" defaultValue={"Feature"}></input>
+                        <input className="Rectangle" placeholder={"Feature"}></input>
                     </div>
                     <div className="col-md-3">
                         <img src={require("../../assets/check-gray.png")} />
@@ -158,11 +211,11 @@ class Variant extends Component {
                 <div className="row variant_row">
                     <div className="col-md-6">
                         <p>FD:</p>
-                        <input className="Rectangle" defaultValue={"Feature Description"}></input>
+                        <input className="Rectangle" placeholder={"Feature Description"}></input>
                     </div>
                     <div className="col-md-6">
                         <p>A:</p>
-                        <input className="Rectangle" defaultValue={"Add to Scope"}></input>
+                        <input className="Rectangle" placeholder={"Add to Scope"}></input>
                     </div>
                 </div>
                 <div className="row variant_row">
@@ -190,6 +243,18 @@ class Variant extends Component {
                 </div>
             </div>
         )
+    }
+
+
+    render() {
+       let { mode } = this.props
+        return (
+            <div>
+                 {mode === "builder" ? this.builderVariant() : this.searchVariant()}
+            </div>
+           
+        )
+       
     }
 }
 

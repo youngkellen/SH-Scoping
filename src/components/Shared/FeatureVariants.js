@@ -6,31 +6,47 @@ import Variant from './Variant';
 const mapStatetoProps = state => ({ viewMode: state.viewMode });
 
 class FeatureVariants extends Component {
+  constructor(){
+    super()
+    this.state = {
+      variants: [{id: 0}, {id: 1}]
+    }
+  }
 
+  addNewVariant(){
+    this.setState(prevState => ({
+      variants: [...prevState.variants, {id: 2}]
+    }))
+  }
+
+  renderAddNew() {
+    let {mode} = this.props
+    if (mode === "builder"){
+      return(
+        <div className="add_new" onClick={() => this.addNewVariant()}>
+          <img src={require("../../assets/plus-black.png")} />
+          <p>Add New Variant</p>
+        </div>
+      )
+    }
+  }
 
   render() {
-    let { viewMode } = this.props;
-    let height = viewMode.split ? "40vh" : "90vh"
+    let { viewMode, mode } = this.props;
+    let { variants } = this.state;
+    let height = viewMode.split ? "40vh" : "90vh";
     return (
       <div className="row">
         <div
-          className="col-md-12"
           style={{ height: "100vh", minWidth: "550px" }}
         >
           <div className="row column_head" style={{ textAlign: "center" }}>
-            Feature Variants
+            <p>Feature Variants</p>
           </div>
+          {this.renderAddNew()}
           <div className="col-md-12" style={{ height: height, overflow: "scroll" }}>
             <div className="row layout-pane-scroll" style={{ overflowY: "scroll" }}>
-              <Variant />
-              <Variant />
-              <Variant />
-              <Variant />
-              <Variant />
-              <Variant />
-              <Variant />
-              <Variant />
-
+               {variants.map((v, i) => <Variant key={i} mode={mode}/>)}
             </div>
           </div>
 

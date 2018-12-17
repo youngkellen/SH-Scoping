@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import SplitterLayout from 'react-splitter-layout';
-import Features from './Features';
-import FeatureSets from './FeatureSets';
-import FeatureVariants from './FeatureVariants'
+import Features from '../Shared/Features';
+import FeatureSets from '../Shared/FeatureSets';
+import FeatureVariants from '../Shared/FeatureVariants'
 import Footer from '../Footer';
 
 const mapStatetoProps = state => ({viewMode: state.viewMode})
@@ -25,15 +25,15 @@ class Search extends Component {
                   secondaryInitialSize={85}
                   
                 >
-                  <FeatureSets/>
+                  <FeatureSets mode={"search"}/>
                   <SplitterLayout
                     percentage
                     primaryIndex={1}
                     primaryInitialSize={80}
                     secondaryInitialSize={20}
                   >
-                    <Features/>
-                    <FeatureVariants/>
+                    <Features mode={"search"}/>
+                    <FeatureVariants mode={"search"}/>
                   </SplitterLayout>
                 </SplitterLayout>
             </div>

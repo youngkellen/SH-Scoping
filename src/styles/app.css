@@ -5052,7 +5052,33 @@ a.text-danger:focus, a.text-danger:hover {
       padding: 5px;
       margin: 0;
       background-color: #ececec;
-      min-width: 200px; }
+      min-width: 200px;
+      height: 32px; }
+      .builder .splitter-layout .column_head p {
+        padding: 0;
+        margin: 0; }
+    .builder .splitter-layout .add_new {
+      text-align: left;
+      padding-left: 20px;
+      height: 20px;
+      border-bottom: solid #aaa 2px;
+      background-color: #ebf3fc;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      cursor: pointer; }
+      .builder .splitter-layout .add_new p {
+        padding: 0;
+        margin: 0; }
+      .builder .splitter-layout .add_new img {
+        height: 10px;
+        margin-right: 3px;
+        cursor: pointer;
+        object-fit: contain; }
+    .builder .splitter-layout .add_new:hover {
+      background-color: #cee5ff; }
+    .builder .splitter-layout .add_new:active {
+      background-color: #4990e2; }
   .builder .collapsible {
     margin-left: 15px;
     background-color: #ececec;

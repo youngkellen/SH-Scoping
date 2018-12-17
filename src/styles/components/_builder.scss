@@ -3,6 +3,8 @@ $scope-gray: #ececec;
 $arrow-gray: #979797;
 $dropdown-color:#656565;
 $input-background: #fbfbfb;
+$addnew-color: #ebf3fc;
+$addnew-hover:#cee5ff;
 
 
 .splitter-layout {
@@ -45,6 +47,38 @@ $input-background: #fbfbfb;
             margin: 0;
             background-color: $scope-gray;
             min-width: 200px;
+            height: 32px;
+            p {
+              padding: 0;
+              margin: 0;
+            }
+        }
+        .add_new {
+          text-align: left;
+          padding-left: 20px;
+          height: 20px;
+          border-bottom: solid #aaa 2px;
+          background-color: $addnew-color;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          cursor: pointer;
+          p {
+            padding: 0;
+            margin: 0;
+          }
+          img {
+            height: 10px;
+            margin-right: 3px;
+            cursor: pointer;
+            object-fit: contain;
+          }
+        }
+        .add_new:hover{
+          background-color:$addnew-hover;
+        }
+        .add_new:active{
+          background-color:$search-color;
         }
       }
       .collapsible {
