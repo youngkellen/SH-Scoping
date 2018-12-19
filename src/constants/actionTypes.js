@@ -7,3 +7,5 @@ export const ASYNC_END = 'ASYNC_END';
 export const MODE_CHANGE = 'MODE_CHANGE';
 export const SPLIT_CHANGE = 'SPLIT_CHANGE';
 export const FULL_VIEW = 'FULL_VIEW';
+export const SCOPE_DOWNLOAD = 'SCOPE_DOWNLOAD';
+export const SCOPE_SELECT = 'SCOPE_SELECT';

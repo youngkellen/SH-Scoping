@@ -145,10 +145,8 @@ class CreateModal extends React.Component {
 
   renderReferenceFiles() {
     let { referenceFiles } = this.state.projectInfo;
-    console.log(referenceFiles, "shit head")
     if (referenceFiles) {
       return referenceFiles.map((file, i) => {
-        console.log(file, "file shit")
         console.log(i)
         if (i > 0) {
           return (

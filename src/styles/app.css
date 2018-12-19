@@ -4897,9 +4897,10 @@ a.text-danger:focus, a.text-danger:hover {
       margin: 0;
       font-weight: bold; }
     .navbar .nav button {
-      width: 90px;
+      width: 80px;
       height: 24px;
-      padding: 0; }
+      padding: 0;
+      font-size: 11px; }
     .navbar .nav .btn-light-blue {
       background-color: #4990e2; }
     .navbar .nav .btn-light-blue:hover {

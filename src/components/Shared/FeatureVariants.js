@@ -3,14 +3,22 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Variant from './Variant';
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode });
+const mapStatetoProps = state => ({ viewMode: state.viewMode, selected: state.scope.selected });
 
 class FeatureVariants extends Component {
   constructor(){
     super()
     this.state = {
-      variants: [{id: 0}, {id: 1}]
+      variants: []
     }
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps, "next props")
+    let { selected } = nextProps;
+    this.setState({
+      variants: [selected]
+    })
   }
 
   addNewVariant(){
@@ -46,7 +54,7 @@ class FeatureVariants extends Component {
           {this.renderAddNew()}
           <div className="col-md-12" style={{ height: height, overflow: "scroll" }}>
             <div className="row layout-pane-scroll" style={{ overflowY: "scroll" }}>
-               {variants.map((v, i) => <Variant key={i} mode={mode}/>)}
+               {variants.map((v, i) => <Variant key={i} mode={mode} data={v}/>)}
             </div>
           </div>
 

@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import shortenText from '../../helper/shortenText';
+import { SCOPE_SELECT } from '../../constants/actionTypes';
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope })
 
 class Excel extends Component {
     constructor(){
@@ -23,7 +24,9 @@ class Excel extends Component {
         this.props.resetHeight()
     }
 
-    selectRow(id){
+    selectRow(id, data){
+        const { dispatch } = this.props
+        console.log(data, "data bro")
         let { selected } = this.state
             if (selected === id){
                 let remove = document.getElementById(selected)
@@ -31,7 +34,8 @@ class Excel extends Component {
                 this.setState({
                     selected: ""
                 })
-            } else if (selected) {
+                dispatch({type: SCOPE_SELECT, payload: {}})
+            } else if (selected && selected !== id) {
                 let remove = document.getElementById(selected)
                 remove.classList.remove(("selected"))
                 let row = document.getElementById(id)
@@ -39,82 +43,85 @@ class Excel extends Component {
                 this.setState({
                     selected: id
                 })
+                dispatch({type: SCOPE_SELECT, payload: data})
             } else {
                 let row = document.getElementById(id)
                 row.classList.add(("selected"))
                 this.setState({
                     selected: id
                 })
+                dispatch({type: SCOPE_SELECT, payload: data})
             }
       
     }
 
     renderRows() {
         const { full } = this.props.viewMode;
-        let data = [
-            { id: 1, inQuote: "x", platform: "iOS", featureSet: "User Account fdsafdsafasddfsafdsafadsafsdafdsafsd", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
-            { id: 2, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious blah blah blah blah blah", assumptions: "", notes: "" },
-            { id: 3, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
-            { id: 4, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
-            { id: 5, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
-            { id: 6, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
-            { id: 7, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
-            { id: 8, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
-            { id: 9, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
-            { id: 10, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
-            { id: 11, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
-            { id: 12, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" }
-        ]
-        if (data) {
-            return data.map((d, i) => {
+        const { scope } = this.props;
+        // let data = [
+        //     { id: 1, inQuote: "x", platform: "iOS", featureSet: "User Account fdsafdsafasddfsafdsafadsafsdafdsafsd", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
+        //     { id: 2, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious blah blah blah blah blah", assumptions: "", notes: "" },
+        //     { id: 3, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
+        //     { id: 4, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
+        //     { id: 5, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
+        //     { id: 6, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
+        //     { id: 7, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
+        //     { id: 8, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
+        //     { id: 9, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
+        //     { id: 10, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" },
+        //     { id: 11, inQuote: "x", platform: "iOS", featureSet: "User Account", feature: "Log In/Email", featureDescription: "whatever ", assumptions: "", notes: "" },
+        //     { id: 12, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" }
+        // ]
+        if (scope && scope.scope) {
+            return scope.scope.map((d, i) => {
                 return (
-                    <tr key={i} id={`tr${i}`} onClick={() =>this.selectRow(`tr${i}`)}>
+                    <tr key={i} id={`tr${i}`} onClick={() =>this.selectRow(`tr${i}`, d)}>
                         <td scope="row" className={ full ? "full_view" : ""} >
-                            <a data-tip data-for={`${d.id}i`}>{d.id}</a>
-                            <ReactTooltip id={`${d.id}i`} place="bottom" type='light' effect='solid'>
-                                {d.id}
+                            <a data-tip data-for={`${i}i`}>{i}</a>
+                            <ReactTooltip id={`${i}i`} place="bottom" type='light' effect='solid'>
+                                {i}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${d.id}q`}>{d.inQuote}</a>
-                            <ReactTooltip id={`${d.id}q`} place="bottom" type='light' effect='solid'>
-                                {d.inQuote}
+                            <a data-tip data-for={`${i}q`}>{d["Include in Scope?"]}</a>
+                            <ReactTooltip id={`${i}q`} place="bottom" type='light' effect='solid'>
+                                {d["Include in Scope?"]}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${d.id}p`}>{d.platform}</a>
-                            <ReactTooltip id={`${d.id}p`} place="bottom" type='light' effect='solid'>
-                                {d.platform}
+                            <a data-tip data-for={`${i}p`}>{d.Platform}</a>
+                            <ReactTooltip id={`${i}p`} place="bottom" type='light' effect='solid'>
+                                {d.Platform}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${d.id}fs`}>{d.featureSet}</a>
-                            <ReactTooltip id={`${d.id}fs`} place="bottom" type='light' effect='solid'>
-                                {d.featureSet}
+                            <a data-tip data-for={`${i}fs`}>{d["Feature set"]}</a>
+                            <ReactTooltip id={`${i}fs`} place="bottom" type='light' effect='solid'>
+                                {d["Feature set"]}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${d.id}f`}>{d.feature}</a>
-                            <ReactTooltip id={`${d.id}f`} place="bottom" type='light' effect='solid'>
-                                {d.feature}
+                            <a data-tip data-for={`${i}f`}>{d.Feature}</a>
+                            <ReactTooltip id={`${i}f`} place="bottom" type='light' effect='solid'>
+                                {d.Feature}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${d.id}fd`}>{d.featureDescription}</a>
-                            <ReactTooltip id={`${d.id}fd`} place="bottom" type='light' effect='solid'>
-                                {d.featureDescription}
+                            <a data-tip data-for={`${i}fd`}>{d["Feature description"]}</a>
+                            <ReactTooltip id={`${i}fd`} place="bottom" type='light' effect='solid'>
+                                {d["Feature description"]}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${d.id}a`}>{d.assumptions}</a>
-                            <ReactTooltip id={`${d.id}a`} place="bottom" type='light' effect='solid'>
-                                {d.assumptions}
+                            <a data-tip data-for={`${i}a`}>{d.Assumptions}</a>
+                            <ReactTooltip id={`${i}a`} place="bottom" type='light' effect='solid'>
+                                {d.Assumptions}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${d.id}a`}>{d.notes}</a>
-                            <ReactTooltip id={`${d.id}a`} place="bottom" type='light' effect='solid'>
-                                {d.notes}
+                            <a data-tip data-for={`${i}n`}>{d.Notes}</a>
+                            <ReactTooltip id={`${i}n`} place="bottom" type='light' effect='solid'>
+                                {d.Notes}
                             </ReactTooltip>
                         </td>
                     </tr>
