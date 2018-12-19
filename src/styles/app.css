@@ -5176,7 +5176,7 @@ a.text-danger:focus, a.text-danger:hover {
         .builder .feature_variant .variant_row .estimate_content .content_row div input {
           margin: 0;
           padding: 0;
-          width: 30px;
+          width: 34px;
           text-align: right;
           background-color: #fbfbfb;
           border: none; }
@@ -5221,7 +5221,8 @@ a.text-danger:focus, a.text-danger:hover {
   flex-direction: column;
   align-items: space-between;
   min-width: 1400px;
-  font-size: 10px; }
+  font-size: 10px;
+  margin-right: 25px; }
   .excel_table .table-hover .table {
     overflow-y: hidden; }
   .excel_table .table-hover tbody tr:hover {

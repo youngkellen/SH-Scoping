@@ -14,28 +14,40 @@ class Variant extends Component {
             estimate: false,
             addNotes: false,
             buttonData:[
-                {hours: 2, platform: "iOS", select: true}, 
-                {hours: 0, platform: "Android"},
-                {hours: 2, platform: "Hybrid"},
-                {hours: 1, platform: "Web"},
-                {hours: 2, platform: "Backend"},
-                {hours: 2, platform: "QA"},
-                {hours: 0, platform: "Design", select: true}
             ],
             data: []
         }
+        this.renderEstimateButtons = this.renderEstimateButtons.bind(this);
     }
 
     componentDidMount(){
         this.setState({
-            data: this.props.data
+            data: this.props.data,
+            buttonData: [{hours: this.props.data["iOS Engineering Estimate (Resource Days)"] || 0, platform: "iOS"}, 
+            {hours: this.props.data["Android Engineering Estimate (Resource Days)"] || 0, platform: "Android"},
+            {hours: this.props.data["Hybrid Engineering"] || 0, platform: "Hybrid"},
+            {hours: this.props.data["Web Engineering Estimate (Resource Days)"] || 0, platform: "Web"},
+            {hours: this.props.data["Backend Engineering Estimate (Resource Days)"] || 0, platform: "Backend"},
+            {hours: this.props.data["QA Estimate (Resource Days)"] || 0, platform: "QA"},
+            {hours: this.props.data["Design estimate (Resource Days)"] || 0, platform: "Design"}]
         })
     }
 
     componentWillReceiveProps(nextProps){
-        console.log(this.props, "variant props")
+        console.log(nextProps, "variant props")
+        console.log(nextProps.data, "next props data" )
         this.setState({
-            data: nextProps.data
+            data: nextProps.data,
+            buttonData: [
+                {hours: nextProps.data["iOS Engineering Estimate (Resource Days)"] || 0, platform: "iOS"}, 
+                {hours: nextProps.data["Android Engineering Estimate (Resource Days)"] || 0, platform: "Android"},
+                {hours: nextProps.data["Hybrid Engineering"] || 0, platform: "Hybrid"},
+                {hours: nextProps.data["Web Engineering Estimate (Resource Days)"] || 0, platform: "Web"},
+                {hours: nextProps.data["Backend Engineering Estimate (Resource Days)"] || 0, platform: "Backend"},
+                {hours: nextProps.data["QA Estimate (Resource Days)"] || 0, platform: "QA"},
+                {hours: nextProps.data["Design estimate (Resource Days)"] || 0, platform: "Design"}
+            ],
+            //addNotes: false
         })
     }
    
@@ -81,7 +93,6 @@ class Variant extends Component {
     }
 
     selectEstimate(data){
-        console.log(data, "data");
         let { buttonData } = this.state;
         let newData = Object.assign({}, data, {select: !data.select})
         let index = buttonData.map(e => e.platform).indexOf(data.platform);
@@ -107,6 +118,8 @@ class Variant extends Component {
 
     renderEstimateButtons() {
         let { buttonData } = this.state;
+        console.log(buttonData, "render estimate buttons")
+      
         return buttonData.map((data, i) => {
             return (
                 <div className="col-md-1 content_row" key={i}>
@@ -119,8 +132,9 @@ class Variant extends Component {
                         <div style={data.select ? {color: "black"} : {color: "lightgray"}}>
                             <input 
                                 style={data.select && !data.hours ? {backgroundColor: "#ffc2c2"}: {}} 
-                                defaultValue={Number(data.hours)} 
+                                placeholder={Number(data.hours)} 
                                 type="number"
+                                step="0.01"
                                 onChange={e => this.changeEstimateHours(data, e.target.value)}
                                 readOnly={data.select ? false : true}
                             />
@@ -133,12 +147,12 @@ class Variant extends Component {
         })
     }
 
-    renderNotes(){
+    renderNotes(d){
         if (this.state.addNotes){
             return (
                 <div >
                      <p>N:</p>
-                     <input className="Rectangle" placeholder={"Notes"}></input>
+                     <input className="Rectangle" defaultValue={d.Notes}></input>
                 </div>
             )
         } else {
@@ -210,14 +224,14 @@ class Variant extends Component {
         let { menuClick, estimate } = this.state;
         let { data } = this.state;
         let dropDownColor = "#656565"
-        console.log(data, "data fucker")
+        console.log(data, "data variant")
         if (data){
             return (
                 <div className="feature_variant">
                     <div className="row variant_row">
                         <div className="col-md-3">
                             <p>T:</p>
-                            <input className="Rectangle" defaultValue={data.SOURCE}/>
+                            <input className="Rectangle" defaultValue={data.SOURCE} />
                         </div>
                         <div className="col-md-3">
                             <img src={require("../../assets/check-gray.png")} />
@@ -257,7 +271,7 @@ class Variant extends Component {
                     </div>
                     <div className="row variant_row">
                         <div className="col-md-10">
-                            {this.renderNotes()}
+                            {this.renderNotes(data)}
                         </div>
                         <div className="col-md-2" style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ estimate: !prevState.estimate }))} >
                             <p>Estimates</p>

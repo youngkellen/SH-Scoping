@@ -13,6 +13,13 @@ class FeatureVariants extends Component {
     }
   }
 
+  componentDidMount(){
+    let { selected } = this.props;
+    this.setState({
+      variants: [selected]
+    })
+  }
+
   componentWillReceiveProps(nextProps){
     console.log(nextProps, "next props")
     let { selected } = nextProps;

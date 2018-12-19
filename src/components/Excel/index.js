@@ -17,6 +17,10 @@ class Excel extends Component {
     }
 
     componentDidMount() {
+        const { selected } = this.props.scope
+        if (selected.id){
+            this.selectRow(selected.id, selected)
+        }
     }
 
     componentWillUnmount(){
@@ -27,6 +31,7 @@ class Excel extends Component {
     selectRow(id, data){
         const { dispatch } = this.props
         console.log(data, "data bro")
+        data.id = id;
         let { selected } = this.state
             if (selected === id){
                 let remove = document.getElementById(selected)
