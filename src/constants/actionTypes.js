@@ -9,3 +9,5 @@ export const SPLIT_CHANGE = 'SPLIT_CHANGE';
 export const FULL_VIEW = 'FULL_VIEW';
 export const SCOPE_DOWNLOAD = 'SCOPE_DOWNLOAD';
 export const SCOPE_SELECT = 'SCOPE_SELECT';
+export const SCOPE_TREE = 'SCOPE_TREE';
+export const SCOPE_SELECTED_FEATURES = 'SCOPE_SELECTED_FEATURES';

@@ -6,8 +6,9 @@ import Search from '../Search';
 import Excel from '../Excel';
 import SplitterLayout from 'react-splitter-layout';
 import Footer from '../Footer.js'
+import { SCOPE_TREE } from '../../constants/actionTypes';
 
-const mapStatetoProps = state => ({viewMode: state.viewMode})
+const mapStatetoProps = state => ({viewMode: state.viewMode, scope: state.scope})
 
 class Dashboard extends Component {
   constructor(){
@@ -20,6 +21,8 @@ class Dashboard extends Component {
     this.getHeight = this.getHeight.bind(this);
     this.resetHeight = this.resetHeight.bind(this);
   }
+
+
 
   componentWillReceiveProps(nextProps){
     console.log(nextProps, "dashboard will props")
