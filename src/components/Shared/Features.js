@@ -35,6 +35,7 @@ class Features extends Component {
   }
 
   render() {
+    console.log(this.props, "features props")
     let { features, scope } = this.props;
     let { selected } = scope;
     return (

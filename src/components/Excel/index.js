@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import shortenText from '../../helper/shortenText';
-import { SCOPE_SELECT } from '../../constants/actionTypes';
+import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope, tree: state.scope.tree })
 
 class Excel extends Component {
     constructor(){
@@ -29,9 +29,8 @@ class Excel extends Component {
     }
 
     selectRow(id, data){
-        const { dispatch } = this.props
+        const { dispatch,tree } = this.props
         console.log(data, "data bro")
-        data.id = id;
         let { selected } = this.state
             if (selected === id){
                 let remove = document.getElementById(selected)
@@ -40,7 +39,11 @@ class Excel extends Component {
                     selected: ""
                 })
                 dispatch({type: SCOPE_SELECT, payload: {}})
+                dispatch({type: SCOPE_SELECTED_FEATURES, payload: []})
             } else if (selected && selected !== id) {
+                let { featureSet } = tree[data.SOURCE]
+                let index = featureSet.map(e => e.name).indexOf(data["Feature set"])
+                let features = featureSet[index]
                 let remove = document.getElementById(selected)
                 remove.classList.remove(("selected"))
                 let row = document.getElementById(id)
@@ -49,13 +52,18 @@ class Excel extends Component {
                     selected: id
                 })
                 dispatch({type: SCOPE_SELECT, payload: data})
+                dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
             } else {
+                let { featureSet } = tree[data.SOURCE]
+                let index = featureSet.map(e => e.name).indexOf(data["Feature set"])
+                let features = featureSet[index]
                 let row = document.getElementById(id)
                 row.classList.add(("selected"))
                 this.setState({
                     selected: id
                 })
                 dispatch({type: SCOPE_SELECT, payload: data})
+                dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
             }
       
     }

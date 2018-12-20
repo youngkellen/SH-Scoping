@@ -20,7 +20,7 @@ class Type extends Component {
         dispatch({ type: SCOPE_SELECTED_FEATURES, payload: features})
     }
 
-   componentDidMount(nextProps){
+   componentDidMount(){
        console.log(this.props, "props in type")
        if (this.props.type === this.props.selected.SOURCE){
            this.setState({
@@ -28,6 +28,14 @@ class Type extends Component {
            })
        }
    }
+   componentWillReceiveProps(nextProps){
+    console.log(nextProps, "next props in type")
+    if (nextProps.type === nextProps.selected.SOURCE ){
+        this.setState({
+            selected: true
+        })
+    }
+}
 
     render() {
         let { viewMode, type, featureSets} = this.props;
@@ -36,12 +44,12 @@ class Type extends Component {
         console.log(featureSets, "feature sets")
         return (
             <div className="row" >
-                <button className="collapsible" onClick={() => this.setState(prevState =>({selected: !prevState.selected}))}>
+                <button className="collapsible" onClick={() => this.setState({selected: !this.state.selected})}>
                     {type}<div className={selected ? "arrow-up" : "arrow-down"} />
                 </button>
                 <div className="content" style={ selected ? {display: "block"} : {display: "none"}}>
                     <ul>
-                       {featureSet.map((set,i) => <Set key={set.id} id={set.id} name={set.name} selectedSet ={this.props.selected["Feature set"]} handleFeature={()=>this.handleFeatures(set.features)}/>)}
+                       {featureSet.map((set,i) => <Set key={set.id} id={set.id} type={type} selectedType={this.props.selected.SOURCE} name={set.name} selectedSet ={this.props.selected["Feature set"]} handleFeature={()=>this.handleFeatures(set.features)}/>)}
                     </ul>
                 </div>
             </div>

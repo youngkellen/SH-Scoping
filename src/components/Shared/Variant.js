@@ -217,7 +217,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-10">
                             <p>N:</p>
-                            <input className="Rectangle" defaultValue={data.Notes}></input>
+                            <div className="Rectangle">{data.Notes}</div>
                         </div>
                         <div className="col-md-2" style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ estimate: !prevState.estimate }))} >
                             <p>Estimates</p>

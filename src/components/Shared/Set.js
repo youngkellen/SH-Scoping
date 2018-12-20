@@ -14,8 +14,7 @@ class Set extends Component {
     }
     
     componentWillReceiveProps(nextProps){
-        console.log(nextProps, "set next props")
-       if (nextProps.selectedSet === this.props.name) {
+       if (nextProps.selectedSet === nextProps.name && nextProps.type === nextProps.selectedType) {
            this.setState({
                selected: true
            })

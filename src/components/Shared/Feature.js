@@ -13,8 +13,20 @@ class Feature extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
+    componentDidMount(){
+        if (this.props.selectedId === this.props.id) {
+            this.setState({
+                selected: true
+            })
+        } else {
+            this.setState({
+                selected: false
+            })
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedId === this.props.id) {
+        if (nextProps.selectedId === nextProps.id) {
             this.setState({
                 selected: true
             })
