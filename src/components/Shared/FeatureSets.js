@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Set from './Set';
+import Type from './Type';
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope })
 
@@ -43,9 +43,9 @@ class FeatureSets extends Component {
         {this.renderAddNew()}
         <div className="col-md-12" style={{ height: height, overflow: "scroll" }}>
           <div className="row layout-pane-scroll" style={{ overflowY: "scroll" }}>
-           {types.map((type,i) => <Set key={i} type={type} featureSets={tree[type]}/>)}
+           {types.map((type,i) => <Type key={i} type={type} featureSets={tree[type]} />)}
           </div>
-          <div className="row" />
+
         </div>
       </div>
     )

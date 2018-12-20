@@ -5126,6 +5126,8 @@ a.text-danger:focus, a.text-danger:hover {
         cursor: pointer; }
       .builder .content ul li:hover {
         background-color: lightgray; }
+  .builder .in-quote {
+    border: solid #7ed321 1px; }
   .builder .feature_variant {
     background-color: white;
     min-height: 100px;
@@ -5193,6 +5195,26 @@ a.text-danger:focus, a.text-danger:hover {
       background-color: #fbfbfb;
       display: inline-block;
       border: none; }
+  .builder .features {
+    background-color: #e3e3e3; }
+    .builder .features ul {
+      list-style-type: none; }
+      .builder .features ul li {
+        border-bottom: solid #aaa 2px;
+        border-left: none;
+        background-color: #e3e3e3;
+        padding-left: 10px;
+        cursor: pointer; }
+      .builder .features ul li:hover {
+        background-color: white; }
+  .builder .green-dot {
+    height: 6px;
+    width: 6px;
+    background-color: #7ed321;
+    border-radius: 10px;
+    display: inline-block;
+    margin-right: 10px;
+    left: 20px; }
 
 @media (max-width: 767px) {
   .builder {

@@ -18,9 +18,9 @@ class Excel extends Component {
 
     componentDidMount() {
         const { selected } = this.props.scope
-        if (selected.id){
-            this.selectRow(selected.id, selected)
-        }
+        // if (selected.id){
+        //     this.selectRow(selected.id, selected)
+        // }
     }
 
     componentWillUnmount(){

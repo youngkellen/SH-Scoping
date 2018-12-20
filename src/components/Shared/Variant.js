@@ -165,6 +165,25 @@ class Variant extends Component {
         }
     }
 
+    renderQuote(quote){
+        if (quote){
+            return (
+                <div>
+                    <img src={require("../../assets/check-black.png")} />
+                    <p >Include in Quote</p>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <img src={require("../../assets/check-gray.png")} />
+                    <p style={{color: "lightgray"}}>Include in Quote</p>
+                </div>
+               
+            )
+        }
+    }
+
     searchVariant(){
         let { menuClick, estimate, data } = this.state;
         let dropDownColor = "#656565"
@@ -178,8 +197,8 @@ class Variant extends Component {
                             <div className="Rectangle">{data.SOURCE}</div>
                         </div>
                         <div className="col-md-3">
-                            <img src={require("../../assets/check-gray.png")} />
-                            <p>Include in Quote</p>
+                        <img src={require("../../assets/check-gray.png")} />
+                         <p>Include in Quote</p>
                         </div>
                         <div className="col-md-3">
                             {this.renderAddToScope()}
@@ -229,7 +248,7 @@ class Variant extends Component {
                             <div className="Rectangle">Title</div>
                         </div>
                         <div className="col-md-3">
-                            <img src={require("../../assets/check-gray.png")} />
+                            <img src={require("../../assets/check-black.png")} />
                             <p>Include in Quote</p>
                         </div>
                         <div className="col-md-3">
@@ -279,18 +298,18 @@ class Variant extends Component {
         let { menuClick, estimate } = this.state;
         let { data } = this.state;
         let dropDownColor = "#656565"
+        let inQuote = data["Include in Scope?"]
         console.log(data, "data variant")
         if (data){
             return (
-                <div className="feature_variant">
+                <div  className={`feature_variant ${inQuote ? "in-quote" : ""}`}>
                     <div className="row variant_row">
                         <div className="col-md-3">
                             <p>T:</p>
                             <input className="Rectangle" defaultValue={data.SOURCE} />
                         </div>
                         <div className="col-md-3">
-                            <img src={require("../../assets/check-gray.png")} />
-                            <p>Include in Quote</p>
+                           {this.renderQuote(inQuote)}
                         </div>
                         <div className="col-md-6">
                             <div className="col-md-6">

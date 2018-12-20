@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SCOPE_SELECT } from '../../constants/actionTypes';
+import Feature from './Feature'
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode, features: state.scope.features, scope: state.scope })
 
-class Feature extends Component {
+class Features extends Component {
+  constructor(){
+    super()
+    this.handleClick = this.handleClick.bind(this);
+  }
   componentDidMount() {
 
   }
@@ -25,13 +30,15 @@ class Feature extends Component {
 
   handleClick(id){
     let { dispatch, scope } = this.props;
-    // dispatch({type: SCOPE_SELECT, payload: scope[id]})
+    console.log(id)
+    dispatch({type: SCOPE_SELECT, payload: scope.scope[id]})
   }
 
   render() {
-    let { features } = this.props;
+    let { features, scope } = this.props;
+    let { selected } = scope;
     return (
-      <div className="row" style={{ minWidth: 200 }}>
+      <div className="row features" style={{ minWidth: 200 }}>
         <div style={{ height: "100vh" }}>
           <div className="row column_head" style={{ textAlign: "center" }}>
             <p>Feature </p>
@@ -39,7 +46,7 @@ class Feature extends Component {
           {this.renderAddNew()}
           <div className="row layout-pane-scroll">
             <ul>
-              {features.map(feature => <li onClick={() => this.handleClick(feature.id)}>{feature.feature}</li>)}
+              {features.map(feature => <Feature key={feature.id} inScope={scope.scope[feature.id]["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.id}/>)}
             </ul>
           </div>
         </div>
@@ -48,4 +55,4 @@ class Feature extends Component {
   }
 }
 
-export default connect(mapStatetoProps)(Feature);
+export default connect(mapStatetoProps)(Features);

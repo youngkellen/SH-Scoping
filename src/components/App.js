@@ -31,6 +31,7 @@ class App extends Component {
   call(data){
     const { dispatch } = this.props;
     console.log(data, "csv data")
+    data = data.map((d,i) => Object.assign({}, d, {id: i}))
     dispatch({ type: SCOPE_DOWNLOAD, payload: data})
    // dispatch({type: SCOPE_SELECT, payload: scope[id]})
     let types = {}

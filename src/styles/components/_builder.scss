@@ -5,6 +5,10 @@ $dropdown-color:#656565;
 $input-background: #fbfbfb;
 $addnew-color: #ebf3fc;
 $addnew-hover:#cee5ff;
+$feature-color: #e3e3e3;
+$quote-color: #7ed321;
+
+
 
 
 .splitter-layout {
@@ -143,6 +147,9 @@ $addnew-hover:#cee5ff;
           }
       }
       }
+      .in-quote{
+        border: solid $quote-color 1px;
+      }
       .feature_variant {
         background-color: white;
         min-height: 100px;
@@ -226,8 +233,35 @@ $addnew-hover:#cee5ff;
           display: inline-block; 
           border: none;
         }
+        
        
       }
+      .features {
+        background-color: $feature-color;
+        ul {
+          list-style-type: none;
+          li {
+            border-bottom: solid #aaa 2px;
+            border-left: none;
+            background-color: $feature-color;
+            padding-left: 10px;
+            cursor: pointer;
+          }
+          li:hover{
+            background-color: white;
+          }
+        }
+      }
+      .green-dot{
+        height: 6px;
+        width: 6px;
+        background-color: $quote-color;
+        border-radius: 10px;
+        display: inline-block;
+        margin-right: 10px;
+        left: 20px;
+      }
+      
 }
 
 @media (max-width: 767px) {
