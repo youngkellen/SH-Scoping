@@ -20,15 +20,15 @@ class Excel extends Component {
         // if (selected.id){
         //     this.selectRow(selected.id, selected)
         // }
-        console.log(this.props, "excel props")
         let { id } = this.props.selected;
         let { selected } = this.state;
-        console.log(selected, "selected")
-        if ( id !== selected) {
-            console.log(selected, "selected")
+        if (id && id !== selected) {
             let remove = document.getElementById(`tr${id}`)
-            remove.classList.remove(("selected"))
+            if (remove){
+                remove.classList.remove(("selected"))
+            }
             let row = document.getElementById(`tr${id}`)
+           
             row.classList.add(("selected"))
             this.setState({
                 selected: `tr${id}`,
@@ -37,12 +37,9 @@ class Excel extends Component {
     }
     
     componentWillReceiveProps(nextProps){
-        console.log(nextProps, "Excel next")
         let { id } = nextProps.selected;
         let { selected } = this.state;
-        console.log(selected, "selected")
-        if (id !== selected) {
-            console.log(selected, "selected")
+        if (id && selected && id !== selected) {
             let remove = document.getElementById(selected)
             remove.classList.remove(("selected"))
             let row = document.getElementById(`tr${id}`)
@@ -73,7 +70,9 @@ class Excel extends Component {
             } else if (selected && selected !== id) {
                 let { featureSet } = tree[data.SOURCE]
                 let index = featureSet.map(e => e.name).indexOf(data["Feature set"])
+                console.log(index, "index in select row")
                 let features = featureSet[index]
+                console.log(features, "features in select row")
                 let remove = document.getElementById(selected)
                 remove.classList.remove(("selected"))
                 let row = document.getElementById(id)
@@ -86,7 +85,9 @@ class Excel extends Component {
             } else {
                 let { featureSet } = tree[data.SOURCE]
                 let index = featureSet.map(e => e.name).indexOf(data["Feature set"])
+                console.log(index, "index in select row")
                 let features = featureSet[index]
+                console.log(features, "features in select row")
                 let row = document.getElementById(id)
                 row.classList.add(("selected"))
                 this.setState({
@@ -116,54 +117,54 @@ class Excel extends Component {
         //     { id: 12, inQuote: "x", platform: "Android", featureSet: "Stuff", feature: "Goku", featureDescription: "Supercalifragilisticexpealidoscious", assumptions: "", notes: "" }
         // ]
         if (scope && scope.scope) {
-            return scope.scope.map((d, i) => {
+            return scope.scope.map(d => {
                 return (
-                    <tr key={i} id={`tr${i}`} onClick={() =>this.selectRow(`tr${i}`, d)}>
+                    <tr key={d.id} id={`tr${d.id}`} onClick={() =>this.selectRow(`tr${d.id}`, d)}>
                         <td scope="row" className={ full ? "full_view" : ""} >
-                            <a data-tip data-for={`${i}i`}>{i}</a>
-                            <ReactTooltip id={`${i}i`} place="bottom" type='light' effect='solid'>
-                                {i}
+                            <a data-tip data-for={`${d.id}i`}>{d.id}</a>
+                            <ReactTooltip id={`${d.id}i`} place="bottom" type='light' effect='solid'>
+                                {d.id}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${i}q`}>{d["Include in Scope?"]}</a>
-                            <ReactTooltip id={`${i}q`} place="bottom" type='light' effect='solid'>
+                            <a data-tip data-for={`${d.id}q`}>{d["Include in Scope?"]}</a>
+                            <ReactTooltip id={`${d.id}q`} place="bottom" type='light' effect='solid'>
                                 {d["Include in Scope?"]}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${i}p`}>{d.Platform}</a>
-                            <ReactTooltip id={`${i}p`} place="bottom" type='light' effect='solid'>
+                            <a data-tip data-for={`${d.id}p`}>{d.Platform}</a>
+                            <ReactTooltip id={`${d.id}p`} place="bottom" type='light' effect='solid'>
                                 {d.Platform}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${i}fs`}>{d["Feature set"]}</a>
-                            <ReactTooltip id={`${i}fs`} place="bottom" type='light' effect='solid'>
+                            <a data-tip data-for={`${d.id}fs`}>{d["Feature set"]}</a>
+                            <ReactTooltip id={`${d.id}fs`} place="bottom" type='light' effect='solid'>
                                 {d["Feature set"]}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${i}f`}>{d.Feature}</a>
-                            <ReactTooltip id={`${i}f`} place="bottom" type='light' effect='solid'>
+                            <a data-tip data-for={`${d.id}f`}>{d.Feature}</a>
+                            <ReactTooltip id={`${d.id}f`} place="bottom" type='light' effect='solid'>
                                 {d.Feature}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${i}fd`}>{d["Feature description"]}</a>
-                            <ReactTooltip id={`${i}fd`} place="bottom" type='light' effect='solid'>
+                            <a data-tip data-for={`${d.id}fd`}>{d["Feature description"]}</a>
+                            <ReactTooltip id={`${d.id}fd`} place="bottom" type='light' effect='solid'>
                                 {d["Feature description"]}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${i}a`}>{d.Assumptions}</a>
-                            <ReactTooltip id={`${i}a`} place="bottom" type='light' effect='solid'>
+                            <a data-tip data-for={`${d.id}a`}>{d.Assumptions}</a>
+                            <ReactTooltip id={`${d.id}a`} place="bottom" type='light' effect='solid'>
                                 {d.Assumptions}
                             </ReactTooltip>
                         </td>
                         <td className={ full ? "full_view" : ""}>
-                            <a data-tip data-for={`${i}n`}>{d.Notes}</a>
-                            <ReactTooltip id={`${i}n`} place="bottom" type='light' effect='solid'>
+                            <a data-tip data-for={`${d.id}n`}>{d.Notes}</a>
+                            <ReactTooltip id={`${d.id}n`} place="bottom" type='light' effect='solid'>
                                 {d.Notes}
                             </ReactTooltip>
                         </td>

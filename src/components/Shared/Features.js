@@ -47,7 +47,7 @@ class Features extends Component {
           {this.renderAddNew()}
           <div className="row layout-pane-scroll">
             <ul>
-              {features.map(feature => <Feature key={feature.id} inScope={scope.scope[feature.id]["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.id}/>)}
+              {features.map(feature => <Feature key={feature.id} inScope={scope.scope[0]["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.id}/>)}
             </ul>
           </div>
         </div>
