@@ -3,9 +3,40 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Set from './Set';
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope })
 
 class FeatureSets extends Component {
+
+  componentWillMount(){
+    let { scope } = this.props.scope
+    let types = {}
+    // iterate through scope once to get the types, feature sets, and feature in a nice structure
+    scope.forEach((s,i) => {
+      if (!types.hasOwnProperty(s.SOURCE)){
+        types[s.SOURCE] = { 
+          featureSet: [ 
+            { 
+              name: s["Feature set"], 
+              features: [
+                  { 
+                    feature:s.Feature, id: i 
+                  }
+              ] 
+            }
+          ] 
+        };
+      } else {
+        let pos = types[s.SOURCE].featureSet.map(e => e.name).indexOf(s["Feature set"]);
+        if ( pos === -1 ) {
+          types[s.SOURCE].featureSet = [...types[s.SOURCE].featureSet, { name: s["Feature set"], features: [s.Feature] }]
+        } else {
+          types[s.SOURCE].featureSet[pos].features = [...types[s.SOURCE].featureSet[pos].features, {feature: s.Feature, id: i}]
+        }
+      }
+    })
+    console.log(types, "types bro")
+
+  }
 
   getElementHeight() {
     // let height = document.getElementById("General").getBoundingClientRect().height

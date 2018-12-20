@@ -166,8 +166,61 @@ class Variant extends Component {
     }
 
     searchVariant(){
-        let { menuClick, estimate } = this.state;
+        let { menuClick, estimate, data } = this.state;
         let dropDownColor = "#656565"
+        console.log(data, "data variant")
+        if (data){
+            return (
+                <div className="feature_variant">
+                    <div className="row variant_row">
+                        <div className="col-md-6">
+                            <p>T:</p>
+                            <div className="Rectangle">{data.SOURCE}</div>
+                        </div>
+                        <div className="col-md-3">
+                            <img src={require("../../assets/check-gray.png")} />
+                            <p>Include in Quote</p>
+                        </div>
+                        <div className="col-md-3">
+                            {this.renderAddToScope()}
+                        </div>
+                    </div>
+                    <div className="row variant_row">
+                        <div className="col-md-6">
+                            <p>FD:</p>
+                            <div className="Rectangle">{data["Feature description"]}</div>
+                        </div>
+                        <div className="col-md-6">
+                            <p>A:</p>
+                            <div className="Rectangle">{data.Assumptions}</div>
+                        </div>
+                    </div>
+                    <div className="row variant_row">
+                        <div className="col-md-10">
+                            <p>N:</p>
+                            <input className="Rectangle" defaultValue={data.Notes}></input>
+                        </div>
+                        <div className="col-md-2" style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ estimate: !prevState.estimate }))} >
+                            <p>Estimates</p>
+                            <div className={estimate ? "arrow-up" : "arrow-down"}></div>
+                        </div>
+                    </div>
+                    <div className="container row variant_row">
+                        <div className="col-md-12 estimate_content" style={estimate ? { display: "block" } : { display: "none" }}>
+                            <div className="row">
+                                <p>Estimates (HOURS):</p>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6">
+                                {this.renderEstimateButtons()}
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
             return (
                 <div className="feature_variant">
                     <div className="row variant_row">
@@ -196,7 +249,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-10">
                             <img src={require("../../assets/plus-black.png")} />
-                            <p>notes</p>
+                            <p>{data.Notes}</p>
                         </div>
                         <div className="col-md-2" style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ estimate: !prevState.estimate }))} >
                             <p>Estimates</p>
@@ -218,6 +271,8 @@ class Variant extends Component {
                     </div>
                 </div>
             )
+        }
+           
     }
 
     builderVariant(){
