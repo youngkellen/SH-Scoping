@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import shortenText from '../../helper/shortenText';
 import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope, tree: state.scope.tree })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope, tree: state.scope.tree, selected: state.scope.selected })
 
 class Excel extends Component {
     constructor(){
@@ -17,10 +17,40 @@ class Excel extends Component {
     }
 
     componentDidMount() {
-        const { selected } = this.props.scope
         // if (selected.id){
         //     this.selectRow(selected.id, selected)
         // }
+        console.log(this.props, "excel props")
+        let { id } = this.props.selected;
+        let { selected } = this.state;
+        console.log(selected, "selected")
+        if ( id !== selected) {
+            console.log(selected, "selected")
+            let remove = document.getElementById(`tr${id}`)
+            remove.classList.remove(("selected"))
+            let row = document.getElementById(`tr${id}`)
+            row.classList.add(("selected"))
+            this.setState({
+                selected: `tr${id}`,
+            })
+        }
+    }
+    
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps, "Excel next")
+        let { id } = nextProps.selected;
+        let { selected } = this.state;
+        console.log(selected, "selected")
+        if (id !== selected) {
+            console.log(selected, "selected")
+            let remove = document.getElementById(selected)
+            remove.classList.remove(("selected"))
+            let row = document.getElementById(`tr${id}`)
+            row.classList.add(("selected"))
+            this.setState({
+                selected: `tr${id}`,
+            })
+        }
     }
 
     componentWillUnmount(){
