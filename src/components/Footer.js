@@ -58,20 +58,23 @@ class Footer extends React.Component {
                             <p>Total Hours: {scopeSummary.designHours + scopeSummary.engineerHours}</p>
                         </div>
                         <div className="col-md-2">
-                            <p>Billable: {scopeSummary.billable}</p>
+                            <p>Billable: ${scopeSummary.billable}</p>
                         </div>
                         <div className="col-md-2" />
                     </div>
                     <div className="col-md-3 view_settings">
-                        <div className="container row">
-                            <div className="col-md-4" >
+                        <div className="row">
+                            <div className="col-md-3" >
                                 <p onClick={() => this.handleFullView()} style={full ? { backgroundColor: buttonBlue } : {}}>Full View</p>
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-md-3">
                                 <p onClick={() => this.handleSplitView()} style={split && !full ? { backgroundColor: buttonBlue } : {}}>Split View</p>
                             </div>
-                            <div className="col-md-4">
+                            <div className="col-md-3">
                                 <p onClick={() => this.handleCollapseView()} style={!full && !split ? { backgroundColor: buttonBlue } : {}}> Collapsed</p>
+                            </div>
+                            <div className="col-md-3">
+                                <button className="btn btn-primary btn-sm">EXPORT</button>
                             </div>
                         </div>
                     </div>

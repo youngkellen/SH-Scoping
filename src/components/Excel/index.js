@@ -115,49 +115,49 @@ class Excel extends Component {
             return scope.scope.map(d => {
                 return (
                     <tr key={d.id} id={`tr${d.id}`} onClick={() =>this.selectRow(`tr${d.id}`, d)}>
-                        <td scope="row" className={ full ? "full_view" : ""} >
+                        <td scope="row" className={ full ? "full_view id" : "id"} >
                             <a data-tip data-for={`${d.id}i`}>{d.id}</a>
                             <ReactTooltip id={`${d.id}i`} place="bottom" type='light' effect='solid'>
                                 {d.id}
                             </ReactTooltip>
                         </td>
-                        <td className={ full ? "full_view" : ""}>
+                        <td className={ full ? "full_view scope" : "scope"}>
                             <a data-tip data-for={`${d.id}q`}>{d["Include in Scope?"]}</a>
                             <ReactTooltip id={`${d.id}q`} place="bottom" type='light' effect='solid'>
                                 {d["Include in Scope?"]}
                             </ReactTooltip>
                         </td>
-                        <td className={ full ? "full_view" : ""}>
+                        <td className={ full ? "full_view platform" : "platform"}>
                             <a data-tip data-for={`${d.id}p`}>{d.Platform}</a>
                             <ReactTooltip id={`${d.id}p`} place="bottom" type='light' effect='solid'>
                                 {d.Platform}
                             </ReactTooltip>
                         </td>
-                        <td className={ full ? "full_view" : ""}>
+                        <td className={ full ? "full_view fs" : "fs"}>
                             <a data-tip data-for={`${d.id}fs`}>{d["Feature set"]}</a>
                             <ReactTooltip id={`${d.id}fs`} place="bottom" type='light' effect='solid'>
                                 {d["Feature set"]}
                             </ReactTooltip>
                         </td>
-                        <td className={ full ? "full_view" : ""}>
+                        <td className={ full ? "full_view feature" : "feature"}>
                             <a data-tip data-for={`${d.id}f`}>{d.Feature}</a>
                             <ReactTooltip id={`${d.id}f`} place="bottom" type='light' effect='solid'>
                                 {d.Feature}
                             </ReactTooltip>
                         </td>
-                        <td className={ full ? "full_view" : ""}>
+                        <td className={ full ? "full_view fd" : "fd"}>
                             <a data-tip data-for={`${d.id}fd`}>{d["Feature description"]}</a>
                             <ReactTooltip id={`${d.id}fd`} place="bottom" type='light' effect='solid'>
                                 {d["Feature description"]}
                             </ReactTooltip>
                         </td>
-                        <td className={ full ? "full_view" : ""}>
+                        <td className={ full ? "full_view assumptions" : "assumptions"}>
                             <a data-tip data-for={`${d.id}a`}>{d.Assumptions}</a>
                             <ReactTooltip id={`${d.id}a`} place="bottom" type='light' effect='solid'>
                                 {d.Assumptions}
                             </ReactTooltip>
                         </td>
-                        <td className={ full ? "full_view" : ""}>
+                        <td className={ full ? "full_view notes" : "notes"}>
                             <a data-tip data-for={`${d.id}n`}>{d.Notes}</a>
                             <ReactTooltip id={`${d.id}n`} place="bottom" type='light' effect='solid'>
                                 {d.Notes}
@@ -173,33 +173,31 @@ class Excel extends Component {
         let { excelHeight, viewMode } = this.props;
         let { full } = viewMode;
         console.log(excelHeight, "excel Height")
-        let height = excelHeight ? parseInt(excelHeight.replace(/px/,"")) * 0.8 : full ? 500 : 250
+        // let height = excelHeight ? parseInt(excelHeight.replace(/px/,"")) * 0.8 : full ? 500 : 250
+        let height = excelHeight ? excelHeight * 0.8 : full ? 80 : 40
         console.log(height, "new height")
         return (
             <div className="excel_table" id="excel_table">
                 <div className="row" >
-                    <div className="col-md-12 table-area" style={{height: `${height}px`, minHeight: `${height}px`,  maxHeight: `${height}px`,overflow: "auto"}}>
+                    <div className="col-md-12" style={{height: `${height}%`,  maxHeight: `${height}%`, paddingBottom: "20px"}}>
                         <table className="table table-bordered table-hover">
                             <thead >
-                                <tr >
-                                    <th scope="col" width="50">ID</th>
-                                    <th scope="col" width="50">In Quote</th>
-                                    <th scope="col" width="50">Platform</th>
-                                    <th scope="col" width="100">Feature Set</th>
-                                    <th scope="col" width="100">Feature</th>
-                                    <th scope="col" width="500">Feature Description</th>
-                                    <th scope="col" width="250">Assumptions</th>
-                                    <th scope="col">Notes</th>
+                                <tr className="head">
+                                    <th scope="col" className="id">ID</th>
+                                    <th scope="col" className="scope">In Quote</th>
+                                    <th scope="col" className="platform">Platform</th>
+                                    <th scope="col" className="fs">Feature Set</th>
+                                    <th scope="col" className="feature">Feature</th>
+                                    <th scope="col" className="fd">Feature Description</th>
+                                    <th scope="col" className="assumptions">Assumptions</th>
+                                    <th scope="col" className="notes">Notes</th>
                                 </tr>
                             </thead>
-                            <tbody style={{maxHeight: "300px", overflow: "auto"}}>
+                            <tbody style={{borderTop: "solid white 20px"}}>
                                 {this.renderRows()}
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div style={height > 200 ? {display: "flex"} : {display: "none"}}className="row excel_export">
-                    <button className="btn btn-primary">EXPORT</button>
                 </div>
             </div>
         );

@@ -64,11 +64,12 @@ renderMode() {
   }  else if (split){
 
     return (
-      <div  style={{height: "90vh"}}>
+      <div  style={{height: "95vh"}}>
             <SplitterLayout
                 vertical
                 onDragEnd={()=> this.getHeight()}
-                secondaryInitialSize={full ? 10000 : 400}
+                secondaryInitialSize={full ? 100 : 50}
+                percentage
             >
                  <Builder/>
                  <Excel excelHeight={this.state.excelHeight} resetHeight={this.resetHeight} />
@@ -87,8 +88,8 @@ renderMode() {
     render() {
       return (
         <div className="mode">
-          <div className="row" style={{maxHeight: "90vh"}}>
-            <div className="col-md-12" style={{maxHeight: "90vh"}}>
+          <div className="row" style={{maxHeight: "95vh"}}>
+            <div className="col-md-12" style={{maxHeight: "95vh"}}>
               {this.renderMode()}
             </div>
           </div>
