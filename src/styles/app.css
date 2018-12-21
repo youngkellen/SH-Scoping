@@ -4866,10 +4866,10 @@ a.text-danger:focus, a.text-danger:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 5vh;
-  min-height: 40px; }
+  height: 4vh;
+  min-height: 34px; }
   .navbar .navbar-image {
-    height: 17px;
+    height: 15px;
     width: 26px;
     position: absolute;
     left: 0px; }
@@ -5057,7 +5057,8 @@ a.text-danger:focus, a.text-danger:hover {
       height: 32px; }
       .builder .splitter-layout .column_head p {
         padding: 0;
-        margin: 0; }
+        margin: 0;
+        text-align: center; }
     .builder .splitter-layout .add_new {
       text-align: left;
       padding-left: 20px;

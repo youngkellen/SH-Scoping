@@ -45,7 +45,7 @@ class Type extends Component {
         return (
             <div className="row" >
                 <button className="collapsible" onClick={() => this.setState({selected: !this.state.selected})}>
-                    {type}<div className={selected ? "arrow-up" : "arrow-down"} />
+                    {type} {featureSet.length}<div className={selected ? "arrow-up" : "arrow-down"} />
                 </button>
                 <div className="content" style={ selected ? {display: "block"} : {display: "none"}}>
                     <ul>

@@ -57,7 +57,6 @@ class Excel extends Component {
 
     selectRow(id, data){
         const { dispatch,tree } = this.props
-        console.log(data, "data bro")
         let { selected } = this.state
             if (selected === id){
                 let remove = document.getElementById(selected)
@@ -70,9 +69,7 @@ class Excel extends Component {
             } else if (selected && selected !== id) {
                 let { featureSet } = tree[data.SOURCE]
                 let index = featureSet.map(e => e.name).indexOf(data["Feature set"])
-                console.log(index, "index in select row")
                 let features = featureSet[index]
-                console.log(features, "features in select row")
                 let remove = document.getElementById(selected)
                 remove.classList.remove(("selected"))
                 let row = document.getElementById(id)
@@ -85,9 +82,7 @@ class Excel extends Component {
             } else {
                 let { featureSet } = tree[data.SOURCE]
                 let index = featureSet.map(e => e.name).indexOf(data["Feature set"])
-                console.log(index, "index in select row")
                 let features = featureSet[index]
-                console.log(features, "features in select row")
                 let row = document.getElementById(id)
                 row.classList.add(("selected"))
                 this.setState({

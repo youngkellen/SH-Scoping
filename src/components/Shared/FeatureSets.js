@@ -33,16 +33,15 @@ class FeatureSets extends Component {
     let { tree } = this.props.scope
     let height = viewMode.split ? "40vh" : "90vh";
     let types = Object.keys(tree)
-    let featureSets = []
     console.log(types, "types sets")
     return (
       <div className="row" style={{ minWidth: 200 }}>
-        <div className="row column_head" style={{ textAlign: "center" }}>
+        <div className="row column_head">
           <p>Feature Sets</p>
         </div>
         {this.renderAddNew()}
-        <div className="col-md-12" style={{ height: height, overflow: "scroll" }}>
-          <div className="row layout-pane-scroll" style={{ overflowY: "scroll" }}>
+        <div className="col-md-12" style={{ height: height, overflow: "auto" }}>
+          <div className="row layout-pane-scroll" style={{ overflowY: "auto" }}>
            {types.map((type,i) => <Type key={i} type={type} featureSets={tree[type]} />)}
           </div>
 

@@ -5,12 +5,14 @@ import Header from './Header';
 import NotFound from './NotFound';
 import Dashboard from './Dashboard';
 import {connect} from 'react-redux';
-import { SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT } from "../constants/actionTypes";
+import { SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY } from "../constants/actionTypes";
+import getEngineerHours from "../helper/scopeSummary"
 
 import { store } from '../store';
 import { push } from 'react-router-redux';
 import '../styles/app.css';
 import Papa from 'papaparse';
+import scope from '../reducers/scope';
 
 class App extends Component {
   componentWillMount(){
@@ -35,7 +37,11 @@ class App extends Component {
     dispatch({ type: SCOPE_DOWNLOAD, payload: data})
    // dispatch({type: SCOPE_SELECT, payload: scope[id]})
     let types = {}
+    let designHours = 0;
+    let engineerHours = 0;
     data.forEach((s,i) => {
+      designHours+= Number(s["Design estimate (resource days)"]) || 0
+      engineerHours = getEngineerHours(engineerHours, s)
       if (!types.hasOwnProperty(s.SOURCE)){
         types[s.SOURCE] = { 
           featureSet: [ 
@@ -59,7 +65,7 @@ class App extends Component {
       }
     })
     dispatch({type: SCOPE_TREE, payload: types})
-    
+    dispatch({type: SCOPE_SUMMARY, payload: {designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0} })
   }
   render() {
     return (
