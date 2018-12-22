@@ -5383,6 +5383,8 @@ a.text-danger:focus, a.text-danger:hover {
           background-color: white;
           text-align: center;
           cursor: pointer; }
+        .footer .row .view_settings .row .btn-sm, .footer .row .view_settings .row .btn-group-sm > .btn {
+          font-size: 8px; }
 
 @media (max-width: 767px) {
   .footer .scope_summary div {

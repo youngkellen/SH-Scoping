@@ -9,6 +9,9 @@ class Footer extends React.Component {
         super();
     }
 
+    componentDidMount() {
+    }
+
     async handleCollapseView() {
         const { dispatch } = this.props;
         await dispatch({ type: FULL_VIEW, payload: false })
@@ -33,7 +36,11 @@ class Footer extends React.Component {
 
     }
 
-    componentDidMount() {
+  
+    
+    handleExport(){
+        let csv = require("../assets/Scope.csv")
+        window.open(csv);  
     }
 
     render() {
@@ -74,7 +81,7 @@ class Footer extends React.Component {
                                 <p onClick={() => this.handleCollapseView()} style={!full && !split ? { backgroundColor: buttonBlue } : {}}> Collapsed</p>
                             </div>
                             <div className="col-md-3">
-                                <button className="btn btn-primary btn-sm">EXPORT</button>
+                                <button className="btn btn-primary btn-sm" onClick={() => this.handleExport()}>EXPORT</button>
                             </div>
                         </div>
                     </div>
