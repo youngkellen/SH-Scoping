@@ -3,7 +3,8 @@ import {
     SCOPE_SELECT,
     SCOPE_TREE,
     SCOPE_SELECTED_FEATURES,
-    SCOPE_SUMMARY
+    SCOPE_SUMMARY,
+    SCOPE_SEARCH
   } from '../constants/actionTypes';
   
   const defaultState = {
@@ -11,7 +12,8 @@ import {
     selected: {},
     tree: {},
     features: [],
-    scopeSummary: { designHours: 0, engineerHours: 0, billable: 0 }
+    scopeSummary: { designHours: 0, engineerHours: 0, billable: 0 },
+    search: false
 
   }
   
@@ -29,6 +31,9 @@ import {
       }
       case SCOPE_SUMMARY: {
         return { ...state, scopeSummary: action.payload };
+      }
+      case SCOPE_SEARCH: {
+        return { ...state, search: action.payload };
       }
       default:
         return state;

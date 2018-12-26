@@ -11,8 +11,8 @@ import { SCOPE_TREE } from '../../constants/actionTypes';
 const mapStatetoProps = state => ({viewMode: state.viewMode, scope: state.scope})
 
 class Dashboard extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       excelHeight: 0,
       split: false,
@@ -59,7 +59,7 @@ renderMode() {
     )
   } else if (mode === "search"  && !split) {
     return (
-      <Search/>
+      <Search search={this.props.search}/>
     )
   }  else if (split){
 
