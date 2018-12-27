@@ -91,7 +91,7 @@ class App extends Component {
 
 
 
-    // console.log(this.index, "index in app")
+    console.log(this.index, "index in app")
 
     
 

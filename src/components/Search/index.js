@@ -9,14 +9,15 @@ import SearchEntry from "../Search/SearchEntry";
 import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES, SCOPE_SEARCH } from "../../constants/actionTypes";
 
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope.scope, tree: state.scope.tree })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope.scope, tree: state.scope.tree, searchText: state.scope.search })
 
 class Search extends Component {
   constructor() {
     super()
     this.state = {
       match: [],
-      showResults: true
+      showResults: true,
+      inputValue: ""
     }
     this.handleClick = this.handleClick.bind(this);
   }
@@ -43,8 +44,19 @@ class Search extends Component {
 
   }
 
+  componentDidMount(){
+    let { searchText } = this.props;
+    if (searchText ){
+      // the set timeout is needed because of the search index load time. Don't touch
+      this.setState({
+        inputValue: searchText
+      }, () => setTimeout(() =>this.search(searchText), 500))
+    }
+  }
+
   search(value) {
     let { dispatch } = this.props;
+    console.log(value, "value bro")
     let match = this.props.search(value)
     dispatch({type: SCOPE_SEARCH, payload: value})
     console.log(match, "match")
@@ -52,7 +64,8 @@ class Search extends Component {
       return { key: m.id, source: m.SOURCE, featureSet: m["Feature set"], text: `${m.SOURCE} - ${m["Feature set"]} - ${m.Feature} - ${m["Feature description"]}` }
     })
     this.setState({
-      match
+      match,
+      inputValue: value
     })
   }
 
@@ -80,7 +93,7 @@ class Search extends Component {
 
 
   render() {
-    let { match, showResults } = this.state;
+    let { match, showResults, inputValue } = this.state;
     return (
       <div className="builder row">
         <div className="col-md-12" style={{ height: "100vh" }}>
@@ -89,10 +102,11 @@ class Search extends Component {
               type="search" 
               className="form-control" 
               placeholder="ENTER SEARCH TERMS" 
+              value={inputValue}
               onChange={e => this.search(e.target.value)} 
               onMouseEnter={() => this.setState({showResults: true})}
             />
-            <div className="search-entries" style={showResults ? {display: "block"}: {display: "none"}} onMouseLeave={() => this.setState({showResults: false})} >
+            <div className="search-entries" style={showResults && inputValue && match.length ? {display: "block"}: {display: "none"}} onMouseLeave={() => this.setState({showResults: false})} >
               <ul>
                 {match.map(m => <SearchEntry key={m.key} featureSet={m.featureSet} source={m.source} name={m.text} id={m.key} handleClick={this.handleClick}/>)}
               </ul>

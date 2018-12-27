@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
+import searchHighlight from "../../helper/searchHighlight"
 
 
 class Feature extends PureComponent {
@@ -55,12 +53,15 @@ class Feature extends PureComponent {
 
     render() {
         console.log(this.props, "feature props ")
-        let { feature } = this.props;
+        let { feature, search } = this.props;
         let { selected } = this.state;
         return (
-            <li onClick={() => this.handleClick()} style={selected ? { backgroundColor: "white" } : {}}>
-                {this.renderDot()}
-                {feature}
+            <li 
+                onClick={() => this.handleClick()} 
+                style={selected ? { backgroundColor: "white" } : {} }
+            >
+            {this.renderDot()}
+            <span dangerouslySetInnerHTML={{ __html:searchHighlight(feature, search)}}/>
             </li>
         )
     }

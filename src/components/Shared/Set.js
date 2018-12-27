@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
+import searchHighlight from "../../helper/searchHighlight"
+
 
 
 class Set extends PureComponent {
@@ -66,14 +65,14 @@ class Set extends PureComponent {
     }
 
     render() {
-        let { name } = this.props;
+        let { name, search } = this.props;
         let { selected, temp} = this.state;
         return (
             <li 
                 onClick={()=>this.handleClick()} 
                 className={this.renderClassName()}
                 >
-                {name}
+                <span dangerouslySetInnerHTML={{ __html:searchHighlight(name, search)}}/>
             </li>
         )
     }

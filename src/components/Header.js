@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW } from '../constants/actionTypes';
+import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW, SCOPE_SEARCH } from '../constants/actionTypes';
 import CreateModal from './CreateModal.js'
 
 const mapStateToProps = state => ({viewMode: state.viewMode})

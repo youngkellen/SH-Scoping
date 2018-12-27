@@ -197,7 +197,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>T:</p>
-                            <div className="Rectangle">{data.Feature}</div>
+                            <div className="Rectangle" dangerouslySetInnerHTML={{ __html:searchHighlight(data.Feature, search)}}/>
                         </div>
                         <div className="col-md-3">
                         <img src={require("../../assets/check-gray.png")} />
@@ -210,18 +210,17 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>FD:</p>
-                            <div className="Rectangle" dangerouslySetInnerHTML={{ __html:searchHighlight(data["Feature description"], search)}}>
-                            </div>
+                            <div className="Rectangle" dangerouslySetInnerHTML={{ __html:searchHighlight(data["Feature description"], search)}}/>
                         </div>
                         <div className="col-md-6">
                             <p>A:</p>
-                            <div className="Rectangle">{data.Assumptions}</div>
+                            <div className="Rectangle" dangerouslySetInnerHTML={{ __html:searchHighlight(data.Assumptions, search)}}/>
                         </div>
                     </div>
                     <div className="row variant_row">
                         <div className="col-md-10">
                             <p>N:</p>
-                            <div className="Rectangle">{data.Notes}</div>
+                            <div className="Rectangle" dangerouslySetInnerHTML={{ __html:searchHighlight(data.Notes, search)}}/>
                         </div>
                         <div className="col-md-2" style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ estimate: !prevState.estimate }))} >
                             <p>Estimates</p>
