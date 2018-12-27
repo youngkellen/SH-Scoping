@@ -77,6 +77,7 @@ class Excel extends Component {
                 this.setState({
                     selected: id
                 })
+                console.log(features, "move bitch")
                 dispatch({type: SCOPE_SELECT, payload: data})
                 dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
             } else {

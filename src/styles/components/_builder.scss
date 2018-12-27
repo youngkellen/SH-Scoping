@@ -238,12 +238,14 @@ $quote-color: #7ed321;
         background-color: $feature-color;
         ul {
           list-style-type: none;
+          
           li {
             border-bottom: solid #aaa 2px;
             border-left: none;
             background-color: $feature-color;
             padding-left: 10px;
             cursor: pointer;
+            
           }
           li:hover{
             background-color: white;
@@ -258,6 +260,19 @@ $quote-color: #7ed321;
         display: inline-block;
         margin-right: 10px;
         left: 20px;
+      }
+      .search-entries{
+        ul {
+          list-style-type: none;
+          overflow: auto;
+          max-height: 200px;
+          li:hover {
+            background-color: $search-color;
+            color: white;
+            cursor: pointer;
+          }
+        }
+        
       }
       
 }

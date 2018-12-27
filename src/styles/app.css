@@ -5216,6 +5216,14 @@ a.text-danger:focus, a.text-danger:hover {
     display: inline-block;
     margin-right: 10px;
     left: 20px; }
+  .builder .search-entries ul {
+    list-style-type: none;
+    overflow: auto;
+    max-height: 200px; }
+    .builder .search-entries ul li:hover {
+      background-color: #4990e2;
+      color: white;
+      cursor: pointer; }
 
 @media (max-width: 767px) {
   .builder {

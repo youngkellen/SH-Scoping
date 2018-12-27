@@ -5,18 +5,23 @@ import SplitterLayout from 'react-splitter-layout';
 import Features from '../Shared/Features';
 import FeatureSets from '../Shared/FeatureSets';
 import FeatureVariants from '../Shared/FeatureVariants'
-import Footer from '../Footer';
-import elasticlunr from 'elasticlunr'
+import SearchEntry from "../Search/SearchEntry";
+import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES } from "../../constants/actionTypes";
 
 
-const mapStatetoProps = state => ({viewMode: state.viewMode})
+const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope.scope, tree: state.scope.tree })
 
 class Search extends Component {
-  constructor(){
+  constructor() {
     super()
+    this.state = {
+      match: [],
+      showResults: true
+    }
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillMount(){
+  componentWillMount() {
     console.log("search will mount", this.props)
     let { scope, search } = this.props
     // let fields = Object.keys(scope[0])
@@ -33,48 +38,80 @@ class Search extends Component {
     // result.map(r => {
     // })
 
-    
-  //console.log(index, "index in search")
-    
+
+    //console.log(index, "index in search")
+
   }
 
-  search(value){
+  search(value) {
     let match = this.props.search(value)
+    console.log(match, "match")
+    match = match.map(m => {
+      return { key: m.id, source: m.SOURCE, text: `${m.SOURCE} - ${m["Feature set"]} - ${m.Feature} - ${m["Feature description"]}` }
+    })
+    this.setState({
+      match
+    })
+  }
+
+  handleClick(id, source){
+    let { dispatch, scope, tree } = this.props;
+    console.log(id)
+    let { featureSet } = tree[source]
+    console.log(source, "source")
+    console.log(tree[source], "tree")
+
+    console.log(featureSet, "feature set in search index")
+    let features = featureSet[0]
+    console.log(features, "features in search inde")
+    dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
+    dispatch({type: SCOPE_SELECT, payload: scope[id]})
   }
 
 
-    render() {
-      return (
-        <div className="builder row">
-          <div className="col-md-12"  style={{height: "100vh"}}>
+  render() {
+    let { match, showResults } = this.state;
+    return (
+      <div className="builder row">
+        <div className="col-md-12" style={{ height: "100vh" }}>
           <div className="row form-group" style={{ margin: 0, padding: 0 }}>
-            <input type="search" className="form-control" placeholder="ENTER SEARCH TERMS" onChange={e => this.search(e.target.value)}/>
-          </div>
-          <div onClick={()=>this.search("contact")}>search</div>
-            <div className="row" style={{margin: 0, padding: 0}}>
-                <SplitterLayout
-                  percentage
-                  primaryIndex={0}
-                  secondaryInitialSize={85}
-                  
-                >
-                  <FeatureSets mode={"search"}/>
-                  <SplitterLayout
-                    percentage
-                    primaryIndex={1}
-                    primaryInitialSize={80}
-                    secondaryInitialSize={20}
-                  >
-                    <Features mode={"search"}/>
-                    <FeatureVariants mode={"search"}/>
-                  </SplitterLayout>
-                </SplitterLayout>
+            <input 
+              type="search" 
+              className="form-control" 
+              placeholder="ENTER SEARCH TERMS" 
+              onChange={e => this.search(e.target.value)} 
+              onMouseEnter={() => this.setState({showResults: true})}
+            />
+            <div className="search-entries" style={showResults ? {display: "block"}: {display: "none"}} onMouseLeave={() => this.setState({showResults: false})} >
+              <ul>
+                {match.map(m => <SearchEntry key={m.key} source={m.source} name={m.text} id={m.key} handleClick={this.handleClick}/>)}
+              </ul>
             </div>
           </div>
+
+          <div className="row" style={{ margin: 0, padding: 0 }}>
+            <SplitterLayout
+              percentage
+              primaryIndex={0}
+              secondaryInitialSize={85}
+
+            >
+              <FeatureSets mode={"search"} />
+              <SplitterLayout
+                percentage
+                primaryIndex={1}
+                primaryInitialSize={80}
+                secondaryInitialSize={20}
+              >
+                <Features mode={"search"} />
+                <FeatureVariants mode={"search"} />
+              </SplitterLayout>
+            </SplitterLayout>
+          </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
-  
-  export default connect(mapStatetoProps)(Search);
-  
+}
+
+export default connect(mapStatetoProps)(Search);

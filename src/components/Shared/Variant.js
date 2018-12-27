@@ -194,7 +194,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>T:</p>
-                            <div className="Rectangle">{data.SOURCE}</div>
+                            <div className="Rectangle">{data.Feature}</div>
                         </div>
                         <div className="col-md-3">
                         <img src={require("../../assets/check-gray.png")} />
