@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import searchHighlight from "../../helper/searchHighlight"
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode });
+const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search });
 
 class Variant extends Component {
     constructor() {
@@ -186,6 +187,7 @@ class Variant extends Component {
 
     searchVariant(){
         let { menuClick, estimate, data } = this.state;
+        let { search } = this.props;
         let dropDownColor = "#656565";
         let inQuote = data["Include in Scope?"]
         console.log(data, "data variant")
@@ -208,7 +210,8 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>FD:</p>
-                            <div className="Rectangle">{data["Feature description"]}</div>
+                            <div className="Rectangle" dangerouslySetInnerHTML={{ __html:searchHighlight(data["Feature description"], search)}}>
+                            </div>
                         </div>
                         <div className="col-md-6">
                             <p>A:</p>
@@ -296,8 +299,7 @@ class Variant extends Component {
     }
 
     builderVariant(){
-        let { menuClick, estimate } = this.state;
-        let { data } = this.state;
+        let { menuClick, estimate, data } = this.state;
         let dropDownColor = "#656565"
         let inQuote = data["Include in Scope?"]
         console.log(data, "data variant")

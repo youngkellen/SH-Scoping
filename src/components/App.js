@@ -38,9 +38,9 @@ class App extends Component {
 
   async call(data) {
     const { dispatch } = this.props;
-    console.log(data, "csv data")
+    // console.log(data, "csv data")
     let fields = Object.keys(data[0])
-    console.log(fields, "fields ")
+    // console.log(fields, "fields ")
     data = data.map((d, i) => Object.assign({}, d, { id: i }))
     dispatch({ type: SCOPE_DOWNLOAD, payload: data })
     // dispatch({type: SCOPE_SELECT, payload: scope[id]})
@@ -91,7 +91,7 @@ class App extends Component {
 
 
 
-    console.log(this.index, "index in app")
+    // console.log(this.index, "index in app")
 
     
 

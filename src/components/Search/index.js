@@ -6,7 +6,7 @@ import Features from '../Shared/Features';
 import FeatureSets from '../Shared/FeatureSets';
 import FeatureVariants from '../Shared/FeatureVariants'
 import SearchEntry from "../Search/SearchEntry";
-import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES } from "../../constants/actionTypes";
+import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES, SCOPE_SEARCH } from "../../constants/actionTypes";
 
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope.scope, tree: state.scope.tree })
@@ -44,7 +44,9 @@ class Search extends Component {
   }
 
   search(value) {
+    let { dispatch } = this.props;
     let match = this.props.search(value)
+    dispatch({type: SCOPE_SEARCH, payload: value})
     console.log(match, "match")
     match = match.map(m => {
       return { key: m.id, source: m.SOURCE, featureSet: m["Feature set"], text: `${m.SOURCE} - ${m["Feature set"]} - ${m.Feature} - ${m["Feature description"]}` }
@@ -56,12 +58,12 @@ class Search extends Component {
 
   handleClick(id, source, set){
     let { dispatch, scope, tree } = this.props;
-    console.log(id)
+    //vconsole.log(id)
     let { featureSet } = tree[source]
-    console.log(source, "source")
-    console.log(tree[source], "tree")
-    console.log(set, "feature")
-    console.log(featureSet, "feature set in search index")
+    // console.log(source, "source")
+    // console.log(tree[source], "tree")
+    // console.log(set, "feature")
+    // console.log(featureSet, "feature set in search index")
     let features;
     for (let i = 0; i < featureSet.length; i++){
       if (featureSet[i].name === set){
@@ -69,7 +71,8 @@ class Search extends Component {
         break
       }
     }
-    console.log(features, "features in search inde")
+    
+    // console.log(features, "features in search inde")
     dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
     dispatch({type: SCOPE_SELECT, payload: scope[id]})
     this.setState({showResults: false})

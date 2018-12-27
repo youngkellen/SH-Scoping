@@ -13,7 +13,7 @@ import {
     tree: {},
     features: [],
     scopeSummary: { designHours: 0, engineerHours: 0, billable: 0 },
-    search: false
+    searchTerm: ""
 
   }
   

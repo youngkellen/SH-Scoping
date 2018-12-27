@@ -5035,6 +5035,9 @@ a.text-danger:focus, a.text-danger:hover {
   .builder input[type="search"], .builder textarea {
     background-color: #4990e2;
     color: white; }
+  .builder .highlight-search {
+    color: red;
+    font-weight: bold; }
   .builder input[type="search"]::placeholder {
     color: lightgray; }
   .builder .layout-splitter {
@@ -5227,6 +5230,8 @@ a.text-danger:focus, a.text-danger:hover {
     list-style-type: none;
     overflow: auto;
     max-height: 200px; }
+    .builder .search-entries ul li {
+      border-bottom: solid lightgray 1px; }
     .builder .search-entries ul li:hover {
       background-color: #4990e2;
       color: white;

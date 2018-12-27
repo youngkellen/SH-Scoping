@@ -25,6 +25,10 @@ $quote-color: #7ed321;
         color: white
       
       }
+      .highlight-search {
+        color: red;
+        font-weight: bold;
+      }
       input[type="search"]::placeholder{
           color: lightgray
       }
@@ -277,6 +281,9 @@ $quote-color: #7ed321;
           list-style-type: none;
           overflow: auto;
           max-height: 200px;
+          li {
+            border-bottom: solid lightgray 1px;
+          }
           li:hover {
             background-color: $search-color;
             color: white;
