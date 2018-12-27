@@ -31,7 +31,7 @@ class App extends Component {
       header: true,
       skipEmptyLines: true,
       delimiter: ",",
-      preview: 100,
+      preview: 2000,
       complete: ({ data }) => this.call(data)
       // Here this is also available. So we can call our custom class method
     }
@@ -87,8 +87,8 @@ class App extends Component {
       index: index
     }, async () =>  await dispatch({ type: SCOPE_TREE, payload: types }),  await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } }) )
    
-    await dispatch({ type: SCOPE_TREE, payload: types })
-    await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
+    // await dispatch({ type: SCOPE_TREE, payload: types })
+    // await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
     // dispatch({type: SCOPE_SEARCH, payload: index})
 
 

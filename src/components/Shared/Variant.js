@@ -186,11 +186,12 @@ class Variant extends Component {
 
     searchVariant(){
         let { menuClick, estimate, data } = this.state;
-        let dropDownColor = "#656565"
+        let dropDownColor = "#656565";
+        let inQuote = data["Include in Scope?"]
         console.log(data, "data variant")
         if (data){
             return (
-                <div className="feature_variant">
+                <div className={`feature_variant ${inQuote ? "in-quote" : ""}`}>
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>T:</p>

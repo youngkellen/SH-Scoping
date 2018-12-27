@@ -47,22 +47,28 @@ class Search extends Component {
     let match = this.props.search(value)
     console.log(match, "match")
     match = match.map(m => {
-      return { key: m.id, source: m.SOURCE, text: `${m.SOURCE} - ${m["Feature set"]} - ${m.Feature} - ${m["Feature description"]}` }
+      return { key: m.id, source: m.SOURCE, featureSet: m["Feature set"], text: `${m.SOURCE} - ${m["Feature set"]} - ${m.Feature} - ${m["Feature description"]}` }
     })
     this.setState({
       match
     })
   }
 
-  handleClick(id, source){
+  handleClick(id, source, set){
     let { dispatch, scope, tree } = this.props;
     console.log(id)
     let { featureSet } = tree[source]
     console.log(source, "source")
     console.log(tree[source], "tree")
-
+    console.log(set, "feature")
     console.log(featureSet, "feature set in search index")
-    let features = featureSet[0]
+    let features;
+    for (let i = 0; i < featureSet.length; i++){
+      if (featureSet[i].name === set){
+        features = featureSet[i];
+        break
+      }
+    }
     console.log(features, "features in search inde")
     dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
     dispatch({type: SCOPE_SELECT, payload: scope[id]})
@@ -84,7 +90,7 @@ class Search extends Component {
             />
             <div className="search-entries" style={showResults ? {display: "block"}: {display: "none"}} onMouseLeave={() => this.setState({showResults: false})} >
               <ul>
-                {match.map(m => <SearchEntry key={m.key} source={m.source} name={m.text} id={m.key} handleClick={this.handleClick}/>)}
+                {match.map(m => <SearchEntry key={m.key} featureSet={m.featureSet} source={m.source} name={m.text} id={m.key} handleClick={this.handleClick}/>)}
               </ul>
             </div>
           </div>
