@@ -133,12 +133,23 @@ $quote-color: #7ed321;
         background-color: #f1f1f1;
         ul {
           list-style-type: none;
+          .selected{
+            background-color: white;
+          }
+          .not-selected{
+            opacity: 0.5;
+          }
+          .temp-select{
+            opacity: 1;
+            background-color: #f1f1f1
+          }
           li {
               border-bottom: solid #aaa 2px;
               background-color: $scope-gray;
               border-radius: 25px;
               padding-left: 10px;
               cursor: pointer;
+             
           }
           li:hover{
               background-color: lightgray;

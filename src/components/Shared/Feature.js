@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
 
 
-class Feature extends Component {
+class Feature extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {

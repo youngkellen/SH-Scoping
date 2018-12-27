@@ -18,9 +18,7 @@ import elasticlunr from "elasticlunr";
 class App extends Component {
   constructor(){
     super()
-    this.state = {
-      index: {}
-    }
+    this.index = {};
     this.search = this.search.bind(this)
   }
   componentWillMount() {
@@ -31,7 +29,7 @@ class App extends Component {
       header: true,
       skipEmptyLines: true,
       delimiter: ",",
-      preview: 2000,
+      preview: 200,
       complete: ({ data }) => this.call(data)
       // Here this is also available. So we can call our custom class method
     }
@@ -83,9 +81,9 @@ class App extends Component {
         }
       }
     })
-    this.setState({
-      index: index
-    }, async () =>  await dispatch({ type: SCOPE_TREE, payload: types }),  await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } }) )
+    this.index = index;
+    await dispatch({ type: SCOPE_TREE, payload: types });
+      await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
    
     // await dispatch({ type: SCOPE_TREE, payload: types })
     // await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
@@ -93,7 +91,7 @@ class App extends Component {
 
 
 
-    console.log(this.state.index, "index in app")
+    console.log(this.index, "index in app")
 
     
 
@@ -118,11 +116,11 @@ class App extends Component {
 
   search(term){
     // search needs to be passed down from app to prevent unneeded re rendering
-    console.log(this.state.index, "index in search")
-   let result = this.state.index.search(term);
+    console.log(this.index, "index in search")
+   let result = this.index.search(term);
     console.log(result, "result")
     let match = result.map(r => {
-      return this.state.index.documentStore.getDoc(r.ref)
+      return this.index.documentStore.getDoc(r.ref)
     })
     return match
   }

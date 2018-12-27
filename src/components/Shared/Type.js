@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
 import Set from './Set';
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, selected: state.scope.selected, scope: state.scope })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, selected: state.scope.selected, scope: state.scope.scope })
 
-class Type extends Component {
+class Type extends PureComponent {
     constructor(){
         super()
         this.state = {
@@ -21,16 +21,46 @@ class Type extends Component {
     }
 
    componentDidMount(){
-       console.log(this.props, "props in type")
+    //    console.log(this.props, "props in type")
+    let { id } = this.props;
+   
        if (this.props.type === this.props.selected.SOURCE){
+        console.log(this.props, "type props mount")
+        let offSet = document.getElementById(`type${id}`).offsetTop
+        console.log(offSet, "offSet" )
+        let container = document.getElementById('feature_set');
+        let { clientHeight, scrollHeight } = container
+        console.log(clientHeight, "client height")
+        console.log(scrollHeight, "scroll height")
+            container.scroll({
+                top: offSet,
+                left: 0,
+                behavior: 'smooth'
+              });
+      
            this.setState({
                selected: true
            })
        }
    }
    componentWillReceiveProps(nextProps){
-    console.log(nextProps, "next props in type")
+    // console.log(nextProps, "next props in type")
+    let { id } = this.props;
+    
     if (nextProps.type === nextProps.selected.SOURCE ){
+        console.log(nextProps, "next prop type")
+        let offSet = document.getElementById(`type${id}`).offsetTop
+        console.log(offSet, "offSet" )
+        let container = document.getElementById('feature_set');
+        let { clientHeight, scrollHeight } = container
+        console.log(clientHeight, "client height")
+        console.log(scrollHeight, "scroll height")
+            container.scroll({
+                top: offSet,
+                left: 0,
+                behavior: 'smooth'
+              });
+      
         this.setState({
             selected: true
         })
@@ -38,12 +68,12 @@ class Type extends Component {
 }
 
     render() {
-        let { viewMode, type, featureSets} = this.props;
+        let { viewMode, type, featureSets, id} = this.props;
         let { featureSet } = featureSets;
         let { selected } = this.state
-        console.log(featureSets, "feature sets")
+        // console.log(featureSets, "feature sets")
         return (
-            <div className="row" >
+            <div className="row" id={`type${id}`} >
                 <button className="collapsible" onClick={() => this.setState({selected: !this.state.selected})}>
                     {type} {featureSet.length}<div className={selected ? "arrow-up" : "arrow-down"} />
                 </button>

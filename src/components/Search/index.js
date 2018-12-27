@@ -72,6 +72,7 @@ class Search extends Component {
     console.log(features, "features in search inde")
     dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
     dispatch({type: SCOPE_SELECT, payload: scope[id]})
+    this.setState({showResults: false})
   }
 
 

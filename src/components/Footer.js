@@ -62,7 +62,7 @@ class Footer extends React.Component {
                             <p>Engineer Hours: {scopeSummary.engineerHours}</p>
                         </div>
                         <div className="col-md-2">
-                            <p>Total Hours: {scopeSummary.designHours + scopeSummary.engineerHours}</p>
+                            <p>Total Hours: {Math.round((scopeSummary.designHours + scopeSummary.engineerHours) * 100) / 100}</p>
                         </div>
                         <div className="col-md-2">
                             <p>Billable: ${scopeSummary.billable}</p>
