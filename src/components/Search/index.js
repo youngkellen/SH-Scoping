@@ -94,6 +94,7 @@ class Search extends Component {
 
   render() {
     let { match, showResults, inputValue } = this.state;
+    let { searchText } = this.props;
     return (
       <div className="builder row">
         <div className="col-md-12" style={{ height: "100vh" }}>
@@ -108,7 +109,7 @@ class Search extends Component {
             />
             <div className="search-entries" style={showResults && inputValue && match.length ? {display: "block"}: {display: "none"}} onMouseLeave={() => this.setState({showResults: false})} >
               <ul>
-                {match.map(m => <SearchEntry key={m.key} featureSet={m.featureSet} source={m.source} name={m.text} id={m.key} handleClick={this.handleClick}/>)}
+                {match.map(m => <SearchEntry key={m.key} search={searchText} featureSet={m.featureSet} source={m.source} name={m.text} id={m.key} handleClick={this.handleClick}/>)}
               </ul>
             </div>
           </div>

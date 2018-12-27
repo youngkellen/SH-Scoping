@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
+import searchHighlight from "../../helper/searchHighlight"
 
 
 class SearchEntry extends Component {
@@ -18,10 +16,10 @@ class SearchEntry extends Component {
     }
 
     render() {
-        let { name} = this.props;
+        let { name, search } = this.props;
         return (
             <li onClick={()=>this.handleClick()} >
-                {name}
+                <span dangerouslySetInnerHTML={{ __html:searchHighlight(name, search)}}/>
             </li>
         )
     }
