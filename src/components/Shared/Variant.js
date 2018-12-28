@@ -153,7 +153,8 @@ class Variant extends Component {
             return (
                 <div >
                      <p>N:</p>
-                     <input className="Rectangle" defaultValue={d.Notes}></input>
+                     <div className="Rectangle" contentEditable>{d.Notes}</div>
+                     <img src={require("../../assets/remove.png")} style={{paddingLeft: "2px"}} onClick={()=>this.setState({addNotes: false})}/>
                 </div>
             )
         } else {
@@ -308,7 +309,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-3">
                             <p>T:</p>
-                            <input className="Rectangle" defaultValue={data.SOURCE} />
+                            <div className="Rectangle" contentEditable>{data.SOURCE}</div>
                         </div>
                         <div className="col-md-3">
                            {this.renderQuote(inQuote)}
@@ -338,11 +339,11 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>FD:</p>
-                            <input className="Rectangle" defaultValue={data["Feature description"]}></input>
+                            <div className="Rectangle" contentEditable>{data["Feature description"]}</div>
                         </div>
                         <div className="col-md-6">
                             <p>A:</p>
-                            <input className="Rectangle" defaultValue={data.Assumptions}></input>
+                            <div className="Rectangle" contentEditable>{data.Assumptions}</div>
                         </div>
                     </div>
                     <div className="row variant_row">

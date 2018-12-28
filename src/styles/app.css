@@ -5205,7 +5205,9 @@ a.text-danger:focus, a.text-danger:hover {
       width: 80%;
       background-color: #fbfbfb;
       display: inline-block;
-      border: none; }
+      border: none;
+      overflow: hidden;
+      word-break: break-word; }
   .builder .features {
     background-color: #e3e3e3; }
     .builder .features ul {

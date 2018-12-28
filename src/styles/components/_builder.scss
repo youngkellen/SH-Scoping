@@ -245,6 +245,9 @@ $quote-color: #7ed321;
           background-color : $input-background;
           display: inline-block; 
           border: none;
+          overflow: hidden;
+          word-break: break-word; 
+         
         }
         
        

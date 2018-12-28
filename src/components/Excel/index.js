@@ -14,6 +14,7 @@ class Excel extends Component {
             selected: ""
         }
         this.selectRow = this.selectRow.bind(this);
+        this.listenScrollEvent = this.listenScrollEvent.bind(this);
     }
 
     componentDidMount() {
@@ -169,6 +170,10 @@ class Excel extends Component {
         }
     }
 
+    listenScrollEvent(val){
+        console.log(val)
+    }
+
     render() {
         let { excelHeight, viewMode } = this.props;
         let { full } = viewMode;
@@ -178,9 +183,9 @@ class Excel extends Component {
         console.log(height, "new height")
         return (
             <div className="excel_table" id="excel_table">
-                <div className="row" >
+                <div className="row"  >
                     <div className="col-md-12" style={{height: `${height}%`,  maxHeight: `${height}%`, paddingBottom: "20px"}}>
-                        <table className="table table-bordered table-hover">
+                        <table className="table table-bordered table-hover" >
                             <thead >
                                 <tr className="head">
                                     <th scope="col" className="id">ID</th>
@@ -193,7 +198,7 @@ class Excel extends Component {
                                     <th scope="col" className="notes">Notes</th>
                                 </tr>
                             </thead>
-                            <tbody style={{borderTop: "solid white 20px"}}>
+                            <tbody style={{borderTop: "solid white 20px", overflowY: "scroll"}} ref="tbody" onScroll={()=>this.listenScrollEvent()}>
                                 {this.renderRows()}
                             </tbody>
                         </table>
