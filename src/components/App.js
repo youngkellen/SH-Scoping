@@ -14,6 +14,9 @@ import '../styles/app.css';
 import Papa from 'papaparse';
 import scope from '../reducers/scope';
 import elasticlunr from "elasticlunr";
+import axios from "axios"
+
+const mapStateToProps = state => ({scope: state.scope.scope})
 
 class App extends Component {
   constructor(props){
@@ -22,10 +25,13 @@ class App extends Component {
     this.search = this.search.bind(this)
     let { href}  = window.location;
     if (href.includes("accessToken")){
+      // this is used to get the access Token for opening google sheets
       console.log(href, "href bro")
       let token = href.split("=")[1]
       console.log(token, "token bro")
       this.props.dispatch({type: ACCESS_TOKEN, payload: token})
+      console.log(this.props, "app props")
+      this.getGoogleSheet(token)
     }
   }
   componentWillMount() {
@@ -121,6 +127,22 @@ class App extends Component {
 
   }
 
+  async getGoogleSheet(token){
+    let { scope } = this.props;
+    let copyScope = scope.slice()
+    let csv = Papa.unparse(scope)
+    console.log(csv, "unparse")
+    let postUrl = "https://us-central1-adept-coda-226322.cloudfunctions.net/createGoogleSheetFromCSV";
+    let options = { accessToken: token, csvData: csv, clientName:"newClient" };
+     
+    let response = await axios.post(postUrl, options);
+    console.log(response, "response in get google")
+    if (response){
+      window.open(response.data.googleSheetUrl, "_blank" )
+    }
+    
+  }
+
 
   search(term){
     // search needs to be passed down from app to prevent unneeded re rendering
@@ -151,4 +173,4 @@ class App extends Component {
   }
 }
 
-export default connect()(App);
+export default connect(mapStateToProps)(App);
