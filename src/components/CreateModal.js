@@ -2,12 +2,15 @@ import React from 'react';
 import Modal from 'react-modal';
 import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import {
-  MODE_CHANGE
+  MODE_CHANGE,
+  EXPORT_CSV
 } from '../constants/actionTypes';
 
 const imagePlaceholder = require('../assets/plus.png');
 const removeImage = require('../assets/remove.png')
+const MODE = process.env.NODE_ENV
 
 class CreateModal extends React.Component {
   constructor() {
@@ -473,8 +476,29 @@ class CreateModal extends React.Component {
     }, () => { this.props.closeModal() })
   }
 
+  async getGoogleSheet(){
+    let redirectUrl = MODE === "development" ? "localhost:3000" : "sh-scoping.appspot.com"
+    window.open(`https://us-central1-adept-coda-226322.cloudfunctions.net/authorize?redirectUrl=http://${redirectUrl}`, "_self")
+
+  }
+
+  renderExport(){
+    let { exportCSV, dispatch } = this.props;
+    if (exportCSV) {
+      return (
+        <div className="export-csv">
+          Would you like to open the csv in Google Sheets?
+          <button onClick={()=> this.getGoogleSheet()}>Yes</button>
+          <button onClick={()=> dispatch({type: EXPORT_CSV, payload: false})}>No</button>
+          
+        </div>
+      )
+    }
+  }
+
   render() {
     console.log(this.state, "render state")
+    let { exportCSV } = this.props;
     return (
       <Modal
         isOpen={this.props.createModalOpen}
@@ -482,16 +506,18 @@ class CreateModal extends React.Component {
         className="modal-create"
         overlayClassName="modal-overlay"
       >
-        {this.projectInfoModal()}
-        {this.choosePlatform()}
-        {this.typeSelectModal()}
+        {exportCSV ? null : this.projectInfoModal()}
+        {exportCSV ? null : this.choosePlatform()}
+        {exportCSV ? null : this.typeSelectModal()}
+        {exportCSV ? this.renderExport() : null}
       </Modal>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  viewMode: state.viewMode
+  viewMode: state.viewMode,
+  exportCSV: state.exportCSV.exportCSV
   // schedules
 });
 

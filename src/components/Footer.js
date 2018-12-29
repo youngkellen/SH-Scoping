@@ -2,11 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { store } from '../store';
 import { push } from 'react-router-redux';
-import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW } from '../constants/actionTypes';
+import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW, EXPORT_CSV } from '../constants/actionTypes';
+import axios from "axios";
+
 
 class Footer extends React.Component {
     constructor() {
         super();
+        this.state = {
+            show: false
+        }
     }
 
     componentDidMount() {
@@ -39,8 +44,14 @@ class Footer extends React.Component {
   
     
     handleExport(){
+        let { dispatch } = this.props;
         let csv = require("../assets/Scope.csv")
-        window.open(csv);  
+        // this.setState({
+        //     show: true
+        // })
+        dispatch({type: EXPORT_CSV, payload: true})
+        // window.open(csv);  
+
     }
 
     render() {

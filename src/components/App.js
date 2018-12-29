@@ -5,7 +5,7 @@ import Header from './Header';
 import NotFound from './NotFound';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
-import { SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH } from "../constants/actionTypes";
+import { SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN } from "../constants/actionTypes";
 import getEngineerHours from "../helper/scopeSummary"
 
 import { store } from '../store';
@@ -16,10 +16,17 @@ import scope from '../reducers/scope';
 import elasticlunr from "elasticlunr";
 
 class App extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.index = {};
     this.search = this.search.bind(this)
+    let { href}  = window.location;
+    if (href.includes("accessToken")){
+      console.log(href, "href bro")
+      let token = href.split("=")[1]
+      console.log(token, "token bro")
+      this.props.dispatch({type: ACCESS_TOKEN, payload: token})
+    }
   }
   componentWillMount() {
 
@@ -84,7 +91,8 @@ class App extends Component {
     this.index = index;
     await dispatch({ type: SCOPE_TREE, payload: types });
       await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
-   
+    // let unparse = Papa.unparse(data)
+    // console.log(unparse, "unparse")
     // await dispatch({ type: SCOPE_TREE, payload: types })
     // await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
     // dispatch({type: SCOPE_SEARCH, payload: index})

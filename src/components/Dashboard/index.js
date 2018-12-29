@@ -6,9 +6,9 @@ import Search from '../Search';
 import Excel from '../Excel';
 import SplitterLayout from 'react-splitter-layout';
 import Footer from '../Footer.js'
-import { SCOPE_TREE } from '../../constants/actionTypes';
+import { SCOPE_TREE, EXPORT_CSV } from '../../constants/actionTypes';
 
-const mapStatetoProps = state => ({viewMode: state.viewMode, scope: state.scope})
+const mapStatetoProps = state => ({viewMode: state.viewMode, scope: state.scope, exportCSV: state.exportCSV })
 
 class Dashboard extends Component {
   constructor(props){
@@ -51,6 +51,7 @@ class Dashboard extends Component {
 
 renderMode() {
   const { mode, split, full } = this.props.viewMode;
+  const { exportCSV, dispatch } = this.props;
   console.log(mode, "mode bro")
 
   if (mode === "builder" && !split) {

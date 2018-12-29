@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW, SCOPE_SEARCH } from '../constants/actionTypes';
+import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW, SCOPE_SEARCH, EXPORT_CSV } from '../constants/actionTypes';
 import CreateModal from './CreateModal.js'
 
-const mapStateToProps = state => ({viewMode: state.viewMode})
+const mapStateToProps = state => ({viewMode: state.viewMode, exportCSV: state.exportCSV.exportCSV})
 
 class Header extends React.Component {
   constructor(props){
@@ -64,17 +64,21 @@ class Header extends React.Component {
     }
 
     modalChange(){
+      let { dispatch, exportCSV } = this.props;
       this.setState(prevState => ({
-        createModalOpen: !prevState.createModalOpen
+        createModalOpen: exportCSV ? false : !prevState.createModalOpen
       }))
+      dispatch({type: EXPORT_CSV, payload: false})
     }
   
     render() {
       console.log('header props', this.props)
+      console.log("head state", this.state)
+      let { exportCSV } = this.props;
       return (
         <nav className="navbar navbar-default" style={{width: "100%"}}>
          <CreateModal 
-                    createModalOpen={this.state.createModalOpen}
+                    createModalOpen={this.state.createModalOpen || exportCSV}
                     closeModal={this.modalChange}
                   />
           <div className="navbar-brand">
