@@ -5,7 +5,7 @@ import Header from './Header';
 import NotFound from './NotFound';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
-import { SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN } from "../constants/actionTypes";
+import { SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV } from "../constants/actionTypes";
 import getEngineerHours from "../helper/scopeSummary"
 
 import { store } from '../store';
@@ -105,7 +105,7 @@ class App extends Component {
 
 
 
-    console.log(this.index, "index in app")
+    // console.log(this.index, "index in app")
 
     
 
@@ -128,16 +128,17 @@ class App extends Component {
   }
 
   async getGoogleSheet(token){
-    let { scope } = this.props;
+    let { scope,dispatch } = this.props;
     let copyScope = scope.slice()
     let csv = Papa.unparse(scope)
-    console.log(csv, "unparse")
+    // console.log(csv, "unparse")
     let postUrl = "https://us-central1-adept-coda-226322.cloudfunctions.net/createGoogleSheetFromCSV";
     let options = { accessToken: token, csvData: csv, clientName:"newClient" };
      
     let response = await axios.post(postUrl, options);
-    console.log(response, "response in get google")
+    // console.log(response, "response in get google")
     if (response){
+      dispatch({type: EXPORT_CSV, payload: false})
       window.open(response.data.googleSheetUrl, "_blank" )
     }
     

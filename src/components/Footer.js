@@ -46,11 +46,8 @@ class Footer extends React.Component {
     handleExport(){
         let { dispatch } = this.props;
         let csv = require("../assets/Scope.csv")
-        // this.setState({
-        //     show: true
-        // })
         dispatch({type: EXPORT_CSV, payload: true})
-        // window.open(csv);  
+        window.open(csv);  
 
     }
 

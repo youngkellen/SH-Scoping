@@ -486,11 +486,13 @@ class CreateModal extends React.Component {
     let { exportCSV, dispatch } = this.props;
     if (exportCSV) {
       return (
-        <div className="export-csv">
+        <div className="container modal-platform export-csv">
           Would you like to open the csv in Google Sheets?
-          <button onClick={()=> this.getGoogleSheet()}>Yes</button>
-          <button onClick={()=> dispatch({type: EXPORT_CSV, payload: false})}>No</button>
-          
+          <div className="row">
+            <button className="btn btn-primary" onClick={()=> this.getGoogleSheet()}>Yes</button>
+            <button className="btn btn-secondary" onClick={()=> dispatch({type: EXPORT_CSV, payload: false})}>No</button>
+          </div>
+         
         </div>
       )
     }
