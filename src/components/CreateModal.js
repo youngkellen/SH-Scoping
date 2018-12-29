@@ -477,8 +477,8 @@ class CreateModal extends React.Component {
   }
 
   async getGoogleSheet(){
-    let redirectUrl = MODE === "development" ? "localhost:3000" : "sh-scoping.appspot.com"
-    window.open(`https://us-central1-adept-coda-226322.cloudfunctions.net/authorize?redirectUrl=http://${redirectUrl}`, "_self")
+    let redirectUrl = MODE === "development" ? "http://localhost:3000" : "https://sh-scoping.appspot.com"
+    window.open(`https://us-central1-adept-coda-226322.cloudfunctions.net/authorize?redirectUrl=${redirectUrl}`, "_self")
 
   }
 
