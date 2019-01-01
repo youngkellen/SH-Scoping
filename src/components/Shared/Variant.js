@@ -309,7 +309,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-3">
                             <p>T:</p>
-                            <div className="Rectangle" contentEditable>{data.SOURCE}</div>
+                            <div className="Rectangle" contentEditable>{data.Feature}</div>
                         </div>
                         <div className="col-md-3">
                            {this.renderQuote(inQuote)}

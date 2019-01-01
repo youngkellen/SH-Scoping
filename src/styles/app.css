@@ -5238,6 +5238,10 @@ a.text-danger:focus, a.text-danger:hover {
       background-color: #4990e2;
       color: white;
       cursor: pointer; }
+  .builder .new-type {
+    margin-left: 20px; }
+    .builder .new-type input {
+      border: none; }
 
 @media (max-width: 767px) {
   .builder {

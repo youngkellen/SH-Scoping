@@ -96,7 +96,7 @@ class App extends Component {
     })
     this.index = index;
     await dispatch({ type: SCOPE_TREE, payload: types });
-      await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
+    await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
     // let unparse = Papa.unparse(data)
     // console.log(unparse, "unparse")
     // await dispatch({ type: SCOPE_TREE, payload: types })
@@ -148,7 +148,11 @@ class App extends Component {
   search(term){
     // search needs to be passed down from app to prevent unneeded re rendering
     console.log(this.index, "index in search")
-   let result = this.index.search(term);
+    let options = {
+      expand:true,
+      fields: {}
+    }
+   let result = this.index.search(term, options);
     console.log(result, "result")
     let match = result.map(r => {
       return this.index.documentStore.getDoc(r.ref)

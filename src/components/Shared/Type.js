@@ -72,17 +72,18 @@ class Type extends PureComponent {
         let { viewMode, type, featureSets, id, search } = this.props;
         let { featureSet } = featureSets;
         let { selected } = this.state
-        // console.log(featureSets, "feature sets")
+        console.log(featureSets, "feature sets")
+        console.log(this.props, "type prosp bro")
         return (
             <div className="row" id={`type${id}`} >
-                <button className="collapsible" onClick={() => this.setState({ selected: !this.state.selected })}>
+                <button style={ this.props.temp ? { backgroundColor: "yellow"} : {}} className="collapsible" onClick={() => this.setState({ selected: !this.state.selected })}>
                     <span dangerouslySetInnerHTML={{ __html: searchHighlight(type, search) }} />
                     {featureSet.length}
                     <div className={selected ? "arrow-up" : "arrow-down"} />
                 </button>
                 <div className="content" style={selected ? { display: "block" } : { display: "none" }}>
                     <ul>
-                        {featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.SOURCE} name={set.name} selectedSet={this.props.selected["Feature set"]} handleFeature={() => this.handleFeatures(set.features)} />)}
+                        {featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.SOURCE} name={set.name} selectedSet={this.props.selected["Feature set"]} handleFeature={() => this.handleFeatures(set.features)} temp={this.props.temp}/>)}
                     </ul>
                 </div>
             </div>
