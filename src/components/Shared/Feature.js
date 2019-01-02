@@ -55,15 +55,20 @@ class Feature extends PureComponent {
         console.log(this.props, "feature props ")
         let { feature, search } = this.props;
         let { selected } = this.state;
-        return (
-            <li 
-                onClick={() => this.handleClick()} 
-                style={selected ? { backgroundColor: "white" } : {} }
-            >
-            {this.renderDot()}
-            <span dangerouslySetInnerHTML={{ __html:searchHighlight(feature, search)}}/>
-            </li>
-        )
+        if (feature && feature[0]){
+            return (
+                <li 
+                    onClick={() => this.handleClick()} 
+                    style={selected ? { backgroundColor: "white" } : {} }
+                >
+                {this.renderDot()}
+                <span dangerouslySetInnerHTML={{ __html:searchHighlight(feature, search)}}/>
+                </li>
+            )
+        } else {
+            return <li> No Features </li>
+        }
+       
     }
 }
 

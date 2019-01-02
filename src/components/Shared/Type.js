@@ -1,19 +1,27 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
 import Set from './Set';
-import searchHighlight from "../../helper/searchHighlight"
+import searchHighlight from "../../helper/searchHighlight";
+import { TEMPSCOPE_ADD, TEMPSCOPE_TREE } from '../../constants/actionTypes';
+import newRow from "../../helper/newRow";
+import buildTree from "../../helper/buildTree";
+import NewFS from "../Builder/NewFS"
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, selected: state.scope.selected, scope: state.scope.scope, search: state.scope.search })
 
-class Type extends PureComponent {
+const mapStatetoProps = state => ({ viewMode: state.viewMode, selected: state.scope.selected, scope: state.scope.scope, search: state.scope.search, tempScope: state.tempScope })
+
+class Type extends Component {
     constructor() {
         super()
         this.state = {
-            selected: false
+            selected: false,
+            tempFS: []
         }
         this.handleFeatures = this.handleFeatures.bind(this);
+        this.setToTempScope = this.setToTempScope.bind(this);
+        this.addNewFS = this.addNewFS.bind(this);
     }
 
     handleFeatures(features) {
@@ -22,7 +30,7 @@ class Type extends PureComponent {
     }
 
     componentDidMount() {
-        //    console.log(this.props, "props in type")
+           console.log(this.props, "props in type")
         let { id } = this.props;
 
         if (this.props.type === this.props.selected.SOURCE) {
@@ -44,6 +52,7 @@ class Type extends PureComponent {
             })
         }
     }
+
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps, "next props in type")
         let { id } = this.props;
@@ -68,22 +77,87 @@ class Type extends PureComponent {
         }
     }
 
+    renderAddFS() {
+        // renders add new feature set
+        let { fs, viewMode } = this.props;
+        if (fs && viewMode.mode === "builder") {
+            return (
+                <li className="add-new" onClick={this.addNewFS}>+ Add New Feature Set</li>
+            )
+        } else {
+            return null
+        }
+    }
+
+    async setToTempScope(id, source, fs) {
+        console.log(source, "source fs")
+        console.log(fs, "fs bro")
+        let { tempFS } = this.state;
+        let { dispatch, tempScope, temp } = this.props;
+        tempFS.splice(id, 1)
+        // console.log(tempFS, "temp Row")
+        this.setState({
+            tempFS
+        })
+        if (source && fs) {
+            if (temp){
+                // if adding a fs to a temp row
+                await dispatch({ type: TEMPSCOPE_ADD, payload: new newRow(tempScope.tempScope.length, source, fs) })
+                await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree([...tempScope.tempScope, new newRow(tempScope.tempScope.length, source, fs)]) })
+
+            } else {
+                // if adding a fs to an existing row
+                await dispatch({ type: TEMPSCOPE_ADD, payload: new newRow(tempScope.tempScope.length, source, fs) })
+                await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree([...tempScope.tempScope, new newRow(tempScope.tempScope.length, source, fs)]) })
+            }
+        }
+    }
+
+    addNewFS() {
+        // adds a input for creating a new type
+        let { type } = this.props;
+        this.setState(prevState => ({
+            tempFS: [...prevState.tempFS, {type}]
+        }))
+    }
+
+    renderTempSet(){
+        // if a row that is in scope contains a fs that is not in scope and is in the process of being created, render this
+        let { tempSet, type, search } = this.props;
+        if (tempSet){
+            return (
+                tempSet.featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.SOURCE} name={set.name} selectedSet={this.props.selected["Feature set"]} handleFeature={() => this.handleFeatures(set.features)} temp={this.props.temp} temp/>)
+            )
+        } else {
+            return null
+        }
+    }
+
+
     render() {
-        let { viewMode, type, featureSets, id, search } = this.props;
+        let { viewMode, type, featureSets, id, search, fs, tempSet } = this.props;
         let { featureSet } = featureSets;
-        let { selected } = this.state
+        let { selected, tempFS } = this.state
         console.log(featureSets, "feature sets")
-        console.log(this.props, "type prosp bro")
+        // if (tempSet){
+        //     console.log(tempSet, "tempSet in render")
+        // }
+
+        // console.log(this.props, "type prosp bro")
+        console.log(tempFS, "temp fs")
         return (
             <div className="row" id={`type${id}`} >
-                <button style={ this.props.temp ? { backgroundColor: "yellow"} : {}} className="collapsible" onClick={() => this.setState({ selected: !this.state.selected })}>
+                <button style={this.props.temp ? { backgroundColor: "yellow" } : {}} className="collapsible" onClick={() => this.setState({ selected: !this.state.selected })}>
                     <span dangerouslySetInnerHTML={{ __html: searchHighlight(type, search) }} />
-                    {featureSet.length}
+                    {`  ${featureSet.filter(f=>f.name).length}`}
                     <div className={selected ? "arrow-up" : "arrow-down"} />
                 </button>
                 <div className="content" style={selected ? { display: "block" } : { display: "none" }}>
                     <ul>
-                        {featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.SOURCE} name={set.name} selectedSet={this.props.selected["Feature set"]} handleFeature={() => this.handleFeatures(set.features)} temp={this.props.temp}/>)}
+                        {featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.SOURCE} name={set.name} selectedSet={this.props.selected["Feature set"]} handleFeature={() => this.handleFeatures(set.features)} temp={this.props.temp} />)}
+                        {this.renderTempSet()}
+                        {tempFS.map((t, i) => <NewFS key={i} id={i} type={t.type} setToTempScope={this.setToTempScope} />)}
+                        {this.renderAddFS()}
                     </ul>
                 </div>
             </div>

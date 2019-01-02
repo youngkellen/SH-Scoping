@@ -1,13 +1,14 @@
 export default class newRow {
     constructor(
+        id = "",
         source = "",
+        fs = "",
+        feature = "",
+        fd = "",
         androidHours = "",
         assumptions = "",
         backendHours = "",
         designHours = "",
-        feature = "",
-        fd = "",
-        fs = "",
         hybridHours = "",
         inScope = "",
         magentoHours = "",
@@ -17,7 +18,7 @@ export default class newRow {
         type = "",
         webHours = "",
         iosHours = "",
-        id = "") {
+        ) {
         this["Android Engineering Estimate (Resource Days)"] = androidHours
         this.Assumptions = assumptions
         this["Backend Engineering Estimate (Resource Days)"] = backendHours

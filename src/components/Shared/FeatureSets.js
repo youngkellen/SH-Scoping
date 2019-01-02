@@ -11,7 +11,7 @@ const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope
 
 class FeatureSets extends Component {
   state = {
-    tempRow: []
+    tempType: []
   }
   addNewType = this.addNewType.bind(this);
   setToTempScope = this.setToTempScope.bind(this);
@@ -23,21 +23,21 @@ class FeatureSets extends Component {
   addNewType(){
     // adds a input for creating a new type
     this.setState(prevState=>({
-      tempRow: [...prevState.tempRow, {}]
+      tempType: [...prevState.tempType, {}]
     }))
   }
 
   async setToTempScope(id, source){
-    let { tempRow } = this.state;
+    let { tempType } = this.state;
     let { dispatch, tempScope } = this.props;
-    tempRow.splice(id, 1)
-    console.log(tempRow, "temp Row")
+    tempType.splice(id, 1)
+    // console.log(tempType, "temp Row")
     this.setState({
-      tempRow
+      tempType
     })
     if (source){
-      await dispatch({type: TEMPSCOPE_ADD, payload: new newRow(source)})
-      await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree([...tempScope.tempScope, new newRow(source)])})
+      await dispatch({type: TEMPSCOPE_ADD, payload: new newRow(tempScope.tempScope.length, source)})
+      await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree([...tempScope.tempScope, new newRow(tempScope.tempScope.length, source)])})
     }
   }
 
@@ -54,9 +54,24 @@ class FeatureSets extends Component {
     }
   }
 
+  renderTempTypes(tempTypes, types){
+    if (tempTypes){
+      let { tempTree } = this.props.tempScope;
+      // remove temp type row if a temp feature set was created to a type in scope
+      let tempRows = tempTypes.slice();
+      tempRows = tempRows.filter(t => !types.includes(t))
+      console.log(tempTypes, "temp types in render temp type")
+      console.log(tempRows, "temp rows bro")
+      return tempRows.map((type,i) => <Type key={i} id={i} type={type} featureSets={tempTree[type]} temp fs/>)
+    } else {
+      return null
+    }
+   
+  }
+
   render() {
     let { viewMode } = this.props;
-    let { tempRow } = this.state;
+    let { tempType } = this.state;
     let { tree } = this.props.scope;
     let { tempTree } = this.props.tempScope;
     let height = viewMode.split ? "40vh" : "90vh";
@@ -71,9 +86,9 @@ class FeatureSets extends Component {
         {this.renderAddNew()}
         <div className="col-md-12" id="feature_set" style={{ height: height, overflow: "auto", position: "relative" }}>
           <div className="row layout-pane-scroll" style={{ overflowY: "auto" }}>
-           {tempRow.map(i => <NewType key={i} id={i} setToTempScope={this.setToTempScope}/>) }
-           {tempTypes.map((type,i) => <Type key={i} id={i} type={type} featureSets={tempTree[type]} temp/>)}
-           {types.map((type,i) => <Type key={i} id={i} type={type} featureSets={tree[type]} />)}
+           {tempType.map(i => <NewType key={i} id={i} setToTempScope={this.setToTempScope}/>) }
+           {this.renderTempTypes(tempTypes, types)}
+           {types.map((type,i) => <Type key={i} id={i} type={type} featureSets={tree[type]} tempSet={tempTree[type]} fs/>)}
           </div>
 
         </div>

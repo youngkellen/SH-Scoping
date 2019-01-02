@@ -5122,6 +5122,11 @@ a.text-danger:focus, a.text-danger:hover {
     background-color: #f1f1f1; }
     .builder .content ul {
       list-style-type: none; }
+      .builder .content ul .add-new {
+        background-color: white;
+        border-radius: 0;
+        color: dodgerblue;
+        border-bottom: none; }
       .builder .content ul .selected {
         background-color: white; }
       .builder .content ul .not-selected {

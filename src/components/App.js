@@ -53,7 +53,6 @@ class App extends Component {
     const { dispatch } = this.props;
     // console.log(data, "csv data")
     let fields = Object.keys(data[0])
-    // console.log(fields, "fields ")
     data = data.map((d, i) => Object.assign({}, d, { id: i }))
     dispatch({ type: SCOPE_DOWNLOAD, payload: data })
     // dispatch({type: SCOPE_SELECT, payload: scope[id]})
@@ -149,8 +148,7 @@ class App extends Component {
     // search needs to be passed down from app to prevent unneeded re rendering
     console.log(this.index, "index in search")
     let options = {
-      expand:true,
-      fields: {}
+      expand:true
     }
    let result = this.index.search(term, options);
     console.log(result, "result")

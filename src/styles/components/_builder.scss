@@ -137,6 +137,12 @@ $quote-color: #7ed321;
         background-color: #f1f1f1;
         ul {
           list-style-type: none;
+          .add-new {
+            background-color: white;
+            border-radius: 0;
+            color: dodgerblue;
+            border-bottom: none;
+          }
           .selected{
             background-color: white;
           }
@@ -153,6 +159,7 @@ $quote-color: #7ed321;
               border-radius: 25px;
               padding-left: 10px;
               cursor: pointer;
+              
              
           }
           li:hover{
@@ -263,7 +270,6 @@ $quote-color: #7ed321;
             background-color: $feature-color;
             padding-left: 10px;
             cursor: pointer;
-            
           }
           li:hover{
             background-color: white;
