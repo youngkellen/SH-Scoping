@@ -12,8 +12,10 @@ class Feature extends Component {
     }
 
     componentDidMount(){
-        let { tempSelect } = this.props;
-        if (this.props.selectedId === this.props.id && !tempSelect) {
+        let { tempSelect,temp, selectedId, id } = this.props;
+        if (tempSelect && temp && selectedId === id){
+            this.setState({selected: true})
+        } else if (selectedId === id ) {
             this.setState({
                 selected: true
             })
@@ -25,8 +27,10 @@ class Feature extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let { temp } = nextProps;
-        if (nextProps.selectedId === nextProps.id && !temp) {
+        let { tempSelect,temp, selectedId, id  } = nextProps;
+        if (tempSelect && temp && selectedId === id){
+            this.setState({selected: true})
+        } else if (nextProps.selectedId === nextProps.id && !temp) {
             this.setState({
                 selected: true
             })
@@ -57,12 +61,13 @@ class Feature extends Component {
         console.log(this.props, "feature props ")
         let { feature, search } = this.props;
         let { selected } = this.state;
+        console.log(selected, "selected in feature")
         if (feature && feature[0]){
             return (
                 <li 
                     onClick={() => this.handleClick()} 
-                    style={selected ? { backgroundColor: "white" } : {} }
                     className={this.props.temp ? "temp-background" : ""}
+                    style={selected ? { backgroundColor: "white" } : {} }
                 >
                 {this.renderDot()}
                 <span dangerouslySetInnerHTML={{ __html:searchHighlight(feature, search)}}/>

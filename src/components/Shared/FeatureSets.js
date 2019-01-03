@@ -64,6 +64,7 @@ class FeatureSets extends PureComponent {
       // remove temp type row if a temp feature set was created to a type in scope
       let tempRows = tempTypes.slice().reverse();
       tempRows = tempRows.filter(t => !types.includes(t))
+      console.log(tempRows, "temp rows")
       // console.log(tempTypes, "temp types in render temp type")
       // console.log(tempRows, "temp rows bro")
       return tempRows.map((type,i) => <Type key={i} id={i} type={type} featureSets={tempTree[type]} temp fs/>)

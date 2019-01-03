@@ -110,8 +110,8 @@ class Features extends Component {
         let check = features.filter(f => f.feature).length
         let checkTwo = features[features.length - 1].feature
         if (check && checkTwo && checkTwo[0]){
-         
-          return features.map(feature => <Feature key={feature.id} search={search} inScope={false} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} temp/>)
+         console.log(features, " you need this")
+          return features.map(feature => <Feature key={feature.id} search={search} inScope={false} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} temp/>)
         } else {
           return null
         }

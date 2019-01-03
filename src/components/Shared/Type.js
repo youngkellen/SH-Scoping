@@ -139,12 +139,29 @@ class Type extends PureComponent {
 
     renderTempSet(){
         // if a row that is in scope contains a fs that is not in scope and is in the process of being created, render this
-        let { tempSet, type, search } = this.props;
+        let { tempSet, type, search, featureSets } = this.props;
+        let { featureSet } = featureSets;
         if (tempSet){
             console.log(tempSet, "temp Set bro")
-            return (
-                tempSet.featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={tempSet.featureSet} handleFeature={this.handleFeatures} temp/>)
-            )
+            console.log(featureSet, "feature set bro")
+            let uniqueTempSet = tempSet.featureSet.filter(fs => {
+                let test = featureSet.map(f=>f.name)
+                console.log(test, "test")
+                console.log(fs.name, "fs")
+                console.log(test.includes(fs.name))
+                if (!test.includes(fs.name)) {
+                    return fs
+                }
+            })
+            console.log(uniqueTempSet, "unique")
+            if (uniqueTempSet.length > 0){
+                return (
+                    uniqueTempSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={tempSet.featureSet} handleFeature={this.handleFeatures} temp/>)
+                )
+            } else {
+                return null
+            }
+            
         } else {
             return null
         }
