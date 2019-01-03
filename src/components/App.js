@@ -26,15 +26,15 @@ class App extends Component {
     let { href}  = window.location;
     if (href.includes("accessToken")){
       // this is used to get the access Token for opening google sheets
-      console.log(href, "href bro")
+      // console.log(href, "href bro")
       let token = href.split("=")[1]
-      console.log(token, "token bro")
+      // console.log(token, "token bro")
       this.props.dispatch({type: ACCESS_TOKEN, payload: token})
-      console.log(this.props, "app props")
       this.getGoogleSheet(token)
     }
   }
   componentWillMount() {
+    let { scope } = this.props;
 
     let csv = require("../assets/Scope.csv")
     let config = {
@@ -46,7 +46,11 @@ class App extends Component {
       complete: ({ data }) => this.call(data)
       // Here this is also available. So we can call our custom class method
     }
-    let parse = Papa.parse(csv, config)
+    console.log(scope, "scope bro")
+    if (Object.keys(scope).length === 0){
+      Papa.parse(csv, config)
+    }
+    
   }
 
   async call(data) {

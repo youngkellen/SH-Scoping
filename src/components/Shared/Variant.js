@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import searchHighlight from "../../helper/searchHighlight";
 import newRow from "../../helper/newRow";
 import buildTree from "../../helper/buildTree";
-import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE } from "../../constants/actionTypes"
+import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE, SCOPE_SELECT } from "../../constants/actionTypes"
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp, scope: state.scope, tempScope: state.tempScope });
 
@@ -31,11 +31,17 @@ class Variant extends Component {
         this.renderEstimateButtons = this.renderEstimateButtons.bind(this);
         this.handleAddToScope = this.handleAddToScope.bind(this);
         this.handleRemoveFromScope = this.handleRemoveFromScope.bind(this);
+        this.changeEstimateHours = this.changeEstimateHours.bind(this);
+        this.renderEstimateButtons = this.renderEstimateButtons.bind(this);
         this.handleFD = this.handleFD.bind(this);
         this.handleFeature = this.handleFeature.bind(this);
         this.handleNotes = this.handleNotes.bind(this);
         this.blurFD = this.blurFD.bind(this);
         this.blurFeature = this.blurFeature.bind(this);
+        this.handleAssumption = this.handleAssumption.bind(this);
+        this.blurAssumption = this.blurAssumption.bind(this);
+        this.handleNotes = this.handleNotes.bind(this);
+        this.blurNotes = this.blurNotes.bind(this);
         
     }
 
@@ -43,13 +49,15 @@ class Variant extends Component {
         // If a item was selected that is scope or library
         this.setState({
             data: this.props.data,
-            buttonData: [{hours: this.props.data["iOS Engineering Estimate (Resource Hours)"] || 0, platform: "iOS"}, 
-            {hours: this.props.data["Android Engineering Estimate (Resource Hours)"] || 0, platform: "Android"},
-            {hours: this.props.data["Hybrid Engineering"] || 0, platform: "Hybrid"},
-            {hours: this.props.data["Web Engineering Estimate (Resource Hours)"] || 0, platform: "Web"},
-            {hours: this.props.data["Backend Engineering Estimate (Resource Hours)"] || 0, platform: "Backend"},
-            {hours: this.props.data["QA Estimate (Resource Hours)"] || 0, platform: "QA"},
-            {hours: this.props.data["Design Estimate (Resource Hours)"] || 0, platform: "Design"}]
+            buttonData: [
+                {hours: this.props.data["iOS Engineering Estimate (Resource Hours)"] || 0, platform: "iOS"}, 
+                {hours: this.props.data["Android Engineering Estimate (Resource Hours)"] || 0, platform: "Android"},
+                {hours: this.props.data["Hybrid Engineering"] || 0, platform: "Hybrid"},
+                {hours: this.props.data["Web Engineering Estimate (Resource Hours)"] || 0, platform: "Web"},
+                {hours: this.props.data["Backend Engineering Estimate (Resource Hours)"] || 0, platform: "Backend"},
+                {hours: this.props.data["QA Estimate (Resource Hours)"] || 0, platform: "QA"},
+                {hours: this.props.data["Design Estimate (Resource Hours)"] || 0, platform: "Design"}
+            ]
         })
        
     }
@@ -126,15 +134,59 @@ class Variant extends Component {
         })
     }
 
-    changeEstimateHours(data, val){
-        let { buttonData } = this.state;
-        let newData = Object.assign({}, data, {hours: Number(val)})
-        let index = buttonData.map(e => e.platform).indexOf(data.platform);
+    async changeEstimateHours(changeData, val){
+        let { buttonData, data } = this.state;
+        let { temp, dispatch } = this.props;
+        let newData = Object.assign({}, changeData, {hours: Number(val)})
+        console.log(data, "i need this")
+        console.log(newData, "new bro")
+        let index = buttonData.map(e => e.platform).indexOf(changeData.platform);
         buttonData.splice(index, 1, newData)
         console.log(buttonData, "button Data")
         this.setState({
             buttonData
         })
+        let prop = ""
+        switch (changeData.platform) {
+            case "iOS":
+                prop = "iOS Engineering Estimate (Resource Hours)"
+                break;
+            case "Android":
+                prop = "Android Engineering Estimate (Resource Hours)"
+                break;
+            case "Hybrid":
+                prop = "Hybrid Engineering"
+                break;
+            case "Web":
+                prop = "Web Engineering Estimate (Resource Hours)"
+                break;
+            case "Backend":
+                prop = "Backend Engineering Estimate (Resource Hours)"
+                break;
+            case "QA":
+                prop = "QA Estimate (Resource Hours)"
+                break;
+            case "Backend":
+                prop = "Backend Engineering Estimate (Resource Hours)"
+                break;
+            case "Design": 
+                prop = "Design Estimate (Resource Hours)"
+                break;
+            default:
+                prop = ""
+
+        }
+        console.log(prop, "prop in button")
+
+        data[prop] = val;
+        
+        if (temp){
+            await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: val}})
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
+        } else {
+            await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: val}})
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+        }
 
     }
 
@@ -158,7 +210,7 @@ class Variant extends Component {
                                 placeholder={Number(data.hours)} 
                                 type="number"
                                 step="0.01"
-                                onChange={e => this.changeEstimateHours(data, e.target.value)}
+                                onBlur={e => this.changeEstimateHours(data, e.target.value)}
                                 readOnly={data.select ? false : true}
                             />
                         </div>
@@ -175,7 +227,7 @@ class Variant extends Component {
             return (
                 <div >
                      <p>N:</p>
-                     <div className="Rectangle" onInput={this.handleNotes} contentEditable>{d.Notes}</div>
+                     <div className="Rectangle" onInput={this.handleNotes} contentEditable onBlur={this.blurNotes}>{d.Notes}</div>
                      <img src={require("../../assets/remove.png")} style={{paddingLeft: "2px"}} onClick={()=>this.setState({addNotes: false})}/>
                 </div>
             )
@@ -231,36 +283,31 @@ class Variant extends Component {
    
 
     handleFD(e){
-        let { temp, data, scope, tempScope } = this.props;
         let text = e.target.innerText;
-        console.log(text, "text")
-
         this.setState({
-            FD: e.target.innerHTML,
+            FD: text,
             editFD: true
         })
-        // if (temp){
-        //     console.log(tempScope, "broh")
-        //     tempScope.tempScope[data.id]["Feature description"] = text;
-        // } else {
-        //     scope.scope[data.id]["Feature description"] = text;
-        // }
     }
 
-    blurFD(e){
+    async blurFD(e){
         let { temp, data, scope, tempScope, dispatch } = this.props;
         let text = e.target.innerText;
+        let prop = "Feature description";
+        data[prop] = text;
          if (temp){
-            dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop: "Feature description", value: text}})
+            await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
         } else {
-            dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop: "Feature description", value: text}})
+            await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
         }
     }
 
     handleFeature(e){
-        console.log(e.target.innerHTML, "val bro")
+        let text = e.target.innerText;
         this.setState({
-            Feature: e.target.innerHTML,
+            Feature: text,
             editFeature: true
         })
     }
@@ -268,31 +315,66 @@ class Variant extends Component {
     async blurFeature(e){
         let { temp, data, scope, tempScope, dispatch } = this.props;
         let text = e.target.innerText;
+        let prop = "Feature"
+        data[prop] = text;
          if (temp){
-            await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop: "Feature", value: text}})
+            await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree(tempScope.tempScope) })
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
 
         } else {
-            dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop: "Feature", value: text}})
+            await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({ type: SCOPE_TREE, payload: buildTree(scope.scope) })
-
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
         }
+
+        
+       
     }
 
     handleAssumption(e){
-        console.log(e.target.innerHTML, "val bro")
+        let text = e.target.innerText;
         this.setState({
-            Assumptions: e.target.innerHTML,
+            Assumptions: text,
             editAssumptions: true
         })
     }
 
+    async blurAssumption(e){
+        let { temp, data, dispatch } = this.props;
+        let text = e.target.innerText;
+        let prop = "Assumptions"
+        data[prop] = text;
+         if (temp){
+            await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
+        } else {
+            await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+        }
+       
+    }
+
     handleNotes(e){
-        console.log(e.target.innerHTML, "val bro")
+        let text = e.target.innerText;
         this.setState({
-            Assumptions: e.target.innerHTML,
-            editAssumptions: true
+            Notes: text,
+            editNotes: true
         })
+    }
+
+    async blurNotes(e){
+        let { temp, data, dispatch } = this.props;
+        let text = e.target.innerText;
+        let prop = "Notes";
+        data[prop] = text;
+         if (temp){
+            await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
+        } else {
+            await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
+            await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+        }
     }
 
     searchVariant(){
@@ -451,7 +533,7 @@ class Variant extends Component {
                         </div>
                         <div className="col-md-6">
                             <p>A:</p>
-                            <div className="Rectangle" contentEditable>{data.Assumptions}</div>
+                            <div className="Rectangle" onBlur={this.blurAssumption} onInput={this.handleAssumption} contentEditable>{data.Assumptions}</div>
                         </div>
                     </div>
                     <div className="row variant_row">

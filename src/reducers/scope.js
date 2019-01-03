@@ -11,7 +11,7 @@ import {
   } from '../constants/actionTypes';
   
   const defaultState = {
-    scope: [{}],
+    scope: [],
     selected: {temp: false, data: {}},
     tree: {},
     features: [],
