@@ -21,6 +21,11 @@ class NewType extends PureComponent {
             input: val
         })
     }
+    _handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+          this.handleBlur()
+        }
+      }
     render() {
         console.log(this.props, "newType props")
         return (
@@ -29,6 +34,8 @@ class NewType extends PureComponent {
                 ref={(input) => { this.nameInput = input; }} 
                 onBlur={this.handleBlur}
                 onChange={e => this.handleChange(e.target.value)}
+                onKeyPress={this._handleKeyPress}
+
               />
             </div>
         )

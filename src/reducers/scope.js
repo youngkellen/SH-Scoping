@@ -9,7 +9,7 @@ import {
   
   const defaultState = {
     scope: [{}],
-    selected: {},
+    selected: {temp: false, data: {}},
     tree: {},
     features: [],
     scopeSummary: { designHours: 0, engineerHours: 0, billable: 0 },

@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Component } from 'react';
 import searchHighlight from "../../helper/searchHighlight"
 
 
-class Feature extends PureComponent {
+class Feature extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -12,7 +12,8 @@ class Feature extends PureComponent {
     }
 
     componentDidMount(){
-        if (this.props.selectedId === this.props.id) {
+        let { tempSelect } = this.props;
+        if (this.props.selectedId === this.props.id && !tempSelect) {
             this.setState({
                 selected: true
             })
@@ -24,7 +25,8 @@ class Feature extends PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedId === nextProps.id) {
+        let { temp } = nextProps;
+        if (nextProps.selectedId === nextProps.id && !temp) {
             this.setState({
                 selected: true
             })
@@ -36,8 +38,8 @@ class Feature extends PureComponent {
     }
 
     handleClick() {
-        let { handleFeature, id } = this.props;
-        handleFeature(id)
+        let { handleFeature, id, temp } = this.props;
+        handleFeature(id, temp)
     }
 
     renderDot() {
@@ -60,13 +62,14 @@ class Feature extends PureComponent {
                 <li 
                     onClick={() => this.handleClick()} 
                     style={selected ? { backgroundColor: "white" } : {} }
+                    className={this.props.temp ? "temp-background" : ""}
                 >
                 {this.renderDot()}
                 <span dangerouslySetInnerHTML={{ __html:searchHighlight(feature, search)}}/>
                 </li>
             )
         } else {
-            return <li> No Features </li>
+            return null
         }
        
     }

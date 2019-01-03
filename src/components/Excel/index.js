@@ -21,34 +21,49 @@ class Excel extends Component {
         // if (selected.id){
         //     this.selectRow(selected.id, selected)
         // }
-        let { id } = this.props.selected;
+        let { data, temp } = this.props.selected;
         let { selected } = this.state;
-        if (id && id !== selected) {
-            let remove = document.getElementById(`tr${id}`)
-            if (remove){
-                remove.classList.remove(("selected"))
+        if (!temp){
+            if ((data && data.id || data && data.id === 0)  && data.id !== selected) {
+                let remove = document.getElementById(`tr${data.id}`)
+                if (remove){
+                    remove.classList.remove(("selected"))
+                }
+                let row = document.getElementById(`tr${data.id}`)
+               
+                row.classList.add(("selected"))
+                this.setState({
+                    selected: `tr${data.id}`,
+                })
             }
-            let row = document.getElementById(`tr${id}`)
-           
-            row.classList.add(("selected"))
-            this.setState({
-                selected: `tr${id}`,
-            })
         }
+       
     }
     
     componentWillReceiveProps(nextProps){
-        let { id } = nextProps.selected;
+        
+        let { data, temp } = nextProps.selected;
         let { selected } = this.state;
-        if (id && selected && id !== selected) {
-            let remove = document.getElementById(selected)
-            remove.classList.remove(("selected"))
-            let row = document.getElementById(`tr${id}`)
-            row.classList.add(("selected"))
-            this.setState({
-                selected: `tr${id}`,
-            })
+        if ( !temp ){
+            if ((data && data.id || data && data.id === 0)  && selected && data.id !== selected) {
+                let remove = document.getElementById(selected)
+                remove.classList.remove(("selected"))
+                let row = document.getElementById(`tr${data.id}`)
+                row.classList.add(("selected"))
+                this.setState({
+                    selected: `tr${data.id}`,
+                })
+            }
+        } else {
+            if (selected){
+                let remove = document.getElementById(selected)
+                remove.classList.remove(("selected"))
+                this.setState({
+                    selected: "",
+                })
+            }
         }
+        
     }
 
     componentWillUnmount(){
@@ -65,7 +80,7 @@ class Excel extends Component {
                 this.setState({
                     selected: ""
                 })
-                dispatch({type: SCOPE_SELECT, payload: {}})
+                dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false}})
                 dispatch({type: SCOPE_SELECTED_FEATURES, payload: []})
             } else if (selected && selected !== id) {
                 let { featureSet } = tree[data.SOURCE]
@@ -78,7 +93,7 @@ class Excel extends Component {
                 this.setState({
                     selected: id
                 })
-                dispatch({type: SCOPE_SELECT, payload: data})
+                dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
                 dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
             } else {
                 let { featureSet } = tree[data.SOURCE]
@@ -89,7 +104,7 @@ class Excel extends Component {
                 this.setState({
                     selected: id
                 })
-                dispatch({type: SCOPE_SELECT, payload: data})
+                dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
                 dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
             }
       

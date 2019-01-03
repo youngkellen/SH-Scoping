@@ -34,19 +34,18 @@ class Set extends PureComponent {
            })
        } else {
             this.setState({
-                selected: false,
-                
+                selected: false
             })
-       
        }
     }
 
     handleClick(){
-        let { handleFeature, id} = this.props;
+        let { handleFeature, id, temp, features, name} = this.props;
         this.setState({
             temp: true
         })
-        handleFeature(id)
+        console.log(this.props, "set props")
+        handleFeature(features, temp, name, id)
        
     }
 
@@ -61,17 +60,22 @@ class Set extends PureComponent {
         } else {
             nameOfClass="not-selected"
         }
+        if (this.props.temp) {
+            nameOfClass+=" temp-background"
+        }
         return nameOfClass
     }
 
     render() {
         let { name, search } = this.props;
         let { selected, temp} = this.state;
+        if ( !name ){
+            return null
+        }
         return (
             <li 
                 onClick={()=>this.handleClick()} 
                 className={this.renderClassName()}
-                style={ this.props.temp ? { backgroundColor: "yellow"} : {}}
                 >
                 <span dangerouslySetInnerHTML={{ __html:searchHighlight(name, search)}}/>
             </li>

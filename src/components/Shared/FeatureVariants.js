@@ -16,7 +16,7 @@ class FeatureVariants extends Component {
   componentDidMount(){
     let { selected } = this.props;
     this.setState({
-      variants: [selected]
+      variants: [selected.data]
     })
   }
 
@@ -24,7 +24,7 @@ class FeatureVariants extends Component {
     console.log(nextProps, "next props")
     let { selected } = nextProps;
     this.setState({
-      variants: [selected]
+      variants: [selected.data]
     })
   }
 

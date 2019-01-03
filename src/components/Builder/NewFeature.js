@@ -1,7 +1,7 @@
 import React, { PureComponent, Component } from 'react';
 import { SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
 
-class NewFS extends PureComponent {
+class NewFeature extends PureComponent {
     state = { input: ""}
     handleBlur = this.handleBlur.bind(this);
     handleChange = this.handleChange.bind(this);
@@ -14,7 +14,8 @@ class NewFS extends PureComponent {
     handleBlur(){
         let { id, setToTempScope, type } = this.props;
         let { input } = this.state
-        setToTempScope(id, type, input)
+        setToTempScope(input)
+       
     }
     handleChange(val){
         console.log(val, "new type val")
@@ -45,4 +46,4 @@ class NewFS extends PureComponent {
     }
 }
 
-export default NewFS;
+export default NewFeature;

@@ -45,12 +45,13 @@ class Search extends Component {
   }
 
   componentDidMount(){
-    let { searchText } = this.props;
+    let { searchText, viewMode, dispatch } = this.props;
     if (searchText ){
+      dispatch({type: SCOPE_SEARCH, payload: ""})
       // the set timeout is needed because of the search index load time. Don't touch
-      this.setState({
-        inputValue: searchText
-      }, () => setTimeout(() =>this.search(searchText), 500))
+      // this.setState({
+      //   inputValue: searchText
+      // }, () => setTimeout(() =>this.search(searchText), 500))
     }
   }
 
@@ -87,7 +88,8 @@ class Search extends Component {
     
     // console.log(features, "features in search inde")
     dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
-    dispatch({type: SCOPE_SELECT, payload: scope[id]})
+    dispatch({type: SCOPE_SELECT, payload: {data :scope[id], temp: false }})
+    
     this.setState({showResults: false})
   }
 

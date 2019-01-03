@@ -110,6 +110,7 @@ $quote-color: #7ed321;
           margin-left: 20px;
         }
         .arrow-down {
+          
           width: 0; 
           height: 0; 
           border-left: 5px solid transparent;
@@ -117,6 +118,7 @@ $quote-color: #7ed321;
           display: inline-block;
           border-top: 5px solid $arrow-gray;
           margin-left: 20px;
+          
         }
         
         
@@ -152,6 +154,9 @@ $quote-color: #7ed321;
           .temp-select{
             opacity: 1;
             background-color: #f1f1f1
+          }
+          .temp-background {
+            background-color: yellow;
           }
           li {
               border-bottom: solid #aaa 2px;
@@ -263,7 +268,9 @@ $quote-color: #7ed321;
         background-color: $feature-color;
         ul {
           list-style-type: none;
-          
+          .temp-background {
+            background-color: yellow;
+          }
           li {
             border-bottom: solid #aaa 2px;
             border-left: none;
@@ -290,6 +297,9 @@ $quote-color: #7ed321;
           list-style-type: none;
           overflow: auto;
           max-height: 200px;
+          .temp-background {
+            background-color: yellow;
+          }
           li {
             border-bottom: solid lightgray 1px;
           }

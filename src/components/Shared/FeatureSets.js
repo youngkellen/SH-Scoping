@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Type from './Type';
@@ -9,7 +9,7 @@ import buildTree from "../../helper/buildTree"
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope, tempScope: state.tempScope })
 
-class FeatureSets extends Component {
+class FeatureSets extends PureComponent {
   state = {
     tempType: []
   }
@@ -22,18 +22,22 @@ class FeatureSets extends Component {
 
   addNewType(){
     // adds a input for creating a new type
-    this.setState(prevState=>({
-      tempType: [...prevState.tempType, {}]
-    }))
+    let { tempType } = this.state;
+    if (tempType && tempType.length < 2){
+      this.setState(prevState=>({
+        tempType: [...prevState.tempType, {}]
+      }))
+    }
+    
   }
 
   async setToTempScope(id, source){
     let { tempType } = this.state;
     let { dispatch, tempScope } = this.props;
     tempType.splice(id, 1)
-    // console.log(tempType, "temp Row")
+    console.log(tempType, "temp Row")
     this.setState({
-      tempType
+      tempType: []
     })
     if (source){
       await dispatch({type: TEMPSCOPE_ADD, payload: new newRow(tempScope.tempScope.length, source)})
@@ -58,10 +62,10 @@ class FeatureSets extends Component {
     if (tempTypes){
       let { tempTree } = this.props.tempScope;
       // remove temp type row if a temp feature set was created to a type in scope
-      let tempRows = tempTypes.slice();
+      let tempRows = tempTypes.slice().reverse();
       tempRows = tempRows.filter(t => !types.includes(t))
-      console.log(tempTypes, "temp types in render temp type")
-      console.log(tempRows, "temp rows bro")
+      // console.log(tempTypes, "temp types in render temp type")
+      // console.log(tempRows, "temp rows bro")
       return tempRows.map((type,i) => <Type key={i} id={i} type={type} featureSets={tempTree[type]} temp fs/>)
     } else {
       return null
@@ -86,7 +90,7 @@ class FeatureSets extends Component {
         {this.renderAddNew()}
         <div className="col-md-12" id="feature_set" style={{ height: height, overflow: "auto", position: "relative" }}>
           <div className="row layout-pane-scroll" style={{ overflowY: "auto" }}>
-           {tempType.map(i => <NewType key={i} id={i} setToTempScope={this.setToTempScope}/>) }
+           {tempType.length > 1 ? "" : tempType.map(i => <NewType key={i} id={i} setToTempScope={this.setToTempScope}/>) }
            {this.renderTempTypes(tempTypes, types)}
            {types.map((type,i) => <Type key={i} id={i} type={type} featureSets={tree[type]} tempSet={tempTree[type]} fs/>)}
           </div>

@@ -6,10 +6,16 @@ import Features from '../Shared/Features';
 import FeatureSets from '../Shared/FeatureSets';
 import FeatureVariants from '../Shared/FeatureVariants'
 import Footer from '../Footer';
+import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW, SCOPE_SEARCH, EXPORT_CSV } from '../../constants/actionTypes';
+
+
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode })
 
 class Builder extends Component {
+  async componentDidMount(){
+    await this.props.dispatch({type: SCOPE_SEARCH, payload: ""})
+  }
 
   render() {
     return (

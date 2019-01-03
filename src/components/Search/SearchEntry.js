@@ -16,7 +16,7 @@ class SearchEntry extends Component {
     }
 
     render() {
-        let { name, search } = this.props;
+        let { name, search} = this.props;
         return (
             <li onClick={()=>this.handleClick()} >
                 <span dangerouslySetInnerHTML={{ __html:searchHighlight(name, search)}}/>

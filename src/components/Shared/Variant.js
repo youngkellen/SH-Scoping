@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import searchHighlight from "../../helper/searchHighlight"
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search });
+const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp });
 
 class Variant extends Component {
     constructor() {
@@ -22,6 +22,7 @@ class Variant extends Component {
     }
 
     componentDidMount(){
+        // If a item was selected that is scope or library
         this.setState({
             data: this.props.data,
             buttonData: [{hours: this.props.data["iOS Engineering Estimate (Resource Days)"] || 0, platform: "iOS"}, 
@@ -32,24 +33,26 @@ class Variant extends Component {
             {hours: this.props.data["QA Estimate (Resource Days)"] || 0, platform: "QA"},
             {hours: this.props.data["Design estimate (Resource Days)"] || 0, platform: "Design"}]
         })
+       
     }
 
     componentWillReceiveProps(nextProps){
         console.log(nextProps, "variant props")
         console.log(nextProps.data, "next props data" )
-        this.setState({
-            data: nextProps.data,
-            buttonData: [
-                {hours: nextProps.data["iOS Engineering Estimate (Resource Days)"] || 0, platform: "iOS"}, 
-                {hours: nextProps.data["Android Engineering Estimate (Resource Days)"] || 0, platform: "Android"},
-                {hours: nextProps.data["Hybrid Engineering"] || 0, platform: "Hybrid"},
-                {hours: nextProps.data["Web Engineering Estimate (Resource Days)"] || 0, platform: "Web"},
-                {hours: nextProps.data["Backend Engineering Estimate (Resource Days)"] || 0, platform: "Backend"},
-                {hours: nextProps.data["QA Estimate (Resource Days)"] || 0, platform: "QA"},
-                {hours: nextProps.data["Design estimate (Resource Days)"] || 0, platform: "Design"}
-            ],
-            //addNotes: false
-        })
+            // If a item was selected that is scope or library
+            this.setState({
+                data: nextProps.data,
+                buttonData: [
+                    {hours: nextProps.data["iOS Engineering Estimate (Resource Days)"] || 0, platform: "iOS"}, 
+                    {hours: nextProps.data["Android Engineering Estimate (Resource Days)"] || 0, platform: "Android"},
+                    {hours: nextProps.data["Hybrid Engineering"] || 0, platform: "Hybrid"},
+                    {hours: nextProps.data["Web Engineering Estimate (Resource Days)"] || 0, platform: "Web"},
+                    {hours: nextProps.data["Backend Engineering Estimate (Resource Days)"] || 0, platform: "Backend"},
+                    {hours: nextProps.data["QA Estimate (Resource Days)"] || 0, platform: "QA"},
+                    {hours: nextProps.data["Design estimate (Resource Days)"] || 0, platform: "Design"}
+                ],
+                //addNotes: false
+            })
     }
    
 
