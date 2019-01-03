@@ -120,8 +120,8 @@ class Type extends PureComponent {
 
             } else {
                 // if adding a fs to an existing row
-                // await dispatch({ type: TEMPSCOPE_ADD, payload: new newRow(tempScope.tempScope.length, source, fs) })
-                // await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree([...tempScope.tempScope, new newRow(tempScope.tempScope.length, source, fs)]) })
+                await dispatch({ type: TEMPSCOPE_ADD, payload: new newRow(tempScope.tempScope.length, source, fs) })
+                await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree([...tempScope.tempScope, new newRow(tempScope.tempScope.length, source, fs)]) })
             }
         }
     }

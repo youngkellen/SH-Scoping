@@ -69,7 +69,7 @@ class App extends Component {
 
     data.forEach((s, i) => {
       index.addDoc(s);
-      designHours += Number(s["Design estimate (resource days)"]) || 0
+      designHours += Number(s["Design Estimate (Resource Hours)"]) || 0
       engineerHours = getEngineerHours(engineerHours, s)
       if (!types.hasOwnProperty(s.SOURCE)) {
         types[s.SOURCE] = {
@@ -130,7 +130,7 @@ class App extends Component {
     let { scope,dispatch } = this.props;
     let copyScope = scope.slice()
     let csv = Papa.unparse(scope)
-    // console.log(csv, "unparse")
+    console.log(csv, "unparse")
     let postUrl = "https://us-central1-adept-coda-226322.cloudfunctions.net/createGoogleSheetFromCSV";
     let options = { accessToken: token, csvData: csv, clientName:"newClient" };
      

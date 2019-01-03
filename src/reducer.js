@@ -4,6 +4,7 @@ import scope from './reducers/scope';
 import tempScope from './reducers/tempScope';
 import exportCSV from './reducers/exportCSV';
 import token from './reducers/token';
+import selectHelper from './reducers/selectHelper';
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
@@ -14,5 +15,7 @@ export default combineReducers({
   tempScope,
   exportCSV,
   token,
+  selectHelper,
   router: routerReducer
 });
+

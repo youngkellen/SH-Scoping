@@ -14,24 +14,35 @@ class Variant extends Component {
             menuClick: false,
             estimate: false,
             addNotes: false,
-            buttonData:[
-            ],
-            data: []
+            buttonData:[],
+            data: [],
+            FD: "",
+            Assumptions: "",
+            Notes: "",
+            Feature: "",
+            editFeature: false,
+            editFD: false,
+            editAssumptions: false,
+            editNotes: false
         }
         this.renderEstimateButtons = this.renderEstimateButtons.bind(this);
+        this.handleAddToScope = this.handleAddToScope.bind(this);
+        this.handleRemoveFromScope = this.handleRemoveFromScope.bind(this);
+        this.handleFD = this.handleFD.bind(this);
+        this.handleNotes = this.handleNotes.bind(this);
     }
 
     componentDidMount(){
         // If a item was selected that is scope or library
         this.setState({
             data: this.props.data,
-            buttonData: [{hours: this.props.data["iOS Engineering Estimate (Resource Days)"] || 0, platform: "iOS"}, 
-            {hours: this.props.data["Android Engineering Estimate (Resource Days)"] || 0, platform: "Android"},
+            buttonData: [{hours: this.props.data["iOS Engineering Estimate (Resource Hours)"] || 0, platform: "iOS"}, 
+            {hours: this.props.data["Android Engineering Estimate (Resource Hours)"] || 0, platform: "Android"},
             {hours: this.props.data["Hybrid Engineering"] || 0, platform: "Hybrid"},
-            {hours: this.props.data["Web Engineering Estimate (Resource Days)"] || 0, platform: "Web"},
-            {hours: this.props.data["Backend Engineering Estimate (Resource Days)"] || 0, platform: "Backend"},
-            {hours: this.props.data["QA Estimate (Resource Days)"] || 0, platform: "QA"},
-            {hours: this.props.data["Design estimate (Resource Days)"] || 0, platform: "Design"}]
+            {hours: this.props.data["Web Engineering Estimate (Resource Hours)"] || 0, platform: "Web"},
+            {hours: this.props.data["Backend Engineering Estimate (Resource Hours)"] || 0, platform: "Backend"},
+            {hours: this.props.data["QA Estimate (Resource Hours)"] || 0, platform: "QA"},
+            {hours: this.props.data["Design Estimate (Resource Hours)"] || 0, platform: "Design"}]
         })
        
     }
@@ -43,16 +54,35 @@ class Variant extends Component {
             this.setState({
                 data: nextProps.data,
                 buttonData: [
-                    {hours: nextProps.data["iOS Engineering Estimate (Resource Days)"] || 0, platform: "iOS"}, 
-                    {hours: nextProps.data["Android Engineering Estimate (Resource Days)"] || 0, platform: "Android"},
+                    {hours: nextProps.data["iOS Engineering Estimate (Resource Hours)"] || 0, platform: "iOS"}, 
+                    {hours: nextProps.data["Android Engineering Estimate (Resource Hours)"] || 0, platform: "Android"},
                     {hours: nextProps.data["Hybrid Engineering"] || 0, platform: "Hybrid"},
-                    {hours: nextProps.data["Web Engineering Estimate (Resource Days)"] || 0, platform: "Web"},
-                    {hours: nextProps.data["Backend Engineering Estimate (Resource Days)"] || 0, platform: "Backend"},
-                    {hours: nextProps.data["QA Estimate (Resource Days)"] || 0, platform: "QA"},
-                    {hours: nextProps.data["Design estimate (Resource Days)"] || 0, platform: "Design"}
+                    {hours: nextProps.data["Web Engineering Estimate (Resource Hours)"] || 0, platform: "Web"},
+                    {hours: nextProps.data["Backend Engineering Estimate (Resource Hours)"] || 0, platform: "Backend"},
+                    {hours: nextProps.data["QA Estimate (Resource Hours)"] || 0, platform: "QA"},
+                    {hours: nextProps.data["Design Estimate (Resource Hours)"] || 0, platform: "Design"}
                 ],
                 //addNotes: false
             })
+    }
+
+    handleAddToScope(){
+        let { temp, data } = this.props;
+        let { editAssumptions, editFD, editFeature, editNotes, buttonData } = this.state;
+        this.setState({ addToScope: true })
+        if (temp){
+            console.log(data,  "use this")
+            let feature = editFeature ? this.state.Feature : data.Feature;
+            let FD = editFD ?  this.state.FD : data["Feature description"];
+            let Notes = editNotes ? this.state.Notes : data.Notes;
+            let Assumptions = editAssumptions ? this.state.Assumptions : data.Assumptions;
+        } else {
+
+        }
+    }
+
+    handleRemoveFromScope(){
+        this.setState({ addToScope: false })
     }
    
 
@@ -60,14 +90,14 @@ class Variant extends Component {
         let { addToScope } = this.state;
         if (addToScope) {
             return (
-                <div style={{ cursor: "pointer" }} onClick={() => this.setState({ addToScope: false })} >
+                <div style={{ cursor: "pointer" }} onClick={this.handleRemoveFromScope} >
                     <img src={require("../../assets/remove-red.png")} />
                     <p style={{ color: "red" }}>Remove from Scope</p>
                 </div>
             )
         } else {
             return (
-                <div style={{ cursor: "pointer" }} onClick={() => this.setState({ addToScope: true })}>
+                <div style={{ cursor: "pointer" }} onClick={this.handleAddToScope}>
                     <img src={require("../../assets/plus-blue.png")} />
                     <p style={{ color: "blue" }}>Add to Scope</p>
                 </div>
@@ -156,7 +186,7 @@ class Variant extends Component {
             return (
                 <div >
                      <p>N:</p>
-                     <div className="Rectangle" contentEditable>{d.Notes}</div>
+                     <div className="Rectangle" onInput={this.handleNotes} contentEditable>{d.Notes}</div>
                      <img src={require("../../assets/remove.png")} style={{paddingLeft: "2px"}} onClick={()=>this.setState({addNotes: false})}/>
                 </div>
             )
@@ -187,6 +217,38 @@ class Variant extends Component {
                
             )
         }
+    }
+
+    handleFD(e){
+        console.log(e.target.innerHTML, "val bro")
+        this.setState({
+            FD: e.target.innerHTML,
+            editFD: true
+        })
+    }
+
+    handleFeature(e){
+        console.log(e.target.innerHTML, "val bro")
+        this.setState({
+            Feature: e.target.innerHTML,
+            editFeature: true
+        })
+    }
+
+    handleAssumption(e){
+        console.log(e.target.innerHTML, "val bro")
+        this.setState({
+            Assumptions: e.target.innerHTML,
+            editAssumptions: true
+        })
+    }
+
+    handleNotes(e){
+        console.log(e.target.innerHTML, "val bro")
+        this.setState({
+            Assumptions: e.target.innerHTML,
+            editAssumptions: true
+        })
     }
 
     searchVariant(){
@@ -312,7 +374,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-3">
                             <p>T:</p>
-                            <div className="Rectangle" contentEditable>{data.Feature}</div>
+                            <div className="Rectangle" contentEditable onInput={this.handleFeature}>{data.Feature}</div>
                         </div>
                         <div className="col-md-3">
                            {this.renderQuote(inQuote)}
@@ -342,7 +404,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>FD:</p>
-                            <div className="Rectangle" contentEditable>{data["Feature description"]}</div>
+                            <div className="Rectangle" contentEditable onInput={this.handleFD}>{data["Feature description"]}</div>
                         </div>
                         <div className="col-md-6">
                             <p>A:</p>

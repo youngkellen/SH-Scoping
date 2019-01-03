@@ -19,10 +19,10 @@ export default class newRow {
         webHours = "",
         iosHours = "",
         ) {
-        this["Android Engineering Estimate (Resource Days)"] = androidHours
+        this["Android Engineering Estimate (Resource Hours)"] = androidHours
         this.Assumptions = assumptions
-        this["Backend Engineering Estimate (Resource Days)"] = backendHours
-        this["Design estimate (resource days)"] = designHours
+        this["Backend Engineering Estimate (Resource Hours)"] = backendHours
+        this["Design Estimate (Resource Hours)"] = designHours
         this.Feature = feature
         this["Feature description"] = fd
         this["Feature set"] = fs
@@ -31,11 +31,11 @@ export default class newRow {
         this["Magento Engineering"] = magentoHours
         this.Notes = notes
         this.Platform = platform
-        this["QA Estimate (Resource Days)"] = qaHours
+        this["QA Estimate (Resource Hours)"] = qaHours
         this.SOURCE = source
         this.Type = type
-        this["Web Engineering Estimate (Resource Days)"] = webHours
-        this["iOS Engineering Estimate (Resource Days)"] = iosHours
+        this["Web Engineering Estimate (Resource Hours)"] = webHours
+        this["iOS Engineering Estimate (Resource Hours)"] = iosHours
         this.id = id
     }
 }
