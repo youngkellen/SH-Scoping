@@ -4,7 +4,8 @@ import {
     TEMPSCOPE_TREE,
     TEMPSCOPE_SELECTED_FEATURES,
     TEMPSCOPE_ADD,
-    TEMPSCOPE_REMOVE
+    TEMPSCOPE_REMOVE,
+    TEMPSCOPE_SCOPE_EDIT
   } from '../constants/actionTypes';
   
   const defaultState = {
@@ -35,6 +36,14 @@ import {
             return t
           }
         })}
+      }
+      case TEMPSCOPE_SCOPE_EDIT:
+      return { ...state, tempScope: state.tempScope.map(t => {
+        if (t.id === action.payload.id) {
+          t[action.payload.prop] = action.payload.value;
+        }
+        return t
+        })
       }
       default:
         return state;

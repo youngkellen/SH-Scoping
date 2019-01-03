@@ -5214,7 +5214,15 @@ a.text-danger:focus, a.text-danger:hover {
       display: inline-block;
       border: none;
       overflow: hidden;
-      word-break: break-word; }
+      word-break: break-word;
+      white-space: pre-wrap;
+      /* css-3 */
+      white-space: -moz-pre-wrap;
+      /* Mozilla, since 1999 */
+      white-space: -pre-wrap;
+      /* Opera 4-6 */
+      white-space: -o-pre-wrap;
+      /* Opera 7 */ }
   .builder .features {
     background-color: #e3e3e3; }
     .builder .features ul {

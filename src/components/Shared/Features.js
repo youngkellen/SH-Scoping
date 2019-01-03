@@ -61,11 +61,16 @@ class Features extends Component {
     })
 
     let { features, dispatch, tempScope } = this.props;
-    let { type, fs } = features[0]
-    if (input){
-      await dispatch({type: TEMPSCOPE_ADD, payload: new newRow(tempScope.tempScope.length, type, fs, input)})
-      await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree([...tempScope.tempScope, new newRow(tempScope.tempScope.length, type, fs, input)])})
+    if (features[0]) {
+      let { type, fs } = features[0]
+      if (input){
+        await dispatch({type: TEMPSCOPE_ADD, payload: new newRow(tempScope.tempScope.length, type, fs, input)})
+        await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree([...tempScope.tempScope, new newRow(tempScope.tempScope.length, type, fs, input)])})
+      }
+    } else {
+      alert("Please choose a Feature Set")
     }
+   
   }
 
   handleClick(id, temp){
@@ -83,7 +88,7 @@ class Features extends Component {
     if (features && features[0] && features[0].feature && features[0].feature[0]){
       console.log(features[0].feature, "should not be empty")
       return (
-        features.map(feature => <Feature key={feature.id} search={search} inScope={scope[0]["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp}/>)
+        features.map(feature => <Feature key={feature.id} search={search} inScope={scope[feature.id]["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp}/>)
       )
     } else {
       return null

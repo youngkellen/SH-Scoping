@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import searchHighlight from "../../helper/searchHighlight"
+import searchHighlight from "../../helper/searchHighlight";
+import newRow from "../../helper/newRow";
+import buildTree from "../../helper/buildTree";
+import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE } from "../../constants/actionTypes"
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp });
+const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp, scope: state.scope, tempScope: state.tempScope });
 
 class Variant extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             addToScope: false,
             duplicate: false,
@@ -29,7 +32,11 @@ class Variant extends Component {
         this.handleAddToScope = this.handleAddToScope.bind(this);
         this.handleRemoveFromScope = this.handleRemoveFromScope.bind(this);
         this.handleFD = this.handleFD.bind(this);
+        this.handleFeature = this.handleFeature.bind(this);
         this.handleNotes = this.handleNotes.bind(this);
+        this.blurFD = this.blurFD.bind(this);
+        this.blurFeature = this.blurFeature.bind(this);
+        
     }
 
     componentDidMount(){
@@ -66,29 +73,11 @@ class Variant extends Component {
             })
     }
 
-    handleAddToScope(){
-        let { temp, data } = this.props;
-        let { editAssumptions, editFD, editFeature, editNotes, buttonData } = this.state;
-        this.setState({ addToScope: true })
-        if (temp){
-            console.log(data,  "use this")
-            let feature = editFeature ? this.state.Feature : data.Feature;
-            let FD = editFD ?  this.state.FD : data["Feature description"];
-            let Notes = editNotes ? this.state.Notes : data.Notes;
-            let Assumptions = editAssumptions ? this.state.Assumptions : data.Assumptions;
-        } else {
-
-        }
-    }
-
-    handleRemoveFromScope(){
-        this.setState({ addToScope: false })
-    }
-   
 
     renderAddToScope() {
         let { addToScope } = this.state;
-        if (addToScope) {
+        let { temp, data, scope } = this.props;
+        if (!temp) {
             return (
                 <div style={{ cursor: "pointer" }} onClick={this.handleRemoveFromScope} >
                     <img src={require("../../assets/remove-red.png")} />
@@ -205,7 +194,7 @@ class Variant extends Component {
             return (
                 <div>
                     <img src={require("../../assets/check-black.png")} />
-                    <p >Include in Quote</p>
+                    <p>Include in Quote</p>
                 </div>
             )
         } else {
@@ -219,12 +208,53 @@ class Variant extends Component {
         }
     }
 
+    handleAddToScope(){
+        let { temp, data, scope } = this.props;
+        let { editAssumptions, editFD, editFeature, editNotes, buttonData } = this.state;
+        this.setState({ addToScope: true })
+        if (temp){
+            console.log(data,  "use this")
+            let feature = editFeature ? this.state.Feature : data.Feature;
+            let FD = editFD ?  this.state.FD : data["Feature description"];
+            let Notes = editNotes ? this.state.Notes : data.Notes;
+            let Assumptions = editAssumptions ? this.state.Assumptions : data.Assumptions;
+            let row = new newRow(scope.scope.length, data.SOURCE, feature, FD, Assumptions )
+            console.log(row, "row bro")
+        } else {
+
+        }
+    }
+
+    handleRemoveFromScope(){
+        this.setState({ addToScope: false })
+    }
+   
+
     handleFD(e){
-        console.log(e.target.innerHTML, "val bro")
+        let { temp, data, scope, tempScope } = this.props;
+        let text = e.target.innerText;
+        console.log(text, "text")
+
         this.setState({
             FD: e.target.innerHTML,
             editFD: true
         })
+        // if (temp){
+        //     console.log(tempScope, "broh")
+        //     tempScope.tempScope[data.id]["Feature description"] = text;
+        // } else {
+        //     scope.scope[data.id]["Feature description"] = text;
+        // }
+    }
+
+    blurFD(e){
+        let { temp, data, scope, tempScope, dispatch } = this.props;
+        let text = e.target.innerText;
+         if (temp){
+            dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop: "Feature description", value: text}})
+        } else {
+            dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop: "Feature description", value: text}})
+        }
     }
 
     handleFeature(e){
@@ -233,6 +263,20 @@ class Variant extends Component {
             Feature: e.target.innerHTML,
             editFeature: true
         })
+    }
+
+    async blurFeature(e){
+        let { temp, data, scope, tempScope, dispatch } = this.props;
+        let text = e.target.innerText;
+         if (temp){
+            await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop: "Feature", value: text}})
+            await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree(tempScope.tempScope) })
+
+        } else {
+            dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop: "Feature", value: text}})
+            await dispatch({ type: SCOPE_TREE, payload: buildTree(scope.scope) })
+
+        }
     }
 
     handleAssumption(e){
@@ -266,8 +310,7 @@ class Variant extends Component {
                             <div className="Rectangle" dangerouslySetInnerHTML={{ __html:searchHighlight(data.Feature, search)}}/>
                         </div>
                         <div className="col-md-3">
-                        <img src={require("../../assets/check-gray.png")} />
-                         <p>Include in Quote</p>
+                        {this.renderQuote(inQuote)}
                         </div>
                         <div className="col-md-3">
                             {this.renderAddToScope()}
@@ -374,7 +417,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-3">
                             <p>T:</p>
-                            <div className="Rectangle" contentEditable onInput={this.handleFeature}>{data.Feature}</div>
+                            <div className="Rectangle" contentEditable onInput={this.handleFeature} onBlur={this.blurFeature}>{data.Feature}</div>
                         </div>
                         <div className="col-md-3">
                            {this.renderQuote(inQuote)}
@@ -404,7 +447,7 @@ class Variant extends Component {
                     <div className="row variant_row">
                         <div className="col-md-6">
                             <p>FD:</p>
-                            <div className="Rectangle" contentEditable onInput={this.handleFD}>{data["Feature description"]}</div>
+                            <div className="Rectangle" contentEditable onInput={this.handleFD} onBlur={this.blurFD}>{data["Feature description"]}</div>
                         </div>
                         <div className="col-md-6">
                             <p>A:</p>

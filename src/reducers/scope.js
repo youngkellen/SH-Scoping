@@ -5,7 +5,9 @@ import {
     SCOPE_SELECTED_FEATURES,
     SCOPE_SUMMARY,
     SCOPE_SEARCH,
-    SCOPE_ADD
+    SCOPE_ADD,
+    SCOPE_SCOPE_EDIT,
+    SCOPE_TREE_EDIT
   } from '../constants/actionTypes';
   
   const defaultState = {
@@ -38,6 +40,14 @@ import {
       }
       case SCOPE_ADD:
         return { ...state, scope: [...state.scope, action.payload] };
+        case SCOPE_SCOPE_EDIT:
+        return { ...state, scope: state.scope.map(t => {
+          if (t.id === action.payload.id) {
+            t[action.payload.prop] = action.payload.value;
+          }
+          return t
+          })
+        }
       default:
         return state;
     }
