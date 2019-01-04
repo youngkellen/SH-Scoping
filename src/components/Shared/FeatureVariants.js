@@ -61,7 +61,7 @@ class FeatureVariants extends Component {
           {this.renderAddNew()}
           <div className="col-md-12" style={{ height: height, overflow: "scroll" }}>
             <div className="row layout-pane-scroll" style={{ overflowY: "scroll" }}>
-               {variants.map((v, i) => <Variant key={i} mode={mode} data={v}/>)}
+               {variants.map((v, i) => <Variant key={i} mode={mode} data={v} reIndexSearch={this.props.reIndexSearch}/>)}
             </div>
           </div>
 

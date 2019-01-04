@@ -35,7 +35,7 @@ class Builder extends Component {
                 secondaryInitialSize={20}
               >
                 <Features mode={"builder"}/>
-                <FeatureVariants mode={"builder"}/>
+                <FeatureVariants mode={"builder"} reIndexSearch={this.props.reIndexSearch}/>
               </SplitterLayout>
             </SplitterLayout>
           </div>

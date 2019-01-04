@@ -56,7 +56,7 @@ renderMode() {
 
   if (mode === "builder" && !split) {
     return (
-      <Builder/>
+      <Builder reIndexSearch={this.props.reIndexSearch}/>
     )
   } else if (mode === "search"  && !split) {
     return (
@@ -72,7 +72,7 @@ renderMode() {
                 secondaryInitialSize={full ? 100 : 50}
                 percentage
             >
-                 <Builder/>
+                 <Builder reIndexSearch={this.props.reIndexSearch}/>
                  <Excel excelHeight={this.state.excelHeight} resetHeight={this.resetHeight} />
             </SplitterLayout>
         </div>

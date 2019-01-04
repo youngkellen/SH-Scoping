@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import searchHighlight from "../../helper/searchHighlight";
 import newRow from "../../helper/newRow";
 import buildTree from "../../helper/buildTree";
-import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE, SCOPE_SELECT, TEMPSCOPE_SCOPE_REMOVE } from "../../constants/actionTypes"
+import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE, SCOPE_SELECT, TEMPSCOPE_SCOPE_REMOVE, SCOPE_ADD, SCOPE_DOWNLOAD, SCOPE_SELECTED_FEATURES } from "../../constants/actionTypes"
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp, scope: state.scope, tempScope: state.tempScope });
 
@@ -291,7 +291,7 @@ class Variant extends Component {
 
                 if (t.SOURCE === data.SOURCE && t["Feature set"] === data["Feature set"] ){
                     // console.log(t, "last delete row")
-                    dispatch({type: "SCOPE_SELECTED_FEATURES", payload: [] })
+                    dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
                 }
                 if ( t["Feature set"] && t["Feature set"] !== data["Feature set"] && t.SOURCE === data.SOURCE) {
                     return t
@@ -313,19 +313,32 @@ class Variant extends Component {
             console.log(newTempScope, "final temp scope")
             dispatch({type: TEMPSCOPE_SCOPE_REMOVE, payload: newTempScope})
             dispatch({ type: TEMPSCOPE_TREE, payload: buildTree(newTempScope)})
+            data.id = scope.scope.length
             this.setState({
-                data: {}
+                data
             })
-            dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: true }})
+            dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+            dispatch({ type: SCOPE_ADD, payload: data})
+            dispatch({type: SCOPE_TREE, payload: buildTree([...scope.scope, data])})
 
            
         } else {
-
+            // adding from library
         }
     }
 
     handleRemoveFromScope(){
-        this.setState({ addToScope: false })
+        let { scope, reindexSearch, dispatch } = this.props;
+        let { data } = this.state;
+        let newScope = scope.scope.filter(s => s.id !== data.id)
+        newScope = newScope.map((s,i) => {s.id = i; return s})
+        dispatch({ type: SCOPE_DOWNLOAD, payload: newScope})
+        dispatch({type: SCOPE_TREE, payload: buildTree(newScope)})
+        dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
+        dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
+        this.props.reIndexSearch(newScope)
+        // this.setState({ addToScope: false })
+
     }
    
 
@@ -427,29 +440,31 @@ class Variant extends Component {
     async handleQuote(inQuote){
         let { temp, data, dispatch } = this.props;
         let prop = "Include in Scope?";
-        if (inQuote){
-            data[prop] = "x";
-            this.setState({
-                data
-             })
-            if (temp){
-                await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
-                await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
+        if (Object.keys(this.state.data).length > 0 ){
+            if (inQuote){
+                data[prop] = "x";
+                this.setState({
+                    data
+                 })
+                if (temp){
+                    await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
+                    await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
+                } else {
+                    await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
+                    await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+                }
             } else {
-                await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
-                await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
-            }
-        } else {
-            data[prop] = "";
-            this.setState({
-                data
-             })
-            if (temp){
-                await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
-                await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
-            } else {
-                await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
-                await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+                data[prop] = "";
+                this.setState({
+                    data
+                 })
+                if (temp){
+                    await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
+                    await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
+                } else {
+                    await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
+                    await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+                }
             }
         }
     }

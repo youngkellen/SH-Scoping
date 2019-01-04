@@ -22,7 +22,8 @@ class App extends Component {
   constructor(props){
     super(props)
     this.index = {};
-    this.search = this.search.bind(this)
+    this.search = this.search.bind(this);
+    this.reIndexSearch = this.reIndexSearch.bind(this);
     let { href}  = window.location;
     if (href.includes("accessToken")){
       // this is used to get the access Token for opening google sheets
@@ -49,6 +50,8 @@ class App extends Component {
     console.log(scope, "scope bro")
     if (Object.keys(scope).length === 0){
       Papa.parse(csv, config)
+    } else {
+      this.reIndexSearch(scope)
     }
     
   }
@@ -147,6 +150,21 @@ class App extends Component {
     
   }
 
+  reIndexSearch(scope){
+    // passed down all the way to Variant.js
+    let fields = Object.keys(scope[0])
+    let index = elasticlunr(function () {
+      fields.map(f => {
+        this.addField(f)
+      })
+
+    });
+    scope.forEach(s => {
+        index.addDoc(s);
+    })
+    this.index = index;
+  }
+
 
   search(term){
     // search needs to be passed down from app to prevent unneeded re rendering
@@ -171,7 +189,7 @@ class App extends Component {
             <Route exact path="/" component={Entry} />
             <Route 
               exact path="/dashboard" 
-              component={() => <Dashboard search={this.search}/>} />
+              component={() => <Dashboard search={this.search} reIndexSearch={this.reIndexSearch}/>} />
             <Route component={NotFound} />
           </Switch>
         </div>
