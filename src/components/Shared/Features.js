@@ -101,17 +101,16 @@ class Features extends Component {
     if (features && features[0] && features[0].type && tempScope.tempTree[features[0].type]){
       let { type, fs } = features[0]
       let { featureSet } = tempScope.tempTree[type]
-      console.log(featureSet, "feature set extracted")
+      // console.log(featureSet, "feature set extracted")
       let index = featureSet.slice().map(f => f.name).indexOf(fs)
-      console.log(fs, "fs bro")
-      console.log(index, "index bro")
+      // console.log(fs, "fs bro")
+      // console.log(index, "index bro")
       if ( index !== -1){
         let { features } = featureSet[index]
         let check = features.filter(f => f.feature).length
         let checkTwo = features[features.length - 1].feature
         if (check && checkTwo && checkTwo[0]){
-         console.log(features, " you need this")
-          return features.map(feature => <Feature key={feature.id} search={search} inScope={false} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} temp/>)
+          return features.map(feature => <Feature key={feature.id} search={search} inScope={feature["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} temp/>)
         } else {
           return null
         }

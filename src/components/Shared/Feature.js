@@ -30,7 +30,7 @@ class Feature extends Component {
         let { tempSelect,temp, selectedId, id  } = nextProps;
         if (tempSelect && temp && selectedId === id){
             this.setState({selected: true})
-        } else if (nextProps.selectedId === nextProps.id && !temp) {
+        } else if (nextProps.selectedId === nextProps.id && !temp && !tempSelect) {
             this.setState({
                 selected: true
             })

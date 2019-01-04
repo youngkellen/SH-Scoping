@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import searchHighlight from "../../helper/searchHighlight";
 import newRow from "../../helper/newRow";
 import buildTree from "../../helper/buildTree";
-import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE, SCOPE_SELECT } from "../../constants/actionTypes"
+import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE, SCOPE_SELECT, TEMPSCOPE_SCOPE_REMOVE } from "../../constants/actionTypes"
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp, scope: state.scope, tempScope: state.tempScope });
 
@@ -33,6 +33,7 @@ class Variant extends Component {
         this.handleRemoveFromScope = this.handleRemoveFromScope.bind(this);
         this.changeEstimateHours = this.changeEstimateHours.bind(this);
         this.renderEstimateButtons = this.renderEstimateButtons.bind(this);
+        this.renderQuote = this.renderQuote.bind(this);
         this.handleFD = this.handleFD.bind(this);
         this.handleFeature = this.handleFeature.bind(this);
         this.handleNotes = this.handleNotes.bind(this);
@@ -42,6 +43,7 @@ class Variant extends Component {
         this.blurAssumption = this.blurAssumption.bind(this);
         this.handleNotes = this.handleNotes.bind(this);
         this.blurNotes = this.blurNotes.bind(this);
+        this.handleQuote = this.handleQuote.bind(this);
         
     }
 
@@ -242,17 +244,18 @@ class Variant extends Component {
     }
 
     renderQuote(quote){
+        let { mode } = this.props
         if (quote){
             return (
                 <div>
-                    <img src={require("../../assets/check-black.png")} />
+                    <img src={require("../../assets/check-black.png")} onClick={mode === "builder" ? () => this.handleQuote(false) : null}/>
                     <p>Include in Quote</p>
                 </div>
             )
         } else {
             return (
                 <div>
-                    <img src={require("../../assets/check-gray.png")} />
+                    <img src={require("../../assets/check-gray.png")} onClick={mode === "builder" ? () => this.handleQuote(true) : null}/>
                     <p style={{color: "lightgray"}}>Include in Quote</p>
                 </div>
                
@@ -261,17 +264,61 @@ class Variant extends Component {
     }
 
     handleAddToScope(){
-        let { temp, data, scope } = this.props;
-        let { editAssumptions, editFD, editFeature, editNotes, buttonData } = this.state;
+        let { temp, scope, dispatch, type, tempScope } = this.props;
+        let { editAssumptions, editFD, editFeature, editNotes, buttonData, data } = this.state;
         this.setState({ addToScope: true })
         if (temp){
-            console.log(data,  "use this")
-            let feature = editFeature ? this.state.Feature : data.Feature;
-            let FD = editFD ?  this.state.FD : data["Feature description"];
-            let Notes = editNotes ? this.state.Notes : data.Notes;
-            let Assumptions = editAssumptions ? this.state.Assumptions : data.Assumptions;
-            let row = new newRow(scope.scope.length, data.SOURCE, feature, FD, Assumptions )
-            console.log(row, "row bro")
+            // all of this is because of my mess of a code. If you are trying to refactor this, good luck!
+            let fsCount = 0;
+            let newTempScope = tempScope.tempScope.filter(t => {
+                // console.log(t, "mr t")
+              if (t.SOURCE === data.SOURCE && t["Feature set"] === data["Feature set"]) {
+                fsCount += 1
+              }
+              if (t.Feature !== data.Feature){
+                return t
+              }
+              if (t.id !== data.id){
+                return t
+              }
+            })
+            // console.log(fsCount, "fs count")
+    
+            if (fsCount === 2 ){
+                // console.log(newTempScope, "filter pass 1")
+                // console.log(data, "data")
+              newTempScope = newTempScope.filter(t => {
+
+                if (t.SOURCE === data.SOURCE && t["Feature set"] === data["Feature set"] ){
+                    // console.log(t, "last delete row")
+                    dispatch({type: "SCOPE_SELECTED_FEATURES", payload: [] })
+                }
+                if ( t["Feature set"] && t["Feature set"] !== data["Feature set"] && t.SOURCE === data.SOURCE) {
+                    return t
+                }
+                if (t.SOURCE !== data.SOURCE) {
+                    return t
+                }
+              })
+            }
+    
+            if (fsCount === 1 ) {
+
+              newTempScope = newTempScope.filter(t => {
+                if (t.SOURCE !== data.SOURCE ) {
+                  return t
+                }
+              })
+            }
+            console.log(newTempScope, "final temp scope")
+            dispatch({type: TEMPSCOPE_SCOPE_REMOVE, payload: newTempScope})
+            dispatch({ type: TEMPSCOPE_TREE, payload: buildTree(newTempScope)})
+            this.setState({
+                data: {}
+            })
+            dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: true }})
+
+           
         } else {
 
         }
@@ -374,6 +421,36 @@ class Variant extends Component {
         } else {
             await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+        }
+    }
+
+    async handleQuote(inQuote){
+        let { temp, data, dispatch } = this.props;
+        let prop = "Include in Scope?";
+        if (inQuote){
+            data[prop] = "x";
+            this.setState({
+                data
+             })
+            if (temp){
+                await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
+                await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
+            } else {
+                await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
+                await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+            }
+        } else {
+            data[prop] = "";
+            this.setState({
+                data
+             })
+            if (temp){
+                await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
+                await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
+            } else {
+                await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
+                await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+            }
         }
     }
 
