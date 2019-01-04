@@ -1,7 +1,7 @@
 import React, { PureComponent, Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { SCOPE_SELECTED_FEATURES } from '../../constants/actionTypes';
+import { SCOPE_SELECTED_FEATURES, SELECT_FEATURE_SET } from '../../constants/actionTypes';
 import Set from './Set';
 import searchHighlight from "../../helper/searchHighlight";
 import { TEMPSCOPE_ADD, TEMPSCOPE_TREE } from '../../constants/actionTypes';
@@ -10,7 +10,17 @@ import buildTree from "../../helper/buildTree";
 import NewFS from "../Builder/NewFS"
 
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, selected: state.scope.selected, scope: state.scope.scope, search: state.scope.search, tempScope: state.tempScope, feature: state.scope.features })
+const mapStatetoProps = state => (
+    { 
+        viewMode: state.viewMode, 
+        selected: state.scope.selected, 
+        scope: state.scope.scope, 
+        search: state.scope.search, 
+        tempScope: state.tempScope, 
+        feature: state.scope.features,
+        clicked: state.selectHelper.select
+    }
+)
 
 class Type extends PureComponent {
     constructor() {
@@ -22,23 +32,6 @@ class Type extends PureComponent {
         this.handleFeatures = this.handleFeatures.bind(this);
         this.setToTempScope = this.setToTempScope.bind(this);
         this.addNewFS = this.addNewFS.bind(this);
-    }
-
-    handleFeatures(features, temp, name) {
-        // passed down as prop to Set. Set handles the click event
-        let { dispatch, type} = this.props;
-        console.log(features, "features boss")
-        if (!features){
-            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: [{feature: [], type, fs: name}] })
-        }
-        if (temp){
-            let tempFeatures = features.slice().map(f => Object.assign({}, f, {temp: true, type, fs: name}))
-            console.log(tempFeatures, "temp features")
-            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: tempFeatures })
-        } else {
-            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: features.map(f => Object.assign({}, f, {temp: true, type, fs: name})) })
-        }
-       
     }
 
     componentDidMount() {
@@ -90,6 +83,25 @@ class Type extends PureComponent {
         }
     }
 
+    handleFeatures(features, temp, name) {
+        // passed down as prop to Set. Set handles the click event
+        let { dispatch, type} = this.props;
+        console.log(features, "features boss")
+        if (!features){
+            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: [{feature: [], type, fs: name}] })
+            return
+        }
+        if (temp){
+            let tempFeatures = features.slice().map(f => Object.assign({}, f, {temp: true, type, fs: name}))
+            console.log(tempFeatures, "temp features")
+            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: tempFeatures })
+        } else {
+            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: features.map(f => Object.assign({}, f, {temp: true, type, fs: name})) })
+        }
+        dispatch({type: SELECT_FEATURE_SET, payload: {fs: name, type }})
+       
+    }
+
     renderAddFS() {
         // renders add new feature set
         let { fs, viewMode } = this.props;
@@ -139,7 +151,7 @@ class Type extends PureComponent {
 
     renderTempSet(){
         // if a row that is in scope contains a fs that is not in scope and is in the process of being created, render this
-        let { tempSet, type, search, featureSets } = this.props;
+        let { tempSet, type, search, featureSets, clicked } = this.props;
         let { featureSet } = featureSets;
         if (tempSet){
             console.log(tempSet, "temp Set bro")
@@ -156,7 +168,7 @@ class Type extends PureComponent {
             console.log(uniqueTempSet, "unique")
             if (uniqueTempSet.length > 0){
                 return (
-                    uniqueTempSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={tempSet.featureSet} handleFeature={this.handleFeatures} temp/>)
+                    uniqueTempSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} clicked={clicked}selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={tempSet.featureSet} handleFeature={this.handleFeatures} temp/>)
                 )
             } else {
                 return null
@@ -169,7 +181,7 @@ class Type extends PureComponent {
 
 
     render() {
-        let { viewMode, type, featureSets, id, search, fs, tempSet } = this.props;
+        let { viewMode, type, featureSets, id, search, fs, tempSet, clicked } = this.props;
         let { featureSet } = featureSets;
         let { selected, tempFS } = this.state
         console.log(featureSets, "feature sets")
@@ -192,7 +204,7 @@ class Type extends PureComponent {
                 </button>
                 <div className="content" style={selected ? { display: "block" } : { display: "none" }}>
                     <ul>
-                        {featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={set.features} handleFeature={this.handleFeatures} temp={this.props.temp} />)}
+                        {featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} clicked={clicked} selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={set.features} handleFeature={this.handleFeatures} temp={this.props.temp} />)}
                         {this.renderTempSet()}
                         {!tempFS > 1 ? "" : tempFS.map((t, i) => <NewFS key={i} id={i} type={t.type} setToTempScope={this.setToTempScope} />)}
                         {this.renderAddFS()}

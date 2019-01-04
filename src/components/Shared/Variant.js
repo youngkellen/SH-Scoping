@@ -29,6 +29,7 @@ class Variant extends Component {
             editNotes: false
         }
         this.renderEstimateButtons = this.renderEstimateButtons.bind(this);
+        this.handleDuplicate = this.handleDuplicate.bind(this);
         this.handleAddToScope = this.handleAddToScope.bind(this);
         this.handleRemoveFromScope = this.handleRemoveFromScope.bind(this);
         this.changeEstimateHours = this.changeEstimateHours.bind(this);
@@ -49,6 +50,7 @@ class Variant extends Component {
 
     componentDidMount(){
         // If a item was selected that is scope or library
+        console.log(this.props, "variant props on mount")
         this.setState({
             data: this.props.data,
             buttonData: [
@@ -86,8 +88,8 @@ class Variant extends Component {
 
     renderAddToScope() {
         let { addToScope } = this.state;
-        let { temp, data, scope } = this.props;
-        if (!temp) {
+        let { temp, data, scope, added } = this.props;
+        if (!temp && !added) {
             return (
                 <div style={{ cursor: "pointer" }} onClick={this.handleRemoveFromScope} >
                     <img src={require("../../assets/remove-red.png")} />
@@ -106,22 +108,28 @@ class Variant extends Component {
     }
 
     renderDuplicate() {
-        let { duplicate } = this.state;
-        if (duplicate) {
-            return (
-                <div style={{ cursor: "pointer" }} onClick={() => this.setState({ duplicate: false })} >
-                    <img src={require("../../assets/remove-red.png")} />
-                    <p style={{ color: "red" }}>Duplicate</p>
-                </div>
-            )
-        } else {
-            return (
-                <div style={{ cursor: "pointer" }} onClick={() => this.setState({ duplicate: true })}>
-                    <img src={require("../../assets/plus-blue.png")} />
-                    <p style={{ color: "blue" }}>Duplicate</p>
-                </div>
-            )
-        }
+        return (
+            <div style={{ cursor: "pointer" }} onClick={this.handleDuplicate}>
+                <img src={require("../../assets/plus-blue.png")} />
+                <p style={{ color: "blue" }}>Duplicate</p>
+            </div>
+        )
+        // let { duplicate } = this.state;
+        // if (duplicate) {
+        // return (
+        //     <div style={{ cursor: "pointer" }} onClick={this.handleDuplicate} >
+        //         <img src={require("../../assets/remove-red.png")} />
+        //         <p style={{ color: "red" }}>Duplicate</p>
+        //     </div>
+        // )
+        // } else {
+        //     return (
+        //         <div style={{ cursor: "pointer" }} onClick={() => this.setState({ duplicate: true })}>
+        //             <img src={require("../../assets/plus-blue.png")} />
+        //             <p style={{ color: "blue" }}>Duplicate</p>
+        //         </div>
+        //     )
+        // }
 
     }
 
@@ -138,7 +146,7 @@ class Variant extends Component {
 
     async changeEstimateHours(changeData, val){
         let { buttonData, data } = this.state;
-        let { temp, dispatch } = this.props;
+        let { temp, dispatch, added } = this.props;
         let newData = Object.assign({}, changeData, {hours: Number(val)})
         console.log(data, "i need this")
         console.log(newData, "new bro")
@@ -185,7 +193,7 @@ class Variant extends Component {
         if (temp){
             await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: val}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
-        } else {
+        } else if (!added) {
             await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: val}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
         }
@@ -264,7 +272,7 @@ class Variant extends Component {
     }
 
     handleAddToScope(){
-        let { temp, scope, dispatch, type, tempScope } = this.props;
+        let { temp, scope, dispatch, type, tempScope, added } = this.props;
         let { editAssumptions, editFD, editFeature, editNotes, buttonData, data } = this.state;
         this.setState({ addToScope: true })
         if (temp){
@@ -322,8 +330,17 @@ class Variant extends Component {
             dispatch({type: SCOPE_TREE, payload: buildTree([...scope.scope, data])})
 
            
+        } else if (added) {
+            // if adding from clicking add new variant or duplicate
+            data.id = scope.scope.length
+            this.setState({
+                data
+            })
+            dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+            dispatch({ type: SCOPE_ADD, payload: data})
+            dispatch({type: SCOPE_TREE, payload: buildTree([...scope.scope, data])})
         } else {
-            // adding from library
+             // adding from library
         }
     }
 
@@ -340,6 +357,13 @@ class Variant extends Component {
         // this.setState({ addToScope: false })
 
     }
+
+    handleDuplicate(){
+        let {duplicate, data} = this.props;
+        if (data){
+            duplicate(data)
+        }
+    }
    
 
     handleFD(e){
@@ -351,14 +375,14 @@ class Variant extends Component {
     }
 
     async blurFD(e){
-        let { temp, data, scope, tempScope, dispatch } = this.props;
+        let { temp, data, scope, tempScope, dispatch, added } = this.props;
         let text = e.target.innerText;
         let prop = "Feature description";
         data[prop] = text;
          if (temp){
             await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
-        } else {
+        } else if (!added){
             await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
         }
@@ -373,7 +397,7 @@ class Variant extends Component {
     }
 
     async blurFeature(e){
-        let { temp, data, scope, tempScope, dispatch } = this.props;
+        let { temp, data, scope, tempScope, dispatch, added } = this.props;
         let text = e.target.innerText;
         let prop = "Feature"
         data[prop] = text;
@@ -382,7 +406,7 @@ class Variant extends Component {
             await dispatch({ type: TEMPSCOPE_TREE, payload: buildTree(tempScope.tempScope) })
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
 
-        } else {
+        } else if (!added){
             await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({ type: SCOPE_TREE, payload: buildTree(scope.scope) })
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
@@ -401,14 +425,14 @@ class Variant extends Component {
     }
 
     async blurAssumption(e){
-        let { temp, data, dispatch } = this.props;
+        let { temp, data, dispatch, added } = this.props;
         let text = e.target.innerText;
         let prop = "Assumptions"
         data[prop] = text;
          if (temp){
             await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
-        } else {
+        } else if (!added){
             await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
         }
@@ -424,21 +448,21 @@ class Variant extends Component {
     }
 
     async blurNotes(e){
-        let { temp, data, dispatch } = this.props;
+        let { temp, data, dispatch, added } = this.props;
         let text = e.target.innerText;
         let prop = "Notes";
         data[prop] = text;
          if (temp){
             await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
-        } else {
+        } else if (!added){
             await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: text}})
             await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
         }
     }
 
     async handleQuote(inQuote){
-        let { temp, data, dispatch } = this.props;
+        let { temp, data, dispatch, added } = this.props;
         let prop = "Include in Scope?";
         if (Object.keys(this.state.data).length > 0 ){
             if (inQuote){
@@ -449,7 +473,7 @@ class Variant extends Component {
                 if (temp){
                     await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
                     await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
-                } else {
+                } else if (!added) {
                     await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
                     await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
                 }
@@ -461,7 +485,7 @@ class Variant extends Component {
                 if (temp){
                     await dispatch({type: TEMPSCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
                     await dispatch({type: SCOPE_SELECT, payload: {data, temp: true }})
-                } else {
+                } else if (!added){
                     await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
                     await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
                 }

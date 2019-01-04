@@ -5131,6 +5131,10 @@ a.text-danger:focus, a.text-danger:hover {
         background-color: white; }
       .builder .content ul .not-selected {
         opacity: 0.5; }
+      .builder .content ul .clicked {
+        opacity: 1; }
+      .builder .content ul .clicked::before {
+        content: "- "; }
       .builder .content ul .temp-select {
         opacity: 1;
         background-color: #f1f1f1; }

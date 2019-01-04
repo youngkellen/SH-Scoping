@@ -11,7 +11,7 @@ import {
   export default (state = defaultState, action) => {
     switch (action.type) {
       case SELECT_FEATURE_SET:
-        return { ...state, fs: action.payload };
+        return { ...state, select: action.payload };
       case SELECT_SCROLL:
         return { ...state, scroll: action.payload };
       default:

@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import searchHighlight from "../../helper/searchHighlight"
 
-
-
 class Set extends PureComponent {
     constructor(props){
         super(props)
@@ -52,6 +50,7 @@ class Set extends PureComponent {
 
     renderClassName(){
         let { selected, temp} = this.state;
+        let { clicked, name, type } = this.props;
         let nameOfClass = ""
         if (temp) {
             // nameOfClass = "temp-select"
@@ -61,8 +60,8 @@ class Set extends PureComponent {
         } else {
             nameOfClass="not-selected"
         }
-        if (this.props.temp) {
-            nameOfClass+=" temp-background"
+        if (clicked && clicked.fs === name && clicked.type === type) {
+            nameOfClass+=" clicked"
         }
         return nameOfClass
     }
@@ -77,7 +76,7 @@ class Set extends PureComponent {
             <li 
                 onClick={()=>this.handleClick()} 
                 className={this.renderClassName()}
-                >
+            >
                 <span dangerouslySetInnerHTML={{ __html:searchHighlight(name, search)}}/>
             </li>
         )
