@@ -5134,7 +5134,14 @@ a.text-danger:focus, a.text-danger:hover {
       .builder .content ul .clicked {
         opacity: 1; }
       .builder .content ul .clicked::before {
-        content: "- "; }
+        content: "\A";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: blue;
+        display: inline-block;
+        margin-right: 5px;
+        margin-bottom: 1px; }
       .builder .content ul .temp-select {
         opacity: 1;
         background-color: #f1f1f1; }

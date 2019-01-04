@@ -11,7 +11,7 @@ class Set extends PureComponent {
     }
 
     componentDidMount(){
-        console.log(this.props, "set props")
+        // console.log(this.props, "set props")
         if (this.props.selectedSet === this.props.name && this.props.type === this.props.selectedType) {
             this.setState({
                 selected: true
@@ -43,7 +43,7 @@ class Set extends PureComponent {
         this.setState({
             temp: true
         })
-        console.log(this.props, "set props")
+        // console.log(this.props, "set props")
         handleFeature(features, temp, name, id)
        
     }

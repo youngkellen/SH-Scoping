@@ -1,4 +1,5 @@
 const getEngineerHours = ( engineerHours, s) => {
+    
     if (s["Include in Scope?"]) {
         engineerHours+= ( Number(s["Android Engineering Estimate (Resource Hours)"]) || 0 ) + 
         ( Number(s["Backend Engineering Estimate (Resource Hours)"]) || 0 ) + 

@@ -47,7 +47,7 @@ class App extends Component {
       complete: ({ data }) => this.call(data)
       // Here this is also available. So we can call our custom class method
     }
-    console.log(scope, "scope bro")
+    // console.log(scope, "scope bro")
     if (Object.keys(scope).length === 0){
       Papa.parse(csv, config)
     } else {

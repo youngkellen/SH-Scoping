@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 import searchHighlight from "../../helper/searchHighlight";
 import newRow from "../../helper/newRow";
 import buildTree from "../../helper/buildTree";
-import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE, SCOPE_SELECT, TEMPSCOPE_SCOPE_REMOVE, SCOPE_ADD, SCOPE_DOWNLOAD, SCOPE_SELECTED_FEATURES } from "../../constants/actionTypes"
+import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SUMMARY, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE, SCOPE_SELECT, TEMPSCOPE_SCOPE_REMOVE, SCOPE_ADD, SCOPE_DOWNLOAD, SCOPE_SELECTED_FEATURES } from "../../constants/actionTypes"
+import getEngineerHours from "../../helper/scopeSummary";
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp, scope: state.scope, tempScope: state.tempScope });
+const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp, scope: state.scope, tempScope: state.tempScope, scopeSummary: state.scope.scopeSummary });
 
 class Variant extends Component {
     constructor(props) {
@@ -45,7 +46,8 @@ class Variant extends Component {
         this.handleNotes = this.handleNotes.bind(this);
         this.blurNotes = this.blurNotes.bind(this);
         this.handleQuote = this.handleQuote.bind(this);
-        
+        this.handleAddSummary = this.handleAddSummary.bind(this);
+        this.handleDeductSummary = this.handleDeductSummary.bind(this);
     }
 
     componentDidMount(){
@@ -325,6 +327,7 @@ class Variant extends Component {
             this.setState({
                 data
             })
+            this.handleAddSummary()
             dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
             dispatch({ type: SCOPE_ADD, payload: data})
             dispatch({type: SCOPE_TREE, payload: buildTree([...scope.scope, data])})
@@ -349,6 +352,7 @@ class Variant extends Component {
         let { data } = this.state;
         let newScope = scope.scope.filter(s => s.id !== data.id)
         newScope = newScope.map((s,i) => {s.id = i; return s})
+        this.handleDeductSummary()
         dispatch({ type: SCOPE_DOWNLOAD, payload: newScope})
         dispatch({type: SCOPE_TREE, payload: buildTree(newScope)})
         dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
@@ -461,8 +465,27 @@ class Variant extends Component {
         }
     }
 
+    handleDeductSummary(){
+        let { temp, data, dispatch, added, scopeSummary } = this.props;
+        let { buttonData } = this.state;
+        let index = buttonData.map(e => e.platform).indexOf("Design");
+        let newDesignHours = scopeSummary.designHours - buttonData[index].hours
+        let newEngineerHours = scopeSummary.engineerHours - getEngineerHours(0 , Object.assign({}, data, {"Include in Scope?": true}))
+        dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(newDesignHours * 100) / 100, engineerHours: Math.round(newEngineerHours * 100) / 100, billable: 0 } })
+    }
+
+    handleAddSummary() {
+        let { temp, data, dispatch, added, scopeSummary } = this.props;
+        let { buttonData } = this.state;
+        let index = buttonData.map(e => e.platform).indexOf("Design");
+        let newDesignHours = scopeSummary.designHours + buttonData[index].hours
+        let newEngineerHours = getEngineerHours(scopeSummary.engineerHours, data)
+        dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(newDesignHours * 100) / 100, engineerHours: Math.round(newEngineerHours * 100) / 100, billable: 0 } })
+
+    }
+
     async handleQuote(inQuote){
-        let { temp, data, dispatch, added } = this.props;
+        let { temp, data, dispatch, added, scopeSummary } = this.props;
         let prop = "Include in Scope?";
         if (Object.keys(this.state.data).length > 0 ){
             if (inQuote){
@@ -476,6 +499,7 @@ class Variant extends Component {
                 } else if (!added) {
                     await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: "x"}})
                     await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+                    this.handleAddSummary()
                 }
             } else {
                 data[prop] = "";
@@ -488,6 +512,7 @@ class Variant extends Component {
                 } else if (!added){
                     await dispatch({type: SCOPE_SCOPE_EDIT, payload: {id: data.id, prop, value: ""}})
                     await dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+                    this.handleDeductSummary()
                 }
             }
         }

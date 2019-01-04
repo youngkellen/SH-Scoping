@@ -155,7 +155,14 @@ $quote-color: #7ed321;
             opacity: 1;
           }
           .clicked::before { 
-            content: "- ";
+            content:"\A";
+            width:5px;
+            height:5px;
+            border-radius:50%;
+            background: blue;
+            display:inline-block;
+            margin-right: 5px;
+            margin-bottom: 1px;
           }
           .temp-select{
             opacity: 1;

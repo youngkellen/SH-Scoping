@@ -35,7 +35,7 @@ class Type extends PureComponent {
     }
 
     componentDidMount() {
-           console.log(this.props, "props in type")
+        //    console.log(this.props, "props in type")
         let { id } = this.props;
 
         if (this.props.type === this.props.selected.data.SOURCE && !this.props.selected.temp) {
@@ -61,8 +61,8 @@ class Type extends PureComponent {
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps, "next props in type")
         let { id } = this.props;
-        console.log(this.props, "features in scroll")
-        console.log(nextProps)
+        // console.log(this.props, "features in scroll")
+        // console.log(nextProps)
         if (nextProps.type === nextProps.selected.data.SOURCE && JSON.stringify(this.props.feature) !== JSON.stringify(nextProps.feature)) {
             // console.log(nextProps, "next prop type")
             let offSet = document.getElementById(`type${id}`).offsetTop
@@ -184,14 +184,14 @@ class Type extends PureComponent {
         let { viewMode, type, featureSets, id, search, fs, tempSet, clicked } = this.props;
         let { featureSet } = featureSets;
         let { selected, tempFS } = this.state
-        console.log(featureSets, "feature sets")
+        // console.log(featureSets, "feature sets")
         // if (tempSet){
         //     console.log(tempSet, "tempSet in render")
         // }
 
         // console.log(this.props, "type prosp bro")
-        console.log(tempFS, "temp fs")
-        console.log(type, "type o")
+        // console.log(tempFS, "temp fs")
+        // console.log(type, "type o")
         if (!type){
             return null
         }
