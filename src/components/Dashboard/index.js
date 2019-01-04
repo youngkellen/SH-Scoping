@@ -6,12 +6,13 @@ import Search from '../Search';
 import Excel from '../Excel';
 import SplitterLayout from 'react-splitter-layout';
 import Footer from '../Footer.js'
+import { SCOPE_TREE, EXPORT_CSV } from '../../constants/actionTypes';
 
-const mapStatetoProps = state => ({viewMode: state.viewMode})
+const mapStatetoProps = state => ({viewMode: state.viewMode, scope: state.scope, exportCSV: state.exportCSV })
 
 class Dashboard extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       excelHeight: 0,
       split: false,
@@ -20,6 +21,8 @@ class Dashboard extends Component {
     this.getHeight = this.getHeight.bind(this);
     this.resetHeight = this.resetHeight.bind(this);
   }
+
+
 
   componentWillReceiveProps(nextProps){
     console.log(nextProps, "dashboard will props")
@@ -48,26 +51,28 @@ class Dashboard extends Component {
 
 renderMode() {
   const { mode, split, full } = this.props.viewMode;
+  const { exportCSV, dispatch } = this.props;
   console.log(mode, "mode bro")
 
   if (mode === "builder" && !split) {
     return (
-      <Builder/>
+      <Builder reIndexSearch={this.props.reIndexSearch}/>
     )
   } else if (mode === "search"  && !split) {
     return (
-      <Search/>
+      <Search search={this.props.search}/>
     )
   }  else if (split){
 
     return (
-      <div  style={{height: "90vh"}}>
+      <div  style={{height: "95vh"}}>
             <SplitterLayout
                 vertical
                 onDragEnd={()=> this.getHeight()}
-                secondaryInitialSize={full ? 10000 : 400}
+                secondaryInitialSize={full ? 100 : 50}
+                percentage
             >
-                 <Builder/>
+                 <Builder reIndexSearch={this.props.reIndexSearch}/>
                  <Excel excelHeight={this.state.excelHeight} resetHeight={this.resetHeight} />
             </SplitterLayout>
         </div>
@@ -84,8 +89,8 @@ renderMode() {
     render() {
       return (
         <div className="mode">
-          <div className="row" style={{maxHeight: "90vh"}}>
-            <div className="col-md-12" style={{maxHeight: "90vh"}}>
+          <div className="row" style={{maxHeight: "95vh"}}>
+            <div className="col-md-12" style={{maxHeight: "95vh"}}>
               {this.renderMode()}
             </div>
           </div>
