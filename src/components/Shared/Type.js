@@ -1,10 +1,9 @@
 import React, { PureComponent, Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { SCOPE_SELECTED_FEATURES, SELECT_FEATURE_SET } from '../../constants/actionTypes';
 import Set from './Set';
 import searchHighlight from "../../helper/searchHighlight";
-import { TEMPSCOPE_ADD, TEMPSCOPE_TREE } from '../../constants/actionTypes';
+import { TEMPSCOPE_ADD, TEMPSCOPE_TREE, SELECT_SCROLL, SELECT_FEATURE_SET , SCOPE_SELECTED_FEATURES} from '../../constants/actionTypes';
 import newRow from "../../helper/newRow";
 import buildTree from "../../helper/buildTree";
 import NewFS from "../Builder/NewFS"
@@ -18,7 +17,8 @@ const mapStatetoProps = state => (
         search: state.scope.search, 
         tempScope: state.tempScope, 
         feature: state.scope.features,
-        clicked: state.selectHelper.select
+        clicked: state.selectHelper.select,
+        shouldScroll: state.selectHelper.scroll
     }
 )
 
@@ -60,13 +60,12 @@ class Type extends PureComponent {
 
     componentWillReceiveProps(nextProps) {
         // console.log(nextProps, "next props in type")
-        let { id } = this.props;
+        let { id, shouldScroll } = this.props;
         // console.log(this.props, "features in scroll")
         // console.log(nextProps)
-        if (nextProps.type === nextProps.selected.data.SOURCE && JSON.stringify(this.props.feature) !== JSON.stringify(nextProps.feature)) {
+        if (shouldScroll && nextProps.type === nextProps.selected.data.SOURCE && JSON.stringify(this.props.feature) !== JSON.stringify(nextProps.feature)) {
             // console.log(nextProps, "next prop type")
             let offSet = document.getElementById(`type${id}`).offsetTop
-            // console.log(offSet, "offSet" )
             let container = document.getElementById('feature_set');
             let { clientHeight, scrollHeight } = container
             // console.log(clientHeight, "client height")
@@ -99,6 +98,8 @@ class Type extends PureComponent {
             dispatch({ type: SCOPE_SELECTED_FEATURES, payload: features.map(f => Object.assign({}, f, {temp: true, type, fs: name})) })
         }
         dispatch({type: SELECT_FEATURE_SET, payload: {fs: name, type }})
+        dispatch({type: SELECT_SCROLL, payload: false })
+
        
     }
 

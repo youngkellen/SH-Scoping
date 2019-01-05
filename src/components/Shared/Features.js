@@ -133,7 +133,8 @@ class Features extends Component {
   render() {
     console.log(this.props, "features props")
     let { tempNewFeatures } = this.state;
-    let { features, scope, search, selected } = this.props;
+    let { features, scope, search, selected, viewMode } = this.props;
+    let height = viewMode.split ? "40vh" : "90vh";
     return (
       <div className="row features" style={{ minWidth: 200 }}>
         <div style={{ height: "100vh" }}>
@@ -141,14 +142,17 @@ class Features extends Component {
             <p>Feature </p>
           </div>
           {this.renderAddNew()}
-          <div className="row layout-pane-scroll">
-            <ul>
+          <div className="col-md-12" style={{ height: height, overflow: "auto", position: "relative" }}>
+         
+          <div className="row layout-pane-scroll" style={{overflow: "auto",}}>
+            <ul style={{overflow: "auto",}}>
             {tempNewFeatures.map(i => <NewFeature key={i} id={i} setToTempScope={this.setToScope}/>) }
              {this.renderFeatures()}
              {this.renderTempFeatures()}
              {this.renderEmpty()}
             </ul>
           </div>
+        </div>
         </div>
       </div>
     );
