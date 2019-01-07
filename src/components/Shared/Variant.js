@@ -353,11 +353,12 @@ class Variant extends Component {
         let newScope = scope.scope.filter(s => s.id !== data.id)
         newScope = newScope.map((s,i) => {s.id = i; return s})
         this.handleDeductSummary()
+        this.props.reIndexSearch(newScope)
         dispatch({ type: SCOPE_DOWNLOAD, payload: newScope})
         dispatch({type: SCOPE_TREE, payload: buildTree(newScope)})
         dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
         dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
-        this.props.reIndexSearch(newScope)
+        // reload is needed for re index
         // this.setState({ addToScope: false })
 
     }

@@ -6,7 +6,7 @@ import Features from '../Shared/Features';
 import FeatureSets from '../Shared/FeatureSets';
 import FeatureVariants from '../Shared/FeatureVariants'
 import SearchEntry from "../Search/SearchEntry";
-import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES, SCOPE_SEARCH } from "../../constants/actionTypes";
+import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES, SCOPE_SEARCH, SELECT_FEATURE_SET, SELECT_SCROLL } from "../../constants/actionTypes";
 
 
 const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope.scope, tree: state.scope.tree, searchText: state.scope.search })
@@ -68,6 +68,9 @@ class Search extends Component {
       match,
       inputValue: value
     })
+    dispatch({type: SELECT_SCROLL, payload: true })
+
+    
   }
 
   handleClick(id, source, set){
@@ -85,11 +88,16 @@ class Search extends Component {
         break
       }
     }
+
+    let data = scope[id]
     
     // console.log(features, "features in search inde")
+    dispatch({type: SELECT_SCROLL, payload: true })
+
     dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
-    dispatch({type: SCOPE_SELECT, payload: {data :scope[id], temp: false }})
-    
+    dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+    dispatch({type: SELECT_FEATURE_SET, payload: {fs: data["Feature set"], type: data.SOURCE }})
+
     this.setState({showResults: false})
   }
 

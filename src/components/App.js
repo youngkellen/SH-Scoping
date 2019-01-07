@@ -43,7 +43,7 @@ class App extends Component {
       header: true,
       skipEmptyLines: true,
       delimiter: ",",
-      preview: 200,
+      // preview: 1000,
       complete: ({ data }) => this.call(data)
       // Here this is also available. So we can call our custom class method
     }

@@ -22,6 +22,10 @@ class Dashboard extends Component {
     this.resetHeight = this.resetHeight.bind(this);
   }
 
+  componentDidMount(){
+    this.getHeight()
+  }
+
 
 
   componentWillReceiveProps(nextProps){
@@ -39,7 +43,8 @@ class Dashboard extends Component {
     let height = document.getElementsByClassName("layout-pane")[length - 1].style.height
     console.log(height, "height")
     this.setState({
-      excelHeight: height
+      excelHeight: Number(height.replace(/\d+% ?/g, ""))
+
     })
   }
 
