@@ -7,8 +7,8 @@ import {
     SCOPE_SEARCH,
     SCOPE_ADD,
     SCOPE_SCOPE_EDIT,
-    SCOPE_TREE_EDIT,
-    SCOPE_SCOPE_REMOVE
+    SCOPE_SCOPE_REMOVE,
+    SCOPE_PREVIOUS_SELECT
   } from '../constants/actionTypes';
   
   const defaultState = {
@@ -26,6 +26,8 @@ import {
       case SCOPE_DOWNLOAD:
         return { ...state, scope: action.payload };
       case SCOPE_SELECT:
+        return { ...state, selected: action.payload };
+      case SCOPE_PREVIOUS_SELECT:
         return { ...state, selected: action.payload };
       case SCOPE_TREE: {
         return { ...state, tree: action.payload };
