@@ -3,6 +3,7 @@ import Entry from '../components/Entry';
 import { Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import NotFound from './NotFound';
+import Project from './Project';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
 import { SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV } from "../constants/actionTypes";
@@ -43,7 +44,7 @@ class App extends Component {
       header: true,
       skipEmptyLines: true,
       delimiter: ",",
-      // preview: 1000,
+      // preview: 100,
       complete: ({ data }) => this.call(data)
       // Here this is also available. So we can call our custom class method
     }
@@ -184,12 +185,15 @@ class App extends Component {
     return (
       <div>
         <div>
-          <Header />
+          <Header location={this.props.location}/>
           <Switch>
             <Route exact path="/" component={Entry} />
             <Route 
+              exact path="/project" 
+              component={() => <Project search={this.search} reIndexSearch={this.reIndexSearch}/>} />
+             <Route 
               exact path="/dashboard" 
-              component={() => <Dashboard search={this.search} reIndexSearch={this.reIndexSearch}/>} />
+              component={() => <Dashboard />} />
             <Route component={NotFound} />
           </Switch>
         </div>

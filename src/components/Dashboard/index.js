@@ -1,108 +1,57 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Builder from '../Builder';
-import Search from '../Search';
-import Excel from '../Excel';
-import SplitterLayout from 'react-splitter-layout';
-import Footer from '../Footer.js'
-import { SCOPE_TREE, EXPORT_CSV } from '../../constants/actionTypes';
+import ProjectSelect from "./ProjectSelect"
 
-const mapStatetoProps = state => ({viewMode: state.viewMode, scope: state.scope, exportCSV: state.exportCSV })
+
+
+const mapStatetoProps = state => ({ viewMode: state.viewMode })
 
 class Dashboard extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      excelHeight: 0,
-      split: false,
-      full: false
-    }
-    this.getHeight = this.getHeight.bind(this);
-    this.resetHeight = this.resetHeight.bind(this);
+  async componentDidMount() {
+    // await this.props.dispatch({type: SCOPE_SEARCH, payload: ""})
   }
 
-  componentDidMount(){
-    this.getHeight()
-  }
-
-
-
-  componentWillReceiveProps(nextProps){
-    console.log(nextProps, "dashboard will props")
-    const { split, full } = nextProps.viewMode;
-    this.setState({
-      split,
-      full
-    })
-  }
-
-  getHeight(){
-    let length = document.getElementsByClassName("layout-pane").length
-    console.log(length, "length")
-    let height = document.getElementsByClassName("layout-pane")[length - 1].style.height
-    console.log(height, "height")
-    this.setState({
-      excelHeight: Number(height.replace(/\d+% ?/g, ""))
-
-    })
-  }
-
-  resetHeight(){
-    this.setState({
-      excelHeight: 0
-    })
-  }
-
-renderMode() {
-  const { mode, split, full } = this.props.viewMode;
-  const { exportCSV, dispatch } = this.props;
-  console.log(mode, "mode bro")
-
-  if (mode === "builder" && !split) {
+  render() {
     return (
-      <Builder reIndexSearch={this.props.reIndexSearch}/>
-    )
-  } else if (mode === "search"  && !split) {
-    return (
-      <Search search={this.props.search}/>
-    )
-  }  else if (split){
+      <div className="dashboard">
+        <div className="col-md-12" style={{ height: "100vh" }}>
+          <div className="row">
+            <p>+ NEW PROJECT</p>
+            <input type="search" defaultValue="    Enter Search Term"></input>
+          </div>
+          <div className="row" style={{ marginTop: "30px" }}>
+            <div className="col-md-10" style={{ paddingLeft: 0, overflow: "auto" }}>
+              <ProjectSelect />
+            </div>
+            <div className="col-md-2 filter">
+              <div className="row">
+                <p>FILTER/SORT:</p>
+                <div  >
+                  <p><input type="radio" value="A-Z" name="filter" /> Alphabetical A-Z</p>
+                  <p><input type="radio" value="Z-A" name="filter" /> Alphabetical Z-A</p>
+                  <p><input type="radio" value="recent" name="filter" /> Most recent</p>
+                  <p><input type="radio" value="latest" name="filter" /> Least recent</p>
+                </div>
+              </div>
+              <div className="row" style={{marginTop: "30px"}}>
+                <p>By platform</p>
+                <div  >
+                  <p><input type="radio" value="ios" name="platform" /> iOS</p>
+                  <p><input type="radio" value="android" name="platform" /> Android</p>
+                  <p><input type="radio" value="hybrid" name="platform" /> Hybrid</p>
+                  <p><input type="radio" value="web" name="platform" /> Web</p>
+                </div>
+              </div>
 
-    return (
-      <div  style={{height: "95vh"}}>
-            <SplitterLayout
-                vertical
-                onDragEnd={()=> this.getHeight()}
-                secondaryInitialSize={full ? 100 : 50}
-                percentage
-            >
-                 <Builder reIndexSearch={this.props.reIndexSearch}/>
-                 <Excel excelHeight={this.state.excelHeight} resetHeight={this.resetHeight} />
-            </SplitterLayout>
+
+            </div>
+
+          </div>
         </div>
-    )
-  } else {
-    return (
-      <div>
-        <p>error</p>
       </div>
-    )
-     
+    );
   }
 }
-    render() {
-      return (
-        <div className="mode">
-          <div className="row" style={{maxHeight: "95vh"}}>
-            <div className="col-md-12" style={{maxHeight: "95vh"}}>
-              {this.renderMode()}
-            </div>
-          </div>
-      </div>
-      );
-    }
-  }
-  
-  export default connect(mapStatetoProps)(Dashboard);
-  
+
+export default connect(mapStatetoProps)(Dashboard);

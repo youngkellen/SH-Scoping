@@ -1,6 +1,25 @@
 $navbar-color: #d8d8d8;
 $button-color: #4990e2;
+$project-navbar-color: #4a90e2;
 
+.navbar-project {
+  background-color: $project-navbar-color !important;
+  color: white;
+  ul {
+    .selected {
+      color: $project-navbar-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 35px;
+      width: 120px;
+      background-color: white;
+      text-align: center;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+  }
+}
 .navbar {
   background-color: $navbar-color;
   display: flex;
@@ -8,12 +27,16 @@ $button-color: #4990e2;
   align-items: center;
   height: 4vh;
   min-height: 34px;
+  width: 100%;
+  border-radius: 0;
+  
   .navbar-image {
     height: 15px;
     width: 26px;
     position: absolute;
     left: 0px;
   }
+  
   .nav {
     display: flex;
     align-items: center;
