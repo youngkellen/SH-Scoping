@@ -78,6 +78,7 @@ $arrow-gray: #979797;
                 background-color: $scopeselect-color;
             }
             .scope-versions{
+                border-bottom: solid white 2px;
                 li { 
                     background-color: $scopeselect-color;
                     border-bottom: solid lightgray 1px;
