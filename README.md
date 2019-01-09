@@ -16,11 +16,14 @@ Alternatively, you can add `.env` file in the root folder of project to set envi
 ## Requirements
 
 - Node v8.0.0 or greater
+- Google Cloud Platform
 
 ### Making requests to the backend API
 
-For convenience, we have a live API server running at http://ocapp-dev.us-west-2.elasticbeanstalk.com/brand/api/v1 for the application to make requests against. You can view [the API spec here](http://ocapp-dev.us-west-2.elasticbeanstalk.com/docs/brand/) which contains all routes & responses for the server.
-
+Using Google API endpoints for backend. 
+App.js and Dashboard/index.js contain the url endpoints. 
+The scopes are contained in the GCP bucket `sh-scoping-scopes`. The project is `sh-scoping`.
+Each top level object in the GCP bucket is a folder that contains two files, a csv and a json for the details of the scope.
 
 ## Functionality overview
 
@@ -31,3 +34,16 @@ The example application is a social blogging site (i.e. a Medium.com clone) call
 Please make edits for the CSS in the .scss files. Running `npm run watch-css` will compile the .scss files to .css in styles/app.css
 
 ## Deployment
+
+Deploy using the google cloud console:
+
+Run `npm run build`. 
+Copy and paste build folder into gcp bucket (sh-scoping.appspot.com).
+Put a yaml file into the gcp bucket.
+
+Go into gcp, open the shell (Mkdir SH_Scope for new folder if needed)
+Run : gsutil rsync -r gs://sh-scoping.appspot.com ./SH_Scope 
+(./SH_Scope is folder name)
+
+cd into SH_Scope (make sure app.yaml and build is there)
+gcloud app deploy

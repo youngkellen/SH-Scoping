@@ -7,7 +7,7 @@ import Project from './Project';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
 import {
- SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN 
+ SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN, DASHBOARD_GET_SCOPES , DASHBOARD_GET_SCOPEJSON
 } from '../constants/actionTypes';
 import getEngineerHours from '../helper/scopeSummary';
 
@@ -70,7 +70,8 @@ class App extends Component {
   
 
   async componentDidMount() {
-    const { scopeToken, token } = this.props.token;
+    const { dispatch } = this.props;
+    const { scopeToken } = this.props.token;
     const bucket = 'sh-scoping-scopes';
     const redirectUrl = MODE === 'development' ? 'http://localhost:3000/dashboard' : 'https://sh-scoping.appspot.com/dashboard';
     const clientId = '941945287972-ve1u0pp1qs7glbj57rqfd4s7qp7al57o.apps.googleusercontent.com';
@@ -80,15 +81,25 @@ class App extends Component {
     if (!scopeToken) {
       window.open(url, '_self');
     } else {
-        let option = {
-          headers: {
-            Authorization: `Bearer ${scopeToken}`
-          }
+      let option = {
+        headers: {
+          Authorization: `Bearer ${scopeToken}`
         }
+      }
         let scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
         console.log(scopeList, "scope list")
-        let scopeObject = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o/Scope.csv?alt=media`, option)
-        console.log(scopeObject, "scope object")
+        // Filter the folder and get the files in the folder
+        let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json"))
+        let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json"))
+        scopeJSON = Promise.all(scopeJSON.map(async(s) => {
+          s = await axios.get(s.mediaLink, option)
+          return s.data
+        })
+        )
+        console.log(scopeJSON, "scope json")
+        dispatch({type: DASHBOARD_GET_SCOPES, payload: scopes})
+        dispatch({type: DASHBOARD_GET_SCOPEJSON, payload: scopeJSON})
+       
         
     }
 

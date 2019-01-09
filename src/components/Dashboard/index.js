@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import ProjectSelect from "./ProjectSelect"
+import ProjectSelect from "./ProjectSelect";
+import axios from "axios";
 
 
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode })
+
+
+const mapStatetoProps = state => ({ viewMode: state.viewMode, token: state.token })
 
 class Dashboard extends Component {
   async componentDidMount() {
-    // await this.props.dispatch({type: SCOPE_SEARCH, payload: ""})
+    const { scopeToken, token } = this.props.token;
+    let option = {
+      headers: {
+        Authorization: `Bearer ${scopeToken}`
+      }
+    }
+    const bucket = 'sh-scoping-scopes';
+    // let scopeObject = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o/Dummy One/DummyOne.csv?alt=media`, option)
+    // console.log(scopeObject, "scope object")
   }
 
   render() {
