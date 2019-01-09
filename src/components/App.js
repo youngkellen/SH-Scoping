@@ -31,6 +31,9 @@ class App extends Component {
     this.search = this.search.bind(this);
     this.reIndexSearch = this.reIndexSearch.bind(this);
     const { href } = window.location;
+    this.state = {
+        getScopeToken: href.includes('access_token')
+    }
     console.log(href, 'look bro');
     if (href.includes('accessToken')) {
       // this is used to get the access Token for opening google sheets
@@ -42,6 +45,7 @@ class App extends Component {
     } else if (href.includes('access_token')) {
       // used for getting scopes from gcp
       const token = href.split('=')[1].split('&')[0];
+      this.getScopes(token)
       this.props.dispatch({ type: SCOPE_TOKEN, payload: token });
     }
   }
@@ -55,7 +59,7 @@ class App extends Component {
       header: true,
       skipEmptyLines: true,
       delimiter: ',',
-      // preview: 100,
+      preview: 100,
       complete: ({ data }) => this.call(data),
       // Here this is also available. So we can call our custom class method
     };
@@ -72,40 +76,47 @@ class App extends Component {
   async componentDidMount() {
     const { dispatch } = this.props;
     const { scopeToken } = this.props.token;
+    const { getScopeToken } = this.state;
     const bucket = 'sh-scoping-scopes';
     const redirectUrl = MODE === 'development' ? 'http://localhost:3000/dashboard' : 'https://sh-scoping.appspot.com/dashboard';
     const clientId = '941945287972-ve1u0pp1qs7glbj57rqfd4s7qp7al57o.apps.googleusercontent.com';
    
     const scope = 'https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/devstorage.read_write';
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=token&scope=${scope}&include_granted_scopes=true`;
-    if (!scopeToken) {
+    if (!scopeToken && !getScopeToken) {
       window.open(url, '_self');
-    } else {
-      let option = {
-        headers: {
-          Authorization: `Bearer ${scopeToken}`
-        }
-      }
-        let scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
-        console.log(scopeList, "scope list")
-        // Filter the folder and get the files in the folder
-        let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json"))
-        let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json"))
-        scopeJSON = Promise.all(scopeJSON.map(async(s) => {
-          s = await axios.get(s.mediaLink, option)
-          return s.data
-        })
-        )
-        console.log(scopeJSON, "scope json")
-        dispatch({type: DASHBOARD_GET_SCOPES, payload: scopes})
-        dispatch({type: DASHBOARD_GET_SCOPEJSON, payload: scopeJSON})
-       
-        
-    }
+    } 
 
 
   // window.open("https://accounts.google.com/o/oauth2/v2/auth", params)
     // console.log(pleaseWork, "please work ")
+  }
+
+  async getScopes(scopeToken){
+    const { dispatch } = this.props;
+
+    const bucket = 'sh-scoping-scopes';
+    const redirectUrl = MODE === 'development' ? 'http://localhost:3000/dashboard' : 'https://sh-scoping.appspot.com/dashboard';
+    const clientId = '941945287972-ve1u0pp1qs7glbj57rqfd4s7qp7al57o.apps.googleusercontent.com';
+    let option = {
+      headers: {
+        Authorization: `Bearer ${scopeToken}`
+      }
+    }
+    console.log(scopeToken, "scope token man")
+      let scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
+      console.log(scopeList, "scope list")
+      // Filter the folder and get the files in the folder
+      let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json"))
+      let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json"))
+      scopeJSON = Promise.all(scopeJSON.map(async(s) => {
+        s = await axios.get(s.mediaLink, option)
+        return s.data
+      })
+      )
+      console.log(scopeJSON, "scope json")
+      dispatch({type: DASHBOARD_GET_SCOPES, payload: scopes})
+      dispatch({type: DASHBOARD_GET_SCOPEJSON, payload: scopeJSON})
   }
 
   

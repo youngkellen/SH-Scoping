@@ -17,7 +17,7 @@ class ProjectSelect extends Component {
     renderList() {
         let projects = []
         let { scopes, json } = this.props;
-        if (scopes && json){
+        if (scopes.length && json.length){
             console.log(scopes, "scopes son")
            
             for (let i = 0; i < scopes.length; i++){
