@@ -72,6 +72,7 @@ class Search extends Component {
 
     
   }
+  
 
   handleClick(id, source, set){
     let { dispatch, scope, tree } = this.props;

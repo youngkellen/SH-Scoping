@@ -7,7 +7,7 @@ import Project from './Project';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
 import {
- SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN, DASHBOARD_GET_SCOPES , DASHBOARD_GET_SCOPEJSON
+  SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN, DASHBOARD_GET_SCOPES, DASHBOARD_GET_SCOPEJSON
 } from '../constants/actionTypes';
 import getEngineerHours from '../helper/scopeSummary';
 
@@ -32,7 +32,7 @@ class App extends Component {
     this.reIndexSearch = this.reIndexSearch.bind(this);
     const { href } = window.location;
     this.state = {
-        getScopeToken: href.includes('access_token')
+      getScopeToken: href.includes('access_token')
     }
     console.log(href, 'look bro');
     if (href.includes('accessToken')) {
@@ -71,7 +71,7 @@ class App extends Component {
     }
   }
 
-  
+
 
   async componentDidMount() {
     const { dispatch } = this.props;
@@ -80,19 +80,21 @@ class App extends Component {
     const bucket = 'sh-scoping-scopes';
     const redirectUrl = MODE === 'development' ? 'http://localhost:3000/dashboard' : 'https://sh-scoping.appspot.com/dashboard';
     const clientId = '941945287972-ve1u0pp1qs7glbj57rqfd4s7qp7al57o.apps.googleusercontent.com';
-   
+
     const scope = 'https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/devstorage.read_write';
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=token&scope=${scope}&include_granted_scopes=true`;
     if (!scopeToken && !getScopeToken) {
       window.open(url, '_self');
-    } 
+    } else {
+      // this.getScopes(scopeToken)
+    }
 
 
-  // window.open("https://accounts.google.com/o/oauth2/v2/auth", params)
+    // window.open("https://accounts.google.com/o/oauth2/v2/auth", params)
     // console.log(pleaseWork, "please work ")
   }
 
-  async getScopes(scopeToken){
+  async getScopes(scopeToken) {
     const { dispatch } = this.props;
 
     const bucket = 'sh-scoping-scopes';
@@ -104,22 +106,22 @@ class App extends Component {
       }
     }
     console.log(scopeToken, "scope token man")
-      let scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
-      console.log(scopeList, "scope list")
-      // Filter the folder and get the files in the folder
-      let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json"))
-      let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json"))
-      scopeJSON = Promise.all(scopeJSON.map(async(s) => {
-        s = await axios.get(s.mediaLink, option)
-        return s.data
-      })
-      )
-      console.log(scopeJSON, "scope json")
-      dispatch({type: DASHBOARD_GET_SCOPES, payload: scopes})
-      dispatch({type: DASHBOARD_GET_SCOPEJSON, payload: scopeJSON})
+    let scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
+    console.log(scopeList, "scope list")
+    // Filter the folder and get the files in the folder
+    let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json"))
+    let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json"))
+    // scopeJSON = Promise.all(scopeJSON.map(async (s) => {
+    //   s = await axios.get(s.mediaLink, option)
+    //   return s.data
+    // })
+    // )
+    console.log(scopeJSON, "scope json")
+    dispatch({ type: DASHBOARD_GET_SCOPES, payload: scopes })
+    dispatch({ type: DASHBOARD_GET_SCOPEJSON, payload: scopeJSON })
   }
 
-  
+
 
   async getGoogleSheet(token) {
     const { scope, dispatch } = this.props;
@@ -220,14 +222,14 @@ class App extends Component {
             <Route exact path="/" component={Entry} />
             <Route
               exact
-path="/project"
+              path="/project"
               component={() => <Project search={this.search} reIndexSearch={this.reIndexSearch} />}
             />
             <Route
-               exact
-path="/dashboard"
-               component={() => <Dashboard />}
-             />
+              exact
+              path="/dashboard"
+              component={() => <Dashboard />}
+            />
             <Route component={NotFound} />
           </Switch>
         </div>

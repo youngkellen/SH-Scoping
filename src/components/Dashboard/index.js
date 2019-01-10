@@ -3,27 +3,46 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ProjectSelect from "./ProjectSelect";
 import axios from "axios";
+import scope from '../../reducers/scope';
 
 
 
 
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, token: state.token })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, token: state.token, scopes: state.dashboard.scopes  })
 
 class Dashboard extends Component {
-  async componentDidMount() {
+  state = {
+    scopeVersions: [],
+    jsonVersions: []
+  }
+  async componentWillMount() {
     const { scopeToken, token } = this.props.token;
+    const { scopes } = this.props;
     let option = {
       headers: {
         Authorization: `Bearer ${scopeToken}`
       }
     }
     const bucket = 'sh-scoping-scopes';
-    // let scopeObject = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o/Dummy One/DummyOne.csv?alt=media`, option)
-    // console.log(scopeObject, "scope object")
+    let scopeObject = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?versions=true`, option)
+    console.log(scopeObject, "scope object")
+    let scopeVersions = scopeObject.data.items.filter(i => i.size != "0" && !i.name.includes("json") && i.timeDeleted && i.name.split("/").length > 1)
+    let jsonVersions = scopeObject.data.items.filter(i => i.size != "0" && i.name.includes("json") && i.timeDeleted)
+
+    // let deletedScopes = scopesFromObject.filter(({id}) => !scopes.map(s => s.id).includes(id))
+    console.log(scopeVersions, "scope Versions")
+    if (scopeVersions.length > 0){
+      this.setState({
+        scopeVersions,
+        jsonVersions
+      })
+    }
+   
   }
 
   render() {
+    let { scopeVersions, jsonVersions } = this.state;
     return (
       <div className="dashboard">
         <div className="col-md-12" style={{ height: "100vh" }}>
@@ -33,7 +52,7 @@ class Dashboard extends Component {
           </div>
           <div className="row" style={{ marginTop: "30px" }}>
             <div className="col-md-10" style={{ paddingLeft: 0, overflow: "auto" }}>
-              <ProjectSelect />
+              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions}/>
             </div>
             <div className="col-md-2 filter">
               <div className="row">

@@ -62,7 +62,7 @@ class ProjectSelect extends Component {
         let { title, versions } = this.props;
         let { selected } = this.state
         return (
-            <li>
+            <li onClick={()=>this.setState(prevState => ({selected: !prevState.selected}))} style={{cursor: "pointer"}}>
                 <div className={`row`}>
                 
                     <div className="col-md-2" >
@@ -71,7 +71,7 @@ class ProjectSelect extends Component {
                     <div className="col-md-9" >
                         <p style={{ paddingLeft: 0 }}>Versions: {versions.length}</p>
                     </div>
-                    <div className={`col-md-1`} onClick={()=>this.setState(prevState => ({selected: !prevState.selected}))}>
+                    <div className={`col-md-1`} >
                         <div className={` ${selected ? "arrow-up" : "arrow-down"}`} />
                     </div>
                 </div>
