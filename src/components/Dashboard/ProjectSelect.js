@@ -59,7 +59,7 @@ class ProjectSelect extends Component {
 
      renderList() {
         let projects = []
-        let { scopes, json } = this.props;
+        let { scopes, json, scopeVersions } = this.props;
         let { scopeJSON } = this.state;
 
         console.log(this.props, "render list props")
@@ -70,7 +70,11 @@ class ProjectSelect extends Component {
             for (let i = 0; i < scopeJSON.length; i++){
                 // let version = await axios.get(`https://storage.googleapis.com/${bucket}/${scopes[i].name}?generation=${scopes[i].generation}`)
                 // console.log(version, "version son")
-                let project = new newProject(scopes[i], scopeJSON[i] )
+                let otherVersions = scopeVersions.filter(s => s.name === scopes[i].name)
+                console.log(otherVersions, "other versions", scopes[i].name)
+                // scopes[i] is the most recent version. other versions are older versions
+                let project = new newProject([ scopes[i], ...otherVersions], scopeJSON[i] )
+                console.log(project, "project bro")
                 if (project){
                     projects.push( project )
                 }

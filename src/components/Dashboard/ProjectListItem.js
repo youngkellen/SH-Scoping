@@ -61,6 +61,7 @@ class ProjectSelect extends Component {
     render() {
         let { title, versions } = this.props;
         let { selected } = this.state
+        console.log(versions, "versions in pli")
         return (
             <li onClick={()=>this.setState(prevState => ({selected: !prevState.selected}))} style={{cursor: "pointer"}}>
                 <div className={`row`}>
