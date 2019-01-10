@@ -32,6 +32,8 @@ class Dashboard extends Component {
 
     // let deletedScopes = scopesFromObject.filter(({id}) => !scopes.map(s => s.id).includes(id))
     console.log(scopeVersions, "scope Versions")
+    console.log(jsonVersions, "json Versions")
+
     if (scopeVersions.length > 0){
       this.setState({
         scopeVersions,
@@ -52,7 +54,7 @@ class Dashboard extends Component {
           </div>
           <div className="row" style={{ marginTop: "30px" }}>
             <div className="col-md-10" style={{ paddingLeft: 0, overflow: "auto" }}>
-              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions}/>
+              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions} call={this.props.call}/>
             </div>
             <div className="col-md-2 filter">
               <div className="row">

@@ -9,7 +9,8 @@ const mapStatetoProps = state => ({ json: state.dashboard.json, scopes: state.da
 
 class ProjectSelect extends Component {
     state = {
-        scopeJSON: []
+        scopeJSON: [],
+        jsonOtherVersions: []
     }
     renderList = this.renderList.bind(this)
 
@@ -25,20 +26,46 @@ class ProjectSelect extends Component {
                 return s.data
               })
             )
-            console.log(scopeJSON, "scopejson")
+            console.log(scopeJSON, "scopejson in willmount")
         this.setState({
             scopeJSON
         })
     }
 
+    async componentWillReceiveProps(nextProps){
+        let {  scopeToken } = this.props;
+
+        let option = {
+            headers: {
+              Authorization: `Bearer ${scopeToken}`
+            }
+          }
+         
+        if (nextProps.jsonVersions.length > 0 && nextProps.jsonVersions.length !== this.props.jsonVersions.length){
+            let jsonOtherVersions = await Promise.all(nextProps.jsonVersions.map(async (j) => {
+                j = await axios.get(j.mediaLink, option)
+                return j.data
+              })
+            )
+            this.setState({
+                jsonOtherVersions
+            })
+            console.log(jsonOtherVersions, "json other versions")
+
+        }
+    }
+
     async componentDidMount() {
-        let { scopes, json, scopeToken } = this.props;
+        let { scopes, json, scopeToken, jsonVersions } = this.props;
       
         let option = {
             headers: {
               Authorization: `Bearer ${scopeToken}`
             }
           }
+         
+
+       
         const bucket = 'sh-scoping-scopes';
         console.log(this.props, "ps props mount")
         // let versions =  await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?versions=true`, option)
@@ -60,10 +87,10 @@ class ProjectSelect extends Component {
      renderList() {
         let projects = []
         let { scopes, json, scopeVersions } = this.props;
-        let { scopeJSON } = this.state;
+        let { scopeJSON, jsonOtherVersions } = this.state;
 
         console.log(this.props, "render list props")
-        if (scopes.length > 0 && json.length > 0 && scopeJSON.length > 0){
+        if (scopes.length > 0 && json.length > 0 && scopeJSON.length > 0 && jsonOtherVersions.length === scopeVersions.length){
             console.log(scopes, "scopes son")
             console.log(scopeJSON, "scope json")
            
@@ -73,7 +100,7 @@ class ProjectSelect extends Component {
                 let otherVersions = scopeVersions.filter(s => s.name === scopes[i].name)
                 console.log(otherVersions, "other versions", scopes[i].name)
                 // scopes[i] is the most recent version. other versions are older versions
-                let project = new newProject([ scopes[i], ...otherVersions], scopeJSON[i] )
+                let project = new newProject([ scopes[i], ...otherVersions], [ scopeJSON[i], ...jsonOtherVersions])
                 console.log(project, "project bro")
                 if (project){
                     projects.push( project )
@@ -83,7 +110,7 @@ class ProjectSelect extends Component {
             console.log(projects, "projects bro")
             return (
                 projects.map(p => {
-                    return <ProjectListItem title={p.scope} versions={p.versions} />
+                    return <ProjectListItem title={p.scope} versions={p.versions} call={this.props.call}/>
                 })
             )
         } else {

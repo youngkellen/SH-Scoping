@@ -7,7 +7,7 @@ import Project from './Project';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
 import {
-  SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN, DASHBOARD_GET_SCOPES, DASHBOARD_GET_SCOPEJSON
+  SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SELECT_FEATURE_SET, SCOPE_SELECTED_FEATURES, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN, DASHBOARD_GET_SCOPES, DASHBOARD_GET_SCOPEJSON
 } from '../constants/actionTypes';
 import getEngineerHours from '../helper/scopeSummary';
 
@@ -30,14 +30,16 @@ class App extends Component {
     this.index = {};
     this.search = this.search.bind(this);
     this.reIndexSearch = this.reIndexSearch.bind(this);
+    this.call = this.call.bind(this);
     const { href } = window.location;
+
     this.state = {
       getScopeToken: href.includes('access_token')
     }
     console.log(href, 'look bro');
+
     if (href.includes('accessToken')) {
       // this is used to get the access Token for opening google sheets
-      // console.log(href, "href bro")
       const token = href.split('=')[1];
       // console.log(token, "token bro")
       this.props.dispatch({ type: ACCESS_TOKEN, payload: token });
@@ -48,24 +50,25 @@ class App extends Component {
       this.getScopes(token)
       this.props.dispatch({ type: SCOPE_TOKEN, payload: token });
     }
+
   }
 
   componentWillMount() {
     const { scope } = this.props;
 
-    const csv = require('../assets/Scope.csv');
-    const config = {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      delimiter: ',',
-      preview: 100,
-      complete: ({ data }) => this.call(data),
-      // Here this is also available. So we can call our custom class method
-    };
+    // const csv = require('../assets/Scope.csv');
+    // const config = {
+    //   download: true,
+    //   header: true,
+    //   skipEmptyLines: true,
+    //   delimiter: ',',
+    //   preview: 100,
+    //   complete: ({ data }) => this.call(data),
+    //   // Here this is also available. So we can call our custom class method
+    // };
     // console.log(scope, "scope bro")
     if (Object.keys(scope).length === 0) {
-      Papa.parse(csv, config);
+      // Papa.parse(csv, config);
     } else {
       this.reIndexSearch(scope);
     }
@@ -86,7 +89,7 @@ class App extends Component {
     if (!scopeToken && !getScopeToken) {
       window.open(url, '_self');
     } else {
-      // this.getScopes(scopeToken)
+      this.getScopes(scopeToken)
     }
 
 
@@ -144,6 +147,10 @@ class App extends Component {
     const fields = Object.keys(data[0]);
     data = data.map((d, i) => Object.assign({}, d, { id: i }));
     dispatch({ type: SCOPE_DOWNLOAD, payload: data });
+    dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
+    dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
+    dispatch({type: SELECT_FEATURE_SET, payload: {}})
+
     // dispatch({type: SCOPE_SELECT, payload: scope[id]})
     const types = {};
     let designHours = 0;
@@ -228,7 +235,7 @@ class App extends Component {
             <Route
               exact
               path="/dashboard"
-              component={() => <Dashboard />}
+              component={() => <Dashboard call={this.call}/>}
             />
             <Route component={NotFound} />
           </Switch>
