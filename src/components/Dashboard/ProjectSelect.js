@@ -26,7 +26,7 @@ class ProjectSelect extends Component {
                 return s.data
               })
             )
-            console.log(scopeJSON, "scopejson in willmount")
+            // console.log(scopeJSON, "scopejson in willmount")
         this.setState({
             scopeJSON
         })
@@ -87,13 +87,13 @@ class ProjectSelect extends Component {
 
      renderList() {
         let projects = []
-        let { scopes, json, scopeVersions, sortProject, platformFilter } = this.props;
+        let { scopes, json, scopeVersions, sortProject, platformFilter, search } = this.props;
         let { scopeJSON, jsonOtherVersions } = this.state;
 
         console.log(this.props, "render list props")
         if (scopes.length > 0 && json.length > 0 && scopeJSON.length > 0 && jsonOtherVersions.length === scopeVersions.length){
-            console.log(scopes, "scopes son")
-            console.log(scopeJSON, "scope json")
+            // console.log(scopes, "scopes son")
+            // console.log(scopeJSON, "scope json")
            
             for (let i = 0; i < scopeJSON.length; i++){
                 // let version = await axios.get(`https://storage.googleapis.com/${bucket}/${scopes[i].name}?generation=${scopes[i].generation}`)
@@ -102,15 +102,19 @@ class ProjectSelect extends Component {
                 console.log(otherVersions, "other versions", scopes[i].name)
                 // scopes[i] is the most recent version. other versions are older versions
                 let project = new newProject([ scopes[i], ...otherVersions], [ scopeJSON[i], ...jsonOtherVersions])
-                console.log(project, "project bro")
+                // console.log(project, "project bro")
                 if (project){
                     projects.push( project )
                 }
                
             }
-            console.log(projects, "projects bro")
+            // console.log(projects, "projects bro")
             // add filter log here
             // a-z
+
+            if (search) {
+                projects = projects.filter(p => p.scope.toLowerCase().includes(search.toLowerCase()))
+            }
             if (sortProject) {
                 if (sortProject === "A-Z"){
                     let field = "scope"

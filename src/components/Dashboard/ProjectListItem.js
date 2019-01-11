@@ -14,6 +14,8 @@ const mapStatetoProps = state => ({ viewMode: state.viewMode, scopeToken: state.
 
 class ProjectListItem extends Component {
     getCSV = this.getCSV.bind(this);
+    duplicateCSV = this.duplicateCSV.bind(this);
+    renderVersions = this.renderVersions.bind(this);
     state = {
         selected: false
     }
@@ -49,12 +51,47 @@ class ProjectListItem extends Component {
         
     }
 
+    async duplicateCSV(link, name, downloadLink, json){
+        console.log(link, "link zelda")
+        console.log(downloadLink, "download")
+        console.log(json, "json")
+        const bucket = 'sh-scoping-scopes';
+        const { scopeToken, dispatch } = this.props;
+        let option = {
+            headers: {
+                Authorization: `Bearer ${scopeToken}`
+            }
+        }
+        let jsonOption = {
+            headers: {
+              Authorization: `Bearer ${scopeToken}`,
+              "Content-Type": "application/json"
+            }
+          }
+        let csv = await axios.get(link, option)
+        if (csv && csv.data){
+            let csvLink = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${downloadLink}`
+            let jsonLink = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${downloadLink.split("/")[0]}/scope.json`
+
+            let post = await axios.post(csvLink, csv.data, option)
+            let jsonPost = await axios.post(jsonLink, json, jsonOption)
+        if (post && jsonPost){
+            setTimeout(window.location.reload(), 1000)
+        } else {
+            alert("error")
+        }
+      
+        }
+        
+    }
+
     renderVersions() {
         let { title, versions } = this.props;
         console.log(this.props, "ps props")
-        return versions.map(v => {
+        return versions.map((v, i) => {
+            console.log(v, "v for vendetta")
             return (
-                <li>
+                <li key={i}>
                     <div className="row">
                         <div className="col-md-2">
                             <div className="row" style={{ marginLeft: 0 }}>
@@ -85,7 +122,7 @@ class ProjectListItem extends Component {
                             {moment(v.lastEdit).format("MM-DD-YY")}
                         </div>
                         <div className="col-md-1">
-                            <button className="btn btn-primary">Duplicate</button>
+                            <button className="btn btn-primary" onClick={() => this.duplicateCSV(v.mediaLink, title, v.fileName, v.json)}>Duplicate</button>
                         </div>
                         <div className="col-md-1">
                             <button className="btn btn-primary" onClick={() => this.getCSV(v.mediaLink, title, v.fileName, v.json)}>Edit</button>

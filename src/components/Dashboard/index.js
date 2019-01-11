@@ -23,7 +23,8 @@ class Dashboard extends Component {
     projectPlatforms: "",
     projectTypes: "",
     sortProject: "",
-    platformFilter: []
+    platformFilter: [],
+    search: ""
   }
 
   handleSubmit = this.handleSubmit.bind(this);
@@ -184,18 +185,18 @@ class Dashboard extends Component {
   }
 
   render() {
-    let { scopeVersions, jsonVersions, newProject, sortProject, platformFilter } = this.state;
+    let { scopeVersions, jsonVersions, newProject, sortProject, platformFilter, search } = this.state;
     return (
       <div className="dashboard">
         <div className="col-md-12" style={{ height: "100vh" }}>
           <div className="row">
             <p onClick={() => this.setState(prevState =>({newProject: !prevState.newProject}))} style={{cursor: "pointer", color: "dodgerblue", fontSize: 16}}>+ NEW PROJECT</p>
             {newProject ? this.renderNewProjectInput(): null}
-            <input type="search" defaultValue="Enter Search Term"></input>
+            <input type="search" placeholder="Enter Search Term" onChange={e=>this.setState({search: e.target.value})}></input>
           </div>
           <div className="row" style={{ marginTop: "30px" }}>
             <div className="col-md-10" style={{ paddingLeft: 0, overflow: "auto" }}>
-              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions} call={this.props.call} sortProject={sortProject} platformFilter={platformFilter}/>
+              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions} call={this.props.call} sortProject={sortProject} platformFilter={platformFilter} search={search}/>
             </div>
             <div className="col-md-2 filter">
               <div className="row">
