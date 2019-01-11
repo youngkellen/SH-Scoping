@@ -135,13 +135,13 @@ class Header extends React.Component {
               <li className="nav-item" >
                 <p style={{ overflow: "hidden", maxWidth: "200px", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{scopeName || ""}</p>
               </li>
-              {Platforms.map(p => {
+              {Platforms && Platforms.length ? Platforms.map(p => {
                 return (
                   <li className="nav-item">
                     <button className="btn btn-primary btn-round btn-light-blue">{p}</button>
                   </li>
                 )
-              })}
+              }) : null}
 
               <li className="nav-item">
                 <button className="btn btn-outline-primary btn-round btn-white " onClick={this.saveCSV}>Save</button>
@@ -177,12 +177,12 @@ class Header extends React.Component {
               <li className="nav-item">
                 <p>DASHBOARD</p>
               </li>
-              <li className="nav-item" style={{ marginLeft: "100px" }}>
+              <li className="nav-item selected" style={{ marginLeft: "100px" }}>
                 <p>SCOPES</p>
               </li>
-              <li className="nav-item selected" style={{ marginLeft: "100px" }}>
+              {/* <li className="nav-item selected" style={{ marginLeft: "100px" }}>
                 <p>TYPES</p>
-              </li>
+              </li> */}
             </ul>
           </div>
         </nav>
