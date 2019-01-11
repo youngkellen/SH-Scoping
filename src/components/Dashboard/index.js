@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ProjectSelect from "./ProjectSelect";
 import axios from "axios";
 import scope from '../../reducers/scope';
+import { platform } from 'os';
 
 
 
@@ -21,10 +22,12 @@ class Dashboard extends Component {
     projectDescription: "",
     projectPlatforms: "",
     projectTypes: "",
-    filterProject: ""
+    sortProject: "",
+    platformFilter: []
   }
 
   handleSubmit = this.handleSubmit.bind(this);
+  handlePlatformFilter = this.handlePlatformFilter.bind(this);
 
   async componentWillMount() {
     const { scopeToken, token } = this.props.token;
@@ -164,8 +167,24 @@ class Dashboard extends Component {
     )
   }
 
+  handlePlatformFilter(val){
+    val = val.toLowerCase()
+    let { platformFilter } = this.state;
+
+    if (platformFilter.includes(val)){
+      this.setState({
+        platformFilter:  platformFilter.filter(p => p !== val)
+      })
+     
+    } else {
+      this.setState({
+        platformFilter : [...platformFilter, val]
+      })
+    }
+  }
+
   render() {
-    let { scopeVersions, jsonVersions, newProject, filterProject } = this.state;
+    let { scopeVersions, jsonVersions, newProject, sortProject, platformFilter } = this.state;
     return (
       <div className="dashboard">
         <div className="col-md-12" style={{ height: "100vh" }}>
@@ -176,25 +195,25 @@ class Dashboard extends Component {
           </div>
           <div className="row" style={{ marginTop: "30px" }}>
             <div className="col-md-10" style={{ paddingLeft: 0, overflow: "auto" }}>
-              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions} call={this.props.call} filterProject={filterProject}/>
+              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions} call={this.props.call} sortProject={sortProject} platformFilter={platformFilter}/>
             </div>
             <div className="col-md-2 filter">
               <div className="row">
                 <p>FILTER/SORT:</p>
                 <div  >
-                  <p><input type="radio" value="A-Z" name="filter" onChange={()=>this.setState({ filterProject: "A-Z"})}/> Alphabetical A-Z</p>
-                  <p><input type="radio" value="Z-A" name="filter" onChange={()=>this.setState({ filterProject: "Z-A"})}/> Alphabetical Z-A</p>
-                  <p><input type="radio" value="recent" name="filter" onChange={()=>this.setState({ filterProject: "recent"})}/> Most recent</p>
-                  <p><input type="radio" value="latest" name="filter" onChange={()=>this.setState({ filterProject: "latest"})}/> Least recent</p>
+                  <p><input type="radio" value="A-Z" name="filter" onChange={()=>this.setState({ sortProject: "A-Z"})}/> Alphabetical A-Z</p>
+                  <p><input type="radio" value="Z-A" name="filter" onChange={()=>this.setState({ sortProject: "Z-A"})}/> Alphabetical Z-A</p>
+                  <p><input type="radio" value="recent" name="filter" onChange={()=>this.setState({ sortProject: "recent"})}/> Most recent</p>
+                  <p><input type="radio" value="latest" name="filter" onChange={()=>this.setState({ sortProject: "latest"})}/> Least recent</p>
                 </div>
               </div>
               <div className="row" style={{marginTop: "30px"}}>
                 <p>By platform</p>
                 <div  >
-                  <p><input type="radio" value="ios" name="platform" /> iOS</p>
-                  <p><input type="radio" value="android" name="platform" /> Android</p>
-                  <p><input type="radio" value="hybrid" name="platform" /> Hybrid</p>
-                  <p><input type="radio" value="web" name="platform" /> Web</p>
+                  <p><input type="checkbox" value="ios" name="iOS" onChange={(e) => this.handlePlatformFilter(e.target.value)}/>iOS</p>
+                  <p><input type="checkbox" value="android" name="Android" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Android</p>
+                  <p><input type="checkbox" value="hybrid" name="Hybrid" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Hybrid</p>
+                  <p><input type="checkbox" value="web" name="Web" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Web</p>
                 </div>
               </div>
 
