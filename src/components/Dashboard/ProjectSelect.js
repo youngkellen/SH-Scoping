@@ -87,7 +87,7 @@ class ProjectSelect extends Component {
 
      renderList() {
         let projects = []
-        let { scopes, json, scopeVersions } = this.props;
+        let { scopes, json, scopeVersions, filterProject } = this.props;
         let { scopeJSON, jsonOtherVersions } = this.state;
 
         console.log(this.props, "render list props")
@@ -109,6 +109,27 @@ class ProjectSelect extends Component {
                
             }
             console.log(projects, "projects bro")
+            // add filter log here
+            // a-z
+            if (filterProject) {
+                if (filterProject === "A-Z"){
+                    let field = "scope"
+                     projects = projects.sort((a, b) => (a[field] || "").toString().localeCompare((b[field] || "").toString()));
+                } else if (filterProject === "Z-A"){
+                    let field = "scope"
+                    projects = projects.sort((a,b) => (b[field] || "").toString().localeCompare( (a[field] || "")) );
+                } else if (filterProject === "recent"){
+                    let field = "versions"
+                    projects = projects.sort((a,b) => new Date(b[field][0].lastEdit) - new Date(a[field][0].lastEdit));
+                } else if (filterProject === "latest"){
+                    let field = "versions"
+                    projects = projects.sort((a,b) => new Date(a[field][0].lastEdit) - new Date(b[field][0].lastEdit));
+                }
+            }
+           
+
+         
+
             return (
                 projects.map((p, i) => {
                     return <ProjectListItem key={i} title={p.scope} versions={p.versions} call={this.props.call}/>

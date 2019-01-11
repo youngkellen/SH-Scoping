@@ -20,7 +20,8 @@ class Dashboard extends Component {
     approve: false,
     projectDescription: "",
     projectPlatforms: "",
-    projectTypes: ""
+    projectTypes: "",
+    filterProject: ""
   }
 
   handleSubmit = this.handleSubmit.bind(this);
@@ -164,7 +165,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    let { scopeVersions, jsonVersions, newProject } = this.state;
+    let { scopeVersions, jsonVersions, newProject, filterProject } = this.state;
     return (
       <div className="dashboard">
         <div className="col-md-12" style={{ height: "100vh" }}>
@@ -175,16 +176,16 @@ class Dashboard extends Component {
           </div>
           <div className="row" style={{ marginTop: "30px" }}>
             <div className="col-md-10" style={{ paddingLeft: 0, overflow: "auto" }}>
-              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions} call={this.props.call}/>
+              <ProjectSelect scopeVersions={scopeVersions} jsonVersions={jsonVersions} call={this.props.call} filterProject={filterProject}/>
             </div>
             <div className="col-md-2 filter">
               <div className="row">
                 <p>FILTER/SORT:</p>
                 <div  >
-                  <p><input type="radio" value="A-Z" name="filter" /> Alphabetical A-Z</p>
-                  <p><input type="radio" value="Z-A" name="filter" /> Alphabetical Z-A</p>
-                  <p><input type="radio" value="recent" name="filter" /> Most recent</p>
-                  <p><input type="radio" value="latest" name="filter" /> Least recent</p>
+                  <p><input type="radio" value="A-Z" name="filter" onChange={()=>this.setState({ filterProject: "A-Z"})}/> Alphabetical A-Z</p>
+                  <p><input type="radio" value="Z-A" name="filter" onChange={()=>this.setState({ filterProject: "Z-A"})}/> Alphabetical Z-A</p>
+                  <p><input type="radio" value="recent" name="filter" onChange={()=>this.setState({ filterProject: "recent"})}/> Most recent</p>
+                  <p><input type="radio" value="latest" name="filter" onChange={()=>this.setState({ filterProject: "latest"})}/> Least recent</p>
                 </div>
               </div>
               <div className="row" style={{marginTop: "30px"}}>
