@@ -76,6 +76,7 @@ class Set extends PureComponent {
             <li 
                 onClick={()=>this.handleClick()} 
                 className={this.renderClassName()}
+                style={this.props.temp ? {backgroundColor: "yellow"} : {}}
             >
                 <span dangerouslySetInnerHTML={{ __html:searchHighlight(name, search)}}/>
             </li>

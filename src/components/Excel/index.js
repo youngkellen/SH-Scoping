@@ -240,9 +240,7 @@ class Excel extends Component {
         const { width, height } = window.screen
         let { data, temp } = this.props.selected;
         // let height = excelHeight ? parseInt(excelHeight.replace(/px/,"")) * 0.8 : full ? 500 : 250
-        console.log(excelHeight, "piss")
         let newHeight = excelHeight ? excelHeight/100 * height : full ?  height : height/2
-        console.log(newHeight, "new height")
 
 
         return (

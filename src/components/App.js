@@ -1,195 +1,254 @@
 import React, { Component } from 'react';
-import Entry from '../components/Entry';
 import { Route, Switch } from 'react-router-dom';
+import Entry from '../components/Entry';
 import Header from './Header';
 import NotFound from './NotFound';
+import Project from './Project';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
-import { SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV } from "../constants/actionTypes";
-import getEngineerHours from "../helper/scopeSummary"
+import {
+  SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SELECT_FEATURE_SET, SCOPE_SELECTED_FEATURES, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN, DASHBOARD_GET_SCOPES, DASHBOARD_GET_SCOPEJSON
+} from '../constants/actionTypes';
+import getEngineerHours from '../helper/scopeSummary';
 
 import { store } from '../store';
 import { push } from 'react-router-redux';
 import '../styles/app.css';
 import Papa from 'papaparse';
 import scope from '../reducers/scope';
-import elasticlunr from "elasticlunr";
-import axios from "axios"
+import elasticlunr from 'elasticlunr';
+import axios from 'axios';
 
-const mapStateToProps = state => ({scope: state.scope.scope})
+
+const mapStateToProps = state => ({ scope: state.scope.scope, token: state.token });
+const MODE = process.env.NODE_ENV;
+
 
 class App extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.index = {};
     this.search = this.search.bind(this);
     this.reIndexSearch = this.reIndexSearch.bind(this);
-    let { href}  = window.location;
-    if (href.includes("accessToken")){
+    this.call = this.call.bind(this);
+    const { href } = window.location;
+
+    this.state = {
+      getScopeToken: href.includes('access_token')
+    }
+    console.log(href, 'look bro');
+
+    if (href.includes('accessToken')) {
       // this is used to get the access Token for opening google sheets
-      // console.log(href, "href bro")
-      let token = href.split("=")[1]
+      const token = href.split('=')[1];
       // console.log(token, "token bro")
-      this.props.dispatch({type: ACCESS_TOKEN, payload: token})
-      this.getGoogleSheet(token)
+      this.props.dispatch({ type: ACCESS_TOKEN, payload: token });
+      this.getGoogleSheet(token);
+    } else if (href.includes('access_token')) {
+      // used for getting scopes from gcp
+      const token = href.split('=')[1].split('&')[0];
+      this.getScopes(token)
+      this.props.dispatch({ type: SCOPE_TOKEN, payload: token });
     }
+
   }
+
   componentWillMount() {
-    let { scope } = this.props;
+    const { scope } = this.props;
 
-    let csv = require("../assets/Scope.csv")
-    let config = {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      delimiter: ",",
-      // preview: 1000,
-      complete: ({ data }) => this.call(data)
-      // Here this is also available. So we can call our custom class method
-    }
+    // const csv = require('../assets/Scope.csv');
+    // const config = {
+    //   download: true,
+    //   header: true,
+    //   skipEmptyLines: true,
+    //   delimiter: ',',
+    //   preview: 100,
+    //   complete: ({ data }) => this.call(data),
+    //   // Here this is also available. So we can call our custom class method
+    // };
     // console.log(scope, "scope bro")
-    if (Object.keys(scope).length === 0){
-      Papa.parse(csv, config)
+    if (Object.keys(scope).length === 0) {
+      // Papa.parse(csv, config);
     } else {
-      this.reIndexSearch(scope)
+      this.reIndexSearch(scope);
     }
-    
   }
 
-  async call(data) {
+
+
+  async componentDidMount() {
     const { dispatch } = this.props;
-    // console.log(data, "csv data")
-    let fields = Object.keys(data[0])
-    data = data.map((d, i) => Object.assign({}, d, { id: i }))
-    dispatch({ type: SCOPE_DOWNLOAD, payload: data })
-    // dispatch({type: SCOPE_SELECT, payload: scope[id]})
-    let types = {}
-    let designHours = 0;
-    let engineerHours = 0;
+    const { scopeToken } = this.props.token;
+    const { getScopeToken } = this.state;
+    const bucket = 'sh-scoping-scopes';
+    const redirectUrl = MODE === 'development' ? 'http://localhost:3000/dashboard' : 'https://sh-scoping.appspot.com/dashboard';
+    const clientId = '941945287972-ve1u0pp1qs7glbj57rqfd4s7qp7al57o.apps.googleusercontent.com';
 
-    let index = elasticlunr(function () {
-      fields.map(f => {
-        this.addField(f)
-      })
+    const scope = 'https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/devstorage.read_write';
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=token&scope=${scope}&include_granted_scopes=true`;
+    if (!scopeToken && !getScopeToken) {
+      window.open(url, '_self');
+    } else {
+      this.getScopes(scopeToken)
+    }
 
-    });
 
-    data.forEach((s, i) => {
-      index.addDoc(s);
-      designHours += Number(s["Design Estimate (Resource Hours)"]) || 0
-      engineerHours = getEngineerHours(engineerHours, s)
-      if (!types.hasOwnProperty(s.SOURCE)) {
-        types[s.SOURCE] = {
-          featureSet: [
-            {
-              name: s["Feature set"],
-              features: [
-                {
-                  feature: s.Feature, id: i
-                }
-              ]
-            }
-          ]
-        };
-      } else {
-        let pos = types[s.SOURCE].featureSet.map(e => e.name).indexOf(s["Feature set"]);
-        if (pos === -1) {
-          types[s.SOURCE].featureSet = [...types[s.SOURCE].featureSet, { name: s["Feature set"], features: [{ feature: [s.Feature], id: i }] }]
-        } else {
-          types[s.SOURCE].featureSet[pos].features = [...types[s.SOURCE].featureSet[pos].features, { feature: s.Feature, id: i }]
-        }
+    // window.open("https://accounts.google.com/o/oauth2/v2/auth", params)
+    // console.log(pleaseWork, "please work ")
+  }
+
+  async getScopes(scopeToken) {
+    const { dispatch } = this.props;
+
+    const bucket = 'sh-scoping-scopes';
+    const redirectUrl = MODE === 'development' ? 'http://localhost:3000/dashboard' : 'https://sh-scoping.appspot.com/dashboard';
+    const clientId = '941945287972-ve1u0pp1qs7glbj57rqfd4s7qp7al57o.apps.googleusercontent.com';
+    let option = {
+      headers: {
+        Authorization: `Bearer ${scopeToken}`
       }
-    })
-    this.index = index;
-    await dispatch({ type: SCOPE_TREE, payload: types });
-    await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
-    // let unparse = Papa.unparse(data)
-    // console.log(unparse, "unparse")
-    // await dispatch({ type: SCOPE_TREE, payload: types })
-    // await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } })
-    // dispatch({type: SCOPE_SEARCH, payload: index})
-
-
-
-    // console.log(this.index, "index in app")
-
-    
-
-
-    // var doc1 = {
-    //   "id": 1,
-    //   "title": "Oracle released its latest database Oracle 12g",
-    //   "body": "Yestaday Oracle has released its new database Oracle 12g, this would make more money for this company and lead to a nice profit report of annual year."
-    // }
-
-    // var doc2 = {
-    //   "id": 2,
-    //   "title": "Oracle released its profit report of 2015",
-    //   "body": "As expected, Oracle released its profit report of 2015, during the good sales of database and hardware, Oracle's profit of 2015 reached 12.5 Billion."
-    // }
-
-
-    // index.addDoc(doc2);
-
+    }
+    console.log(scopeToken, "scope token man")
+    let scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
+    console.log(scopeList, "scope list")
+    // Filter the folder and get the files in the folder
+    let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json") && i.name.split("/").length > 1 && i.name.split("/")[i.name.split("/").length - 1] )
+    let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json") && i.name.split("/").length > 1 && i.name.split("/")[i.name.split("/").length - 1])
+    // scopeJSON = Promise.all(scopeJSON.map(async (s) => {
+    //   s = await axios.get(s.mediaLink, option)
+    //   return s.data
+    // })
+    // )
+    console.log(scopeJSON, "scope json")
+    dispatch({ type: DASHBOARD_GET_SCOPES, payload: scopes })
+    dispatch({ type: DASHBOARD_GET_SCOPEJSON, payload: scopeJSON })
   }
 
-  async getGoogleSheet(token){
-    let { scope,dispatch } = this.props;
-    let copyScope = scope.slice()
-    let csv = Papa.unparse(scope)
-    console.log(csv, "unparse")
-    let postUrl = "https://us-central1-adept-coda-226322.cloudfunctions.net/createGoogleSheetFromCSV";
-    let options = { accessToken: token, csvData: csv, clientName:"newClient" };
-     
-    let response = await axios.post(postUrl, options);
+
+
+  async getGoogleSheet(token) {
+    const { scope, dispatch } = this.props;
+    // const copyScope = scope.slice();
+    const csv = Papa.unparse(scope);
+    console.log(csv, 'unparse');
+    const postUrl = 'https://us-central1-adept-coda-226322.cloudfunctions.net/createGoogleSheetFromCSV';
+    const options = { accessToken: token, csvData: csv, clientName: 'newClient' };
+
+    const response = await axios.post(postUrl, options);
     // console.log(response, "response in get google")
-    if (response){
-      dispatch({type: EXPORT_CSV, payload: false})
-      window.open(response.data.googleSheetUrl, "_blank" )
+    if (response) {
+      dispatch({ type: EXPORT_CSV, payload: false });
+      window.open(response.data.googleSheetUrl, '_blank');
     }
-    
+  }
+  call(data) {
+    const { dispatch } = this.props;
+    console.log(data, "csv data")
+    if (data.length > 0){
+      const fields = Object.keys(data[0]);
+      data = data.map((d, i) => Object.assign({}, d, { id: i }));
+      dispatch({ type: SCOPE_DOWNLOAD, payload: data });
+      dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
+      dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
+      dispatch({type: SELECT_FEATURE_SET, payload: {}})
+  
+      // dispatch({type: SCOPE_SELECT, payload: scope[id]})
+      const types = {};
+      let designHours = 0;
+      let engineerHours = 0;
+  
+      const index = elasticlunr(function () {
+        fields.map((f) => {
+          this.addField(f);
+        });
+      });
+  
+      data.forEach((s, i) => {
+        index.addDoc(s);
+        designHours += Number(s['Design Estimate (Resource Hours)']) || 0;
+        engineerHours = getEngineerHours(engineerHours, s);
+        if (!types.hasOwnProperty(s.SOURCE)) {
+          types[s.SOURCE] = {
+            featureSet: [
+              {
+                name: s['Feature set'],
+                features: [
+                  {
+                    feature: s.Feature, id: i,
+                  },
+                ],
+              },
+            ],
+          };
+        } else {
+          const pos = types[s.SOURCE].featureSet.map(e => e.name).indexOf(s['Feature set']);
+          if (pos === -1) {
+            types[s.SOURCE].featureSet = [...types[s.SOURCE].featureSet, { name: s['Feature set'], features: [{ feature: [s.Feature], id: i }] }];
+          } else {
+            types[s.SOURCE].featureSet[pos].features = [...types[s.SOURCE].featureSet[pos].features, { feature: s.Feature, id: i }];
+          }
+        }
+      });
+      this.index = index;
+      dispatch({ type: SCOPE_TREE, payload: types });
+      dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } });
+    } else {
+      dispatch({ type: SCOPE_DOWNLOAD, payload: [] });
+      dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
+      dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
+      dispatch({type: SELECT_FEATURE_SET, payload: {}})
+      dispatch({ type: SCOPE_TREE, payload: {} });
+      dispatch({ type: SCOPE_SUMMARY, payload: { designHours: 0, engineerHours:0, billable: 0 } });
+    }
+
+
+   
   }
 
-  reIndexSearch(scope){
+  reIndexSearch(scope) {
     // passed down all the way to Variant.js
-    let fields = Object.keys(scope[0])
-    let index = elasticlunr(function () {
-      fields.map(f => {
-        this.addField(f)
-      })
-
+    const fields = Object.keys(scope[0]);
+    const index = elasticlunr(function () {
+      fields.map((f) => {
+        this.addField(f);
+      });
     });
-    scope.forEach(s => {
-        index.addDoc(s);
-    })
+    scope.forEach((s) => {
+      index.addDoc(s);
+    });
     this.index = index;
   }
 
 
-  search(term){
+  search(term) {
     // search needs to be passed down from app to prevent unneeded re rendering
-    console.log(this.index, "index in search")
-    let options = {
-      expand:true
-    }
-   let result = this.index.search(term, options);
-    console.log(result, "result")
-    let match = result.map(r => {
-      return this.index.documentStore.getDoc(r.ref)
-    })
-    return match
+    console.log(this.index, 'index in search');
+    const options = {
+      expand: true,
+    };
+    const result = this.index.search(term, options);
+    console.log(result, 'result');
+    const match = result.map((r) => this.index.documentStore.getDoc(r.ref));
+    return match;
   }
 
   render() {
     return (
       <div>
         <div>
-          <Header />
+          <Header location={this.props.location} />
           <Switch>
             <Route exact path="/" component={Entry} />
-            <Route 
-              exact path="/dashboard" 
-              component={() => <Dashboard search={this.search} reIndexSearch={this.reIndexSearch}/>} />
+            <Route
+              exact
+              path="/project"
+              component={() => <Project search={this.search} reIndexSearch={this.reIndexSearch} />}
+            />
+            <Route
+              exact
+              path="/dashboard"
+              component={() => <Dashboard call={this.call}/>}
+            />
             <Route component={NotFound} />
           </Switch>
         </div>
