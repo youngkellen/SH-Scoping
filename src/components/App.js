@@ -143,54 +143,66 @@ class App extends Component {
   }
   call(data) {
     const { dispatch } = this.props;
-    // console.log(data, "csv data")
-    const fields = Object.keys(data[0]);
-    data = data.map((d, i) => Object.assign({}, d, { id: i }));
-    dispatch({ type: SCOPE_DOWNLOAD, payload: data });
-    dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
-    dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
-    dispatch({type: SELECT_FEATURE_SET, payload: {}})
-
-    // dispatch({type: SCOPE_SELECT, payload: scope[id]})
-    const types = {};
-    let designHours = 0;
-    let engineerHours = 0;
-
-    const index = elasticlunr(function () {
-      fields.map((f) => {
-        this.addField(f);
+    console.log(data, "csv data")
+    if (data.length > 0){
+      const fields = Object.keys(data[0]);
+      data = data.map((d, i) => Object.assign({}, d, { id: i }));
+      dispatch({ type: SCOPE_DOWNLOAD, payload: data });
+      dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
+      dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
+      dispatch({type: SELECT_FEATURE_SET, payload: {}})
+  
+      // dispatch({type: SCOPE_SELECT, payload: scope[id]})
+      const types = {};
+      let designHours = 0;
+      let engineerHours = 0;
+  
+      const index = elasticlunr(function () {
+        fields.map((f) => {
+          this.addField(f);
+        });
       });
-    });
-
-    data.forEach((s, i) => {
-      index.addDoc(s);
-      designHours += Number(s['Design Estimate (Resource Hours)']) || 0;
-      engineerHours = getEngineerHours(engineerHours, s);
-      if (!types.hasOwnProperty(s.SOURCE)) {
-        types[s.SOURCE] = {
-          featureSet: [
-            {
-              name: s['Feature set'],
-              features: [
-                {
-                  feature: s.Feature, id: i,
-                },
-              ],
-            },
-          ],
-        };
-      } else {
-        const pos = types[s.SOURCE].featureSet.map(e => e.name).indexOf(s['Feature set']);
-        if (pos === -1) {
-          types[s.SOURCE].featureSet = [...types[s.SOURCE].featureSet, { name: s['Feature set'], features: [{ feature: [s.Feature], id: i }] }];
+  
+      data.forEach((s, i) => {
+        index.addDoc(s);
+        designHours += Number(s['Design Estimate (Resource Hours)']) || 0;
+        engineerHours = getEngineerHours(engineerHours, s);
+        if (!types.hasOwnProperty(s.SOURCE)) {
+          types[s.SOURCE] = {
+            featureSet: [
+              {
+                name: s['Feature set'],
+                features: [
+                  {
+                    feature: s.Feature, id: i,
+                  },
+                ],
+              },
+            ],
+          };
         } else {
-          types[s.SOURCE].featureSet[pos].features = [...types[s.SOURCE].featureSet[pos].features, { feature: s.Feature, id: i }];
+          const pos = types[s.SOURCE].featureSet.map(e => e.name).indexOf(s['Feature set']);
+          if (pos === -1) {
+            types[s.SOURCE].featureSet = [...types[s.SOURCE].featureSet, { name: s['Feature set'], features: [{ feature: [s.Feature], id: i }] }];
+          } else {
+            types[s.SOURCE].featureSet[pos].features = [...types[s.SOURCE].featureSet[pos].features, { feature: s.Feature, id: i }];
+          }
         }
-      }
-    });
-    this.index = index;
-    dispatch({ type: SCOPE_TREE, payload: types });
-    dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } });
+      });
+      this.index = index;
+      dispatch({ type: SCOPE_TREE, payload: types });
+      dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } });
+    } else {
+      dispatch({ type: SCOPE_DOWNLOAD, payload: [] });
+      dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
+      dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
+      dispatch({type: SELECT_FEATURE_SET, payload: {}})
+      dispatch({ type: SCOPE_TREE, payload: {} });
+      dispatch({ type: SCOPE_SUMMARY, payload: { designHours: 0, engineerHours:0, billable: 0 } });
+    }
+
+
+   
   }
 
   reIndexSearch(scope) {

@@ -39,7 +39,7 @@ class ProjectListItem extends Component {
         // let csv = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/${name.split("/")[0]}/o/${name.split("/")[1]}?alt=media`)
         // console.log(csv, "please please")
         let csv = await axios.get(link, option)
-        // console.log(csv.data, "please work")
+        console.log(csv, "please work")
         Papa.parse(csv.data, config);
         dispatch({type: SCOPE_NAME, payload: name})
         dispatch({type: SCOPE_DOWNLOAD_LINK, payload: downloadLink})

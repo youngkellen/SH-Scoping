@@ -110,8 +110,8 @@ class ProjectSelect extends Component {
             }
             console.log(projects, "projects bro")
             return (
-                projects.map(p => {
-                    return <ProjectListItem title={p.scope} versions={p.versions} call={this.props.call}/>
+                projects.map((p, i) => {
+                    return <ProjectListItem key={i} title={p.scope} versions={p.versions} call={this.props.call}/>
                 })
             )
         } else {

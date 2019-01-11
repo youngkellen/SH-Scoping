@@ -77,16 +77,51 @@ class Dashboard extends Component {
     })
   }
 
-  handleSubmit(){
+  handleProjectTypes(val){
+    this.setState({
+      projectTypes: val
+    })
+  }
+
+  async handleSubmit(){
     let { projectDescription, projectName, projectPlatforms, approve, projectTypes} = this.state;
+    const { scopeToken, token } = this.props.token;
     if ( projectDescription && projectName && projectPlatforms && projectTypes) {
       let json = {
-        "Platforms" : projectPlatforms,
-        "Types" : projectTypes,
+        "Platforms" : projectPlatforms.split(" "),
+        "Types" : projectTypes.split(" "),
         "Approve": approve,
         "Description": projectDescription
       }
+      let csv = "SOURCE,Include in Scope?,Platform,Feature set,Feature,Feature description,Design Estimate (Resource Hours),Hybrid Engineering,Web Engineering Estimate (Resource Hours),iOS Engineering Estimate (Resource Hours),Android Engineering Estimate (Resource Hours),Backend Engineering Estimate (Resource Hours),Magento Engineering,QA Estimate (Resource Hours),Assumptions,Notes,Type"
+      
       let folderName = projectName
+      const bucket = 'sh-scoping-scopes';
+      let option = {
+        headers: {
+          Authorization: `Bearer ${scopeToken}`,
+          "Content-Type": "text/csv"
+        }
+      }
+      let jsonOption = {
+        headers: {
+          Authorization: `Bearer ${scopeToken}`,
+          "Content-Type": "application/json"
+        }
+      }
+      
+      let path = `${folderName}/scope.csv`
+      // let csvContent = "data:text/csv;charset=utf-8," + csv
+      // let encodedUri = encodeURI(csvContent);
+  
+      let link = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${path}`
+      let jsonLink = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${folderName}/scope.json`
+      let post = await axios.post(link, csv, option)
+      let jsonPost = await axios.post(jsonLink, json, jsonOption)
+      if (post && jsonPost){
+        alert("Submitted. Please allow up to a minute to see the new project.")
+        // window.location.reload(); 
+      }
     } else {
       alert("Please Complete Form")
     }
@@ -111,12 +146,16 @@ class Dashboard extends Component {
                     <input type="radio" value={approve} name="approve" style={{width: 10}} onChange={()=>this.changeApprove(true)}/>yes
                   </span>
                   <span>
-                    <input type="radio" value={!approve} name="approve"  style={{width: 10}} onChange={()=>this.changeApprove(false)}/>no
+                    <input type="radio" value={!approve} name="approve"  style={{width: 10}} onChange={()=>this.changeApprove(false)} defaultChecked/>no
                   </span>
             </div>
             <div className="row">
               <p style={{display: "inline-block", width: 80, marginRight: 20}}>Platforms</p>
-              <input type="text" className="Rectangle" onChange={e=>this.handleProjectPlatforms(e.target.value)} />
+              <input type="text" className="Rectangle" onChange={e=>this.handleProjectPlatforms(e.target.value)} placeholder="space delimited"/>
+            </div>
+            <div className="row">
+              <p style={{display: "inline-block", width: 80, marginRight: 20}}>Types</p>
+              <input type="text" className="Rectangle" onChange={e=>this.handleProjectTypes(e.target.value)} placeholder="space delimited"/>
             </div>
             <button className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
           </div>

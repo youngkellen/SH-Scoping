@@ -32,6 +32,7 @@ gsutil versioning set on gs://sh-scoping-scopes
 Allow up to a minute for eventual write/read consistency with creating new versions of project.
 
 Delete bucket content with versions in gcp terminal using: gsutil -m rm -rf gs://sh-scoping-scopes/
+Make sure to reenable versioning after deleting
 
 ## Functionality overview
 
