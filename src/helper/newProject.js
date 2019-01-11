@@ -12,7 +12,9 @@ export default class newProject {
                     "types" : json[i].Types, 
                     "approve" : json[i].Approve,
                     "generation": s.generation, 
-                    "mediaLink": s.mediaLink
+                    "mediaLink": s.mediaLink,
+                    "selfLink": s.selfLink,
+                    "json": json[i]
                 }
             })
             

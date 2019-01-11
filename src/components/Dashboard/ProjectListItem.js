@@ -4,6 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 import Papa from 'papaparse';
 import { push } from 'react-router-redux';
+import { SCOPE_NAME, SCOPE_DOWNLOAD_LINK, SCOPE_JSON } from '../../constants/actionTypes';
 
 
 
@@ -17,7 +18,7 @@ class ProjectListItem extends Component {
         selected: false
     }
 
-    async getCSV(link) {
+    async getCSV(link, name, downloadLink, json) {
         const bucket = 'sh-scoping-scopes';
         const { scopeToken, dispatch } = this.props;
         let option = {
@@ -30,7 +31,7 @@ class ProjectListItem extends Component {
             header: true,
             skipEmptyLines: true,
             delimiter: ',',
-            preview: 100,
+            // preview: 100,
             complete: ({data} ) => this.props.call(data)
         };
         // console.log(scope, "scope bro")
@@ -38,8 +39,11 @@ class ProjectListItem extends Component {
         // let csv = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/${name.split("/")[0]}/o/${name.split("/")[1]}?alt=media`)
         // console.log(csv, "please please")
         let csv = await axios.get(link, option)
-        console.log(csv.data, "please work")
+        // console.log(csv.data, "please work")
         Papa.parse(csv.data, config);
+        dispatch({type: SCOPE_NAME, payload: name})
+        dispatch({type: SCOPE_DOWNLOAD_LINK, payload: downloadLink})
+        dispatch({type: SCOPE_JSON, payload: json})
         dispatch(push('./project'))
 
         
@@ -84,7 +88,7 @@ class ProjectListItem extends Component {
                             <button className="btn btn-primary">Duplicate</button>
                         </div>
                         <div className="col-md-1">
-                            <button className="btn btn-primary" onClick={() => this.getCSV(v.mediaLink)}>Edit</button>
+                            <button className="btn btn-primary" onClick={() => this.getCSV(v.mediaLink, title, v.fileName, v.json)}>Edit</button>
                         </div>
 
                     </div>
@@ -98,8 +102,8 @@ class ProjectListItem extends Component {
         let { selected } = this.state
         console.log(versions, "versions in pli")
         return (
-            <li onClick={() => this.setState(prevState => ({ selected: !prevState.selected }))} style={{ cursor: "pointer" }}>
-                <div className={`row`}>
+            <li  style={{ cursor: "pointer" }}>
+                <div className={`row`} onClick={() => this.setState(prevState => ({ selected: !prevState.selected }))}>
 
                     <div className="col-md-2" >
                         <p>{title}</p>

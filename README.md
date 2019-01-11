@@ -25,6 +25,7 @@ App.js and Dashboard/index.js contain the url endpoints.
 The scopes are contained in the GCP bucket `sh-scoping-scopes`. The project is `sh-scoping`.
 Each top level object in the GCP bucket is a folder that contains two files, a csv and a json for the details of the scope.
 Both the csv and json must be updated during any write, or else bugs will happen!!!
+the json file must be named: `scope.json`
 
 ## Functionality overview
 

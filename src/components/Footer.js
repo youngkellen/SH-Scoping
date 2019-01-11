@@ -4,6 +4,8 @@ import { store } from '../store';
 import { push } from 'react-router-redux';
 import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW, EXPORT_CSV } from '../constants/actionTypes';
 import axios from "axios";
+import { stat } from 'fs';
+import Papa from 'papaparse';
 
 
 class Footer extends React.Component {
@@ -44,10 +46,13 @@ class Footer extends React.Component {
   
     
     handleExport(){
-        let { dispatch } = this.props;
-        let csv = require("../assets/Scope.csv")
+        let { dispatch, scope } = this.props;
+        const csv = Papa.unparse(scope);
+        console.log(csv, "csv")
         dispatch({type: EXPORT_CSV, payload: true})
-        window.open(csv);  
+        let csvContent = "data:text/csv;charset=utf-8," + csv
+        let encodedUri = encodeURI(csvContent);
+        window.open(encodedUri);  
 
     }
 
@@ -99,7 +104,7 @@ class Footer extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({ viewMode: state.viewMode, scopeSummary: state.scope.scopeSummary })
+const mapStateToProps = state => ({ viewMode: state.viewMode, scopeSummary: state.scope.scopeSummary, scope: state.scope.scope })
 
 export default connect(mapStateToProps, null)(Footer);
 

@@ -43,6 +43,7 @@ class ProjectSelect extends Component {
          
         if (nextProps.jsonVersions.length > 0 && nextProps.jsonVersions.length !== this.props.jsonVersions.length){
             let jsonOtherVersions = await Promise.all(nextProps.jsonVersions.map(async (j) => {
+
                 j = await axios.get(j.mediaLink, option)
                 return j.data
               })
@@ -97,7 +98,7 @@ class ProjectSelect extends Component {
             for (let i = 0; i < scopeJSON.length; i++){
                 // let version = await axios.get(`https://storage.googleapis.com/${bucket}/${scopes[i].name}?generation=${scopes[i].generation}`)
                 // console.log(version, "version son")
-                let otherVersions = scopeVersions.filter(s => s.name === scopes[i].name)
+                let otherVersions = scopeVersions.filter(s => s.name === scopes[i].name).reverse()
                 console.log(otherVersions, "other versions", scopes[i].name)
                 // scopes[i] is the most recent version. other versions are older versions
                 let project = new newProject([ scopes[i], ...otherVersions], [ scopeJSON[i], ...jsonOtherVersions])

@@ -112,8 +112,8 @@ class App extends Component {
     let scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
     console.log(scopeList, "scope list")
     // Filter the folder and get the files in the folder
-    let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json"))
-    let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json"))
+    let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json") && i.name.split("/").length > 1 && i.name.split("/")[i.name.split("/").length - 1] )
+    let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json") && i.name.split("/").length > 1 && i.name.split("/")[i.name.split("/").length - 1])
     // scopeJSON = Promise.all(scopeJSON.map(async (s) => {
     //   s = await axios.get(s.mediaLink, option)
     //   return s.data
@@ -141,7 +141,7 @@ class App extends Component {
       window.open(response.data.googleSheetUrl, '_blank');
     }
   }
-  async call(data) {
+  call(data) {
     const { dispatch } = this.props;
     // console.log(data, "csv data")
     const fields = Object.keys(data[0]);
@@ -189,8 +189,8 @@ class App extends Component {
       }
     });
     this.index = index;
-    await dispatch({ type: SCOPE_TREE, payload: types });
-    await dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } });
+    dispatch({ type: SCOPE_TREE, payload: types });
+    dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } });
   }
 
   reIndexSearch(scope) {

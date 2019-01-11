@@ -2,9 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { MODE_CHANGE, SPLIT_CHANGE, FULL_VIEW, SCOPE_SEARCH, EXPORT_CSV } from '../constants/actionTypes';
-import CreateModal from './CreateModal.js'
+import CreateModal from './CreateModal.js';
+import axios from 'axios';
+import Papa from 'papaparse'
 
-const mapStateToProps = state => ({ viewMode: state.viewMode, exportCSV: state.exportCSV.exportCSV })
+const mapStateToProps = state => ({
+  viewMode: state.viewMode,
+  exportCSV: state.exportCSV.exportCSV,
+  scopeName: state.scope.scopeName,
+  scopeToken: state.token.scopeToken,
+  downloadLink: state.scope.downloadLink,
+  scope: state.scope.scope,
+  scopeJSON: state.scope.scopeJSON
+})
 
 let navBarColor = "#4a90e2";
 class Header extends React.Component {
@@ -12,10 +22,10 @@ class Header extends React.Component {
     super(props)
     this.state = {
       mode: this.props.viewMode.mode === "search" ? "Search Mode" : "Builder Mode",
-      projectName: "PROJECT NAME",
       createModalOpen: false
     }
     this.modalChange = this.modalChange.bind(this);
+    this.saveCSV = this.saveCSV.bind(this);
   }
 
 
@@ -72,8 +82,39 @@ class Header extends React.Component {
     dispatch({ type: EXPORT_CSV, payload: false })
   }
 
+  async saveCSV() {
+    const { scopeToken, dispatch, scope, downloadLink, scopeJSON } = this.props;
+    const bucket = 'sh-scoping-scopes';
+    let option = {
+      headers: {
+        Authorization: `Bearer ${scopeToken}`,
+        "Content-Type": "text/csv"
+      }
+    }
+    let jsonOption = {
+      headers: {
+        Authorization: `Bearer ${scopeToken}`,
+        "Content-Type": "application/json"
+      }
+    }
+    const csv = Papa.unparse(scope);
+    console.log(downloadLink, "download link")
+    // let csvContent = "data:text/csv;charset=utf-8," + csv
+    // let encodedUri = encodeURI(csvContent);
+
+    let link = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${downloadLink}`
+    let jsonLink = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${downloadLink.split("/")[0]}/scope.json`
+    let post = await axios.post(link, csv, option)
+    let jsonPost = await axios.post(jsonLink, scopeJSON, jsonOption)
+    // console.log(post, "post csv")
+    // console.log(jsonPost,"json Post")
+    if (post && jsonPost){
+      alert("saved")
+    }
+  }
+
   renderNavBar() {
-    let { exportCSV, location } = this.props;
+    let { exportCSV, location, scopeName } = this.props;
     let path = location.pathname;
 
     let platforms = ["iOS", "Android", "Web", "Backend"]
@@ -91,8 +132,8 @@ class Header extends React.Component {
                   <img src={require("../assets/sh-logo.png")}></img>
                 </Link>
               </li>
-              <li className="nav-item">
-                <p>{this.state.projectName.substring(0, 15)}</p>
+              <li className="nav-item" >
+                <p style={{ overflow: "hidden", maxWidth: "200px", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{scopeName || ""}</p>
               </li>
               {platforms.map(p => {
                 return (
@@ -103,7 +144,7 @@ class Header extends React.Component {
               })}
 
               <li className="nav-item">
-                <button className="btn btn-outline-primary btn-round btn-white ">Edit</button>
+                <button className="btn btn-outline-primary btn-round btn-white " onClick={this.saveCSV}>Save</button>
               </li>
               <li className="nav-item">
                 <button className="btn btn-outline-primary btn-round btn-white " onClick={() => this.modalChange()}>Create</button>
