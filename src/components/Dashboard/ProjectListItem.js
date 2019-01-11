@@ -102,8 +102,8 @@ class ProjectListItem extends Component {
         let { selected } = this.state
         console.log(versions, "versions in pli")
         return (
-            <li  style={{ cursor: "pointer" }}>
-                <div className={`row`} onClick={() => this.setState(prevState => ({ selected: !prevState.selected }))}>
+            <li>
+                <div className={`row`} style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ selected: !prevState.selected }))}>
 
                     <div className="col-md-2" >
                         <p>{title}</p>

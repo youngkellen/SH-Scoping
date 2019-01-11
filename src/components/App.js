@@ -128,7 +128,7 @@ class App extends Component {
 
   async getGoogleSheet(token) {
     const { scope, dispatch } = this.props;
-    const copyScope = scope.slice();
+    // const copyScope = scope.slice();
     const csv = Papa.unparse(scope);
     console.log(csv, 'unparse');
     const postUrl = 'https://us-central1-adept-coda-226322.cloudfunctions.net/createGoogleSheetFromCSV';

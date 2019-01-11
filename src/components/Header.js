@@ -114,10 +114,10 @@ class Header extends React.Component {
   }
 
   renderNavBar() {
-    let { exportCSV, location, scopeName } = this.props;
+    let { exportCSV, location, scopeName, scopeJSON } = this.props;
     let path = location.pathname;
 
-    let platforms = ["iOS", "Android", "Web", "Backend"]
+    let { Platforms } = scopeJSON
     if (path === "/project") {
       return (
         <nav className="navbar navbar-default">
@@ -135,7 +135,7 @@ class Header extends React.Component {
               <li className="nav-item" >
                 <p style={{ overflow: "hidden", maxWidth: "200px", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{scopeName || ""}</p>
               </li>
-              {platforms.map(p => {
+              {Platforms.map(p => {
                 return (
                   <li className="nav-item">
                     <button className="btn btn-primary btn-round btn-light-blue">{p}</button>

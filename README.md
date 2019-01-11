@@ -7,11 +7,7 @@ To get the frontend running locally:
 
 - Clone this repo
 - `npm install` to install all req'd dependencies
-- `npm start` to start the local server (this project uses create-react-app)
-
-Local web server will use port 4100 instead of standard React's port 3000 to prevent conflicts with some backends like Node or Rails. You can configure port in scripts section of `package.json`: we use [cross-env](https://github.com/kentcdodds/cross-env) to set environment variable PORT for React scripts, this is Windows-compatible way of setting environment variables.
- 
-Alternatively, you can add `.env` file in the root folder of project to set environment variables (use PORT to change webserver's port). This file will be ignored by git, so it is suitable for API keys and other sensitive stuff. Refer to [dotenv](https://github.com/motdotla/dotenv) and [React](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-development-environment-variables-in-env) documentation for more details. Also, please remove setting variable via script section of `package.json` - `dotenv` never override variables if they are already set.  
+- `npm start` to start the local server (this project uses create-react-app)  
 
 ## Requirements
 
@@ -21,15 +17,25 @@ Alternatively, you can add `.env` file in the root folder of project to set envi
 ### Making requests to the backend API
 
 Using Google API endpoints for backend. 
-App.js and Dashboard/index.js contain the url endpoints. 
+
+https://cloud.google.com/storage/docs/object-versioning?hl=ar
+https://cloud.google.com/storage/docs/json_api/v1/
+
 The scopes are contained in the GCP bucket `sh-scoping-scopes`. The project is `sh-scoping`.
 Each top level object in the GCP bucket is a folder that contains two files, a csv and a json for the details of the scope.
 Both the csv and json must be updated during any write, or else bugs will happen!!!
 the json file must be named: `scope.json`
 
+If versioning is not working, make sure versioning is enabled in google cloud. 
+gsutil versioning set on gs://sh-scoping-scopes
+
+Allow up to a minute for eventual write/read consistency with creating new versions of project.
+
+Delete bucket content with versions in gcp terminal using: gsutil -m rm -rf gs://sh-scoping-scopes/
+
 ## Functionality overview
 
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication. You can view a live demo over at https://redux.productionready.io/
+View site on `https://sh-scoping.appspot.com/`
 
 ## Notes for editing CSS
 
