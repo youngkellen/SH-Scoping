@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Entry from '../components/Entry';
 import Header from './Header';
 import NotFound from './NotFound';
@@ -237,11 +237,10 @@ class App extends Component {
       <div>
         <div>
           <Header location={this.props.location} />
-          <Router>
           <Switch>
             <Route  exact
               path="/"
-              component={() => <Dashboard call={this.call}/>}/>
+              component={() => <Entry/>}/>
             <Route
               exact
               path="/project"
@@ -254,7 +253,6 @@ class App extends Component {
             />
             <Route component={NotFound} />
           </Switch>
-          </Router>
         </div>
       </div>
     );
