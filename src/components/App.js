@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import Entry from '../components/Entry';
 import Header from './Header';
 import NotFound from './NotFound';
@@ -237,7 +237,7 @@ class App extends Component {
       <div>
         <div>
           <Header location={this.props.location} />
-          <BrowserRouter>
+          <Router>
           <Switch>
             <Route  exact
               path="/"
@@ -254,7 +254,7 @@ class App extends Component {
             />
             <Route component={NotFound} />
           </Switch>
-          </BrowserRouter>
+          </Router>
         </div>
       </div>
     );
