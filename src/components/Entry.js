@@ -9,12 +9,13 @@ class Entry extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props) {
-      // this will be used for login functionality
-      store.dispatch(push('/project'));
-    } else {
-      store.dispatch(push('/dashboard'));
-    }
+    // if (this.props) {
+    //   // this will be used for login functionality
+    //   store.dispatch(push('/project'));
+    // } else {
+    //   store.dispatch(push('/dashboard'));
+    // }
+    store.dispatch(push('/dashboard'));
   }
 
   render() {
