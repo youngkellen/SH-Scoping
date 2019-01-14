@@ -16,7 +16,7 @@ class NewType extends PureComponent {
         setToTempScope(id, input)
     }
     handleChange(val){
-        console.log(val, "new type val")
+        // console.log(val, "new type val")
         this.setState({
             input: val
         })
@@ -27,7 +27,7 @@ class NewType extends PureComponent {
         }
       }
     render() {
-        console.log(this.props, "newType props")
+        // console.log(this.props, "newType props")
         return (
             <div className="row new-type">
               <input 

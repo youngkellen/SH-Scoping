@@ -7,7 +7,7 @@ class NewFeature extends PureComponent {
     handleChange = this.handleChange.bind(this);
 
     componentDidMount(){
-        console.log(this.props, "new fs props")
+        // console.log(this.props, "new fs props")
         this.nameInput.focus();
     }
 
@@ -18,7 +18,7 @@ class NewFeature extends PureComponent {
        
     }
     handleChange(val){
-        console.log(val, "new type val")
+        // console.log(val, "new type val")
         this.setState({
             input: val
         })
@@ -29,7 +29,7 @@ class NewFeature extends PureComponent {
         }
       }
     render() {
-        console.log(this.props, "newFS props")
+        // console.log(this.props, "newFS props")
         return (
             <div className="row new-type">
             <li>

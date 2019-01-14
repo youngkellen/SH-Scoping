@@ -697,7 +697,7 @@ class Variant extends Component {
                                     />
                                     <div className="dropdown-menu dropdown-menu-right" style={menuClick ? { display: "block" } : { display: "none" }}>
                                         <a className="dropdown-item" onClick={() => this.addToLibrary(data)}>Add To Library</a>
-                                        <a className="dropdown-item">Update in Library</a>
+                                        {/* <a className="dropdown-item">Update in Library</a> */}
                                     </div>
                                 </div>
                             </div>

@@ -279,10 +279,9 @@ class App extends Component {
     const { dispatch, scope } = this.props;
     console.log(data, "csv library data")
     let addToIndex = Object.keys(this.index).length > 0;
-    alert(addToIndex)
     if (data.length > 0) {
       const fields = Object.keys(data[0]);
-      data = data.map((d, i) => Object.assign({}, d, { id: i  }));
+      data = data.map((d, i) => Object.assign({}, d, { id: i, library: true }));
       dispatch({ type: LIBRARY_DOWNLOAD, payload: data })
 
       // dispatch({type: SCOPE_SELECT, payload: scope[id]})

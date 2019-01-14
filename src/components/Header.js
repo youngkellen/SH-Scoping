@@ -192,8 +192,8 @@ class Header extends React.Component {
   }
 
   render() {
-    console.log('header props', this.props)
-    console.log("head state", this.state)
+    // console.log('header props', this.props)
+    // console.log("head state", this.state)
 
     return (
       this.renderNavBar()

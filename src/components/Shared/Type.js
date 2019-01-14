@@ -67,7 +67,7 @@ class Type extends PureComponent {
             // console.log(nextProps, "next prop type")
             let offSet = document.getElementById(`type${id}`).offsetTop
             let container = document.getElementById('feature_set');
-            let { clientHeight, scrollHeight } = container
+            // let { clientHeight, scrollHeight } = container
             // console.log(clientHeight, "client height")
             // console.log(scrollHeight, "scroll height")
             container.scroll({

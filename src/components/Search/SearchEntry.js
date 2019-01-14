@@ -11,8 +11,8 @@ class SearchEntry extends Component {
 
 
     handleClick(){
-        let { handleClick, id, source, featureSet} = this.props;
-        handleClick(id, source, featureSet)
+        let { handleClick, id, source, featureSet, library} = this.props;
+        handleClick(id, source, featureSet, library)
     }
 
     render() {

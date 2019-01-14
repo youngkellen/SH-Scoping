@@ -21,7 +21,7 @@ class Features extends Component {
   }
 
   componentDidMount(){
-    console.log(this.props, "features props")
+    // console.log(this.props, "features props")
     let { mode } = this.props
    
   }
@@ -55,7 +55,7 @@ class Features extends Component {
 
   async setToScope(input){
     let { tempNewFeatures } = this.state
-    console.log(this.props, "features props")
+    // console.log(this.props, "features props")
     tempNewFeatures.splice(0, 1)
     this.setState({
       tempNewFeatures: []
@@ -89,9 +89,9 @@ class Features extends Component {
 
   renderFeatures(){
     let { features, scope, search, selected } = this.props;
-    console.log(features, "features in render features")
+    // console.log(features, "features in render features")
     if (features && features[0] && !features[0].temp  && features[0].feature && features[0].feature[0]){
-      console.log(features[0].feature, "should not be empty")
+      // console.log(features[0].feature, "should not be empty")
       return (
         features.map(feature => <Feature key={feature.id} search={search} inScope={scope[feature.id]["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} library={feature.library} temp={feature.library} inLibrary={selected.library} />)
       )
@@ -102,10 +102,10 @@ class Features extends Component {
 s
   renderLibraryFeatures(){
     let { features, scope, search, selected } = this.props;
-    console.log(features, "features in render features library")
+    // console.log(features, "features in render features library")
 
     if (features && features[0] && features[0].library  && features[0].feature && features[0].feature[0]){
-      console.log(features[0].feature, "should not be empty")
+      // console.log(features[0].feature, "should not be empty")
       return (
         features.map(feature => <Feature key={feature.id} search={search} inScope={false} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} inLibrary={selected.library} library={feature.library} temp={feature.library}/>)
       )

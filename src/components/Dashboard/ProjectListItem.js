@@ -41,7 +41,7 @@ class ProjectListItem extends Component {
         // let csv = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/${name.split("/")[0]}/o/${name.split("/")[1]}?alt=media`)
         // console.log(csv, "please please")
         let csv = await axios.get(link, option)
-        console.log(csv, "please work")
+        // console.log(csv, "please work")
         Papa.parse(csv.data, config);
         dispatch({type: SCOPE_NAME, payload: name})
         dispatch({type: SCOPE_DOWNLOAD_LINK, payload: downloadLink})
@@ -52,9 +52,9 @@ class ProjectListItem extends Component {
     }
 
     async duplicateCSV(link, name, downloadLink, json){
-        console.log(link, "link zelda")
-        console.log(downloadLink, "download")
-        console.log(json, "json")
+        // console.log(link, "link zelda")
+        // console.log(downloadLink, "download")
+        // console.log(json, "json")
         const bucket = 'sh-scoping-scopes';
         const { scopeToken, dispatch } = this.props;
         let option = {
@@ -87,9 +87,9 @@ class ProjectListItem extends Component {
 
     renderVersions() {
         let { title, versions } = this.props;
-        console.log(this.props, "ps props")
+        // console.log(this.props, "ps props")
         return versions.map((v, i) => {
-            console.log(v, "v for vendetta")
+            // console.log(v, "v for vendetta")
             return (
                 <li key={i}>
                     <div className="row">
@@ -137,7 +137,7 @@ class ProjectListItem extends Component {
     render() {
         let { title, versions } = this.props;
         let { selected } = this.state
-        console.log(versions, "versions in pli")
+        // console.log(versions, "versions in pli")
         return (
             <li>
                 <div className={`row`} style={{ cursor: "pointer" }} onClick={() => this.setState(prevState => ({ selected: !prevState.selected }))}>

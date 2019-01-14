@@ -35,7 +35,7 @@ class FeatureSets extends PureComponent {
     let { tempType } = this.state;
     let { dispatch, tempScope } = this.props;
     tempType.splice(id, 1)
-    console.log(tempType, "temp Row")
+    // console.log(tempType, "temp Row")
     this.setState({
       tempType: []
     })
@@ -64,7 +64,7 @@ class FeatureSets extends PureComponent {
       // remove temp type row if a temp feature set was created to a type in scope
       let tempRows = tempTypes.slice().reverse();
       tempRows = tempRows.filter(t => !types.includes(t))
-      console.log(tempRows, "temp rows")
+      // console.log(tempRows, "temp rows")
       // console.log(tempTypes, "temp types in render temp type")
       // console.log(tempRows, "temp rows bro")
       return tempRows.map((type,i) => <Type key={i} id={i} type={type} featureSets={tempTree[type]} temp fs/>)
@@ -78,7 +78,7 @@ class FeatureSets extends PureComponent {
     let { mode, library } = this.props;
     if (mode === "search"){
       let libraryTypes = Object.keys(library.tree)
-      console.log(library.scope, "library library")
+      // console.log(library.scope, "library library")
       if (libraryTypes){
         return (
           libraryTypes.map((type, i)=> <Type key={i} id={i} type={type} featureSets={library.tree[type]} temp library fs/>)

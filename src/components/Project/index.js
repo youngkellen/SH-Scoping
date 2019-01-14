@@ -29,7 +29,7 @@ class Project extends Component {
 
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps, "project will props")
+    // console.log(nextProps, "project will props")
     const { split, full } = nextProps.viewMode;
     this.setState({
       split,

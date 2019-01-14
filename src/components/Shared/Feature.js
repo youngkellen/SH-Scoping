@@ -54,10 +54,10 @@ class Feature extends Component {
     }
 
     render() {
-        console.log(this.props, "feature props ")
+        // console.log(this.props, "feature props ")
         let { feature, search } = this.props;
         let { selected } = this.state;
-        console.log(selected, "selected in feature")
+        // console.log(selected, "selected in feature")
         if (feature && feature[0]){
             return (
                 <li 
