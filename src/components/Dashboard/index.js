@@ -40,13 +40,13 @@ class Dashboard extends Component {
     }
     const bucket = 'sh-scoping-scopes';
     let scopeObject = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?versions=true`, option)
-    console.log(scopeObject, "scope object")
+    // console.log(scopeObject, "scope object")
     let scopeVersions = scopeObject.data.items.filter(i => i.size != "0" && !i.name.includes("json") && i.timeDeleted && i.name.split("/").length > 1)
     let jsonVersions = scopeObject.data.items.filter(i => i.size != "0" && i.name.includes("json") && i.timeDeleted && i.name.split("/").length > 1)
 
     // let deletedScopes = scopesFromObject.filter(({id}) => !scopes.map(s => s.id).includes(id))
-    console.log(scopeVersions, "scope Versions")
-    console.log(jsonVersions, "json Versions")
+    // console.log(scopeVersions, "scope Versions")
+    // console.log(jsonVersions, "json Versions")
 
     if (scopeVersions.length > 0){
       this.setState({
@@ -76,7 +76,7 @@ class Dashboard extends Component {
   }
 
   handleProjectPlatforms(val){
-    console.log(this.state)
+    // console.log(this.state)
     this.setState({
       projectPlatforms: val
     })
@@ -211,7 +211,7 @@ class Dashboard extends Component {
               <div className="row" style={{marginTop: "30px"}}>
                 <p>By platform</p>
                 <div  >
-                  <p><input type="checkbox" value="ios" name="iOS" onChange={(e) => this.handlePlatformFilter(e.target.value)}/>iOS</p>
+                  <p><input type="checkbox" value="ios" name="iOS" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> iOS</p>
                   <p><input type="checkbox" value="android" name="Android" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Android</p>
                   <p><input type="checkbox" value="hybrid" name="Hybrid" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Hybrid</p>
                   <p><input type="checkbox" value="web" name="Web" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Web</p>

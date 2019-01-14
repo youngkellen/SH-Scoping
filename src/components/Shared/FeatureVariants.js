@@ -25,7 +25,7 @@ class FeatureVariants extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps, "next props in fv")
+    // console.log(nextProps, "next props in fv")
     if (nextProps.selected.data.Feature !== this.props.selected.data.Feature){
       let { selected } = nextProps;
       this.setState({

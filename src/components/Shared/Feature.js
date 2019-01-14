@@ -12,38 +12,34 @@ class Feature extends Component {
     }
 
     componentDidMount(){
-        let { tempSelect,temp, selectedId, id } = this.props;
-        if (tempSelect && temp && selectedId === id){
+        // console.log(this.props, "feature props in mount")
+        let { tempSelect,temp, selectedId, id, library, inLibrary } = this.props;
+
+        if (tempSelect && temp && selectedId === id && ( (library && library === inLibrary) || (!library && !inLibrary)) ){
             this.setState({selected: true})
-        } else if (selectedId === id ) {
-            this.setState({
-                selected: true
-            })
+        } else if (selectedId === id && !temp && !tempSelect && !library && !inLibrary) {
+            this.setState({selected: true})
         } else {
-            this.setState({
-                selected: false
-            })
+            this.setState({selected: false})
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        let { tempSelect,temp, selectedId, id  } = nextProps;
-        if (tempSelect && temp && selectedId === id){
+        let { tempSelect,temp, selectedId, id, inLibrary, library  } = nextProps;
+        if (tempSelect && temp && selectedId === id ){
+            // select if in library or temp
             this.setState({selected: true})
-        } else if (nextProps.selectedId === nextProps.id && !temp && !tempSelect) {
-            this.setState({
-                selected: true
-            })
+        } else if (nextProps.selectedId === nextProps.id && !temp && !tempSelect && !library && !inLibrary) {
+            // select if in scope
+            this.setState({selected: true})
         } else {
-            this.setState({
-                selected: false
-            })
+            this.setState({selected: false})
         }
     }
 
     handleClick() {
-        let { handleFeature, id, temp } = this.props;
-        handleFeature(id, temp)
+        let { handleFeature, id, temp, library } = this.props;
+        handleFeature(id, temp, library)
     }
 
     renderDot() {
@@ -58,15 +54,15 @@ class Feature extends Component {
     }
 
     render() {
-        console.log(this.props, "feature props ")
+        // console.log(this.props, "feature props ")
         let { feature, search } = this.props;
         let { selected } = this.state;
-        console.log(selected, "selected in feature")
+        // console.log(selected, "selected in feature")
         if (feature && feature[0]){
             return (
                 <li 
                     onClick={() => this.handleClick()} 
-                    className={this.props.temp ? "temp-background" : ""}
+                    className={this.props.temp ? this.props.library ? "library-background" : "temp-background" : ""}
                     style={selected ? { backgroundColor: "white" } : {} }
                 >
                 {this.renderDot()}

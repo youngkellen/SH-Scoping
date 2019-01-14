@@ -7,7 +7,7 @@ import Project from './Project';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
 import {
-  SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SELECT_FEATURE_SET, SCOPE_SELECTED_FEATURES, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN, DASHBOARD_GET_SCOPES, DASHBOARD_GET_SCOPEJSON
+  SCOPE_DOWNLOAD, SCOPE_TREE, SCOPE_SELECT, SELECT_FEATURE_SET, SCOPE_SELECTED_FEATURES, SCOPE_SUMMARY, SCOPE_SEARCH, ACCESS_TOKEN, EXPORT_CSV, SCOPE_TOKEN, DASHBOARD_GET_SCOPES, DASHBOARD_GET_SCOPEJSON, LIBRARY_DOWNLOAD, LIBRARY_TREE
 } from '../constants/actionTypes';
 import getEngineerHours from '../helper/scopeSummary';
 
@@ -49,6 +49,9 @@ class App extends Component {
       const token = href.split('=')[1].split('&')[0];
       this.getScopes(token)
       this.props.dispatch({ type: SCOPE_TOKEN, payload: token });
+      window.location.hash = '';
+      setTimeout(() => window.location.reload(), 1500)
+
     }
 
   }
@@ -81,24 +84,28 @@ class App extends Component {
     const { scopeToken } = this.props.token;
     const { getScopeToken } = this.state;
     const bucket = 'sh-scoping-scopes';
+
+    if (!scopeToken && !getScopeToken) {
+      this.getScopeToken()
+    } else {
+      this.getScopes(scopeToken)
+    }
+    // window.open("https://accounts.google.com/o/oauth2/v2/auth", params)
+    // console.log(pleaseWork, "please work ")
+  }
+
+  getScopeToken() {
     const redirectUrl = MODE === 'development' ? 'http://localhost:3000/dashboard' : 'https://sh-scoping.appspot.com/dashboard';
     const clientId = '941945287972-ve1u0pp1qs7glbj57rqfd4s7qp7al57o.apps.googleusercontent.com';
 
     const scope = 'https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/devstorage.read_write';
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=token&scope=${scope}&include_granted_scopes=true`;
-    if (!scopeToken && !getScopeToken) {
-      window.open(url, '_self');
-    } else {
-      this.getScopes(scopeToken)
-    }
-
-
-    // window.open("https://accounts.google.com/o/oauth2/v2/auth", params)
-    // console.log(pleaseWork, "please work ")
+    window.open(url, '_self');
   }
 
   async getScopes(scopeToken) {
     const { dispatch } = this.props;
+    const { getScopeToken } = this.state;
 
     const bucket = 'sh-scoping-scopes';
     const redirectUrl = MODE === 'development' ? 'http://localhost:3000/dashboard' : 'https://sh-scoping.appspot.com/dashboard';
@@ -109,19 +116,31 @@ class App extends Component {
       }
     }
     console.log(scopeToken, "scope token man")
-    let scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
+    let scopeList
+    try {
+      scopeList = scopeList = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?access_token=${scopeToken}`)
+    }
+    catch (err) {
+      if (err && !getScopeToken) {
+        console.log(err, "err")
+        this.getScopeToken()
+      }
+    }
     console.log(scopeList, "scope list")
-    // Filter the folder and get the files in the folder
-    let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json") && i.name.split("/").length > 1 && i.name.split("/")[i.name.split("/").length - 1] )
-    let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json") && i.name.split("/").length > 1 && i.name.split("/")[i.name.split("/").length - 1])
-    // scopeJSON = Promise.all(scopeJSON.map(async (s) => {
-    //   s = await axios.get(s.mediaLink, option)
-    //   return s.data
-    // })
-    // )
-    console.log(scopeJSON, "scope json")
-    dispatch({ type: DASHBOARD_GET_SCOPES, payload: scopes })
-    dispatch({ type: DASHBOARD_GET_SCOPEJSON, payload: scopeJSON })
+    if (scopeList) {
+      // Filter the folder and get the files in the folder
+      let scopes = scopeList.data.items.filter(i => i.size != "0" && !i.name.includes("json") && i.name.split("/").length > 1 && i.name.split("/")[i.name.split("/").length - 1])
+      let scopeJSON = scopeList.data.items.filter(i => i.size != "0" && i.name.includes("json") && i.name.split("/").length > 1 && i.name.split("/")[i.name.split("/").length - 1])
+      // scopeJSON = Promise.all(scopeJSON.map(async (s) => {
+      //   s = await axios.get(s.mediaLink, option)
+      //   return s.data
+      // })
+      // )
+      console.log(scopeJSON, "scope json")
+      dispatch({ type: DASHBOARD_GET_SCOPES, payload: scopes })
+      dispatch({ type: DASHBOARD_GET_SCOPEJSON, payload: scopeJSON })
+    }
+
   }
 
 
@@ -144,25 +163,25 @@ class App extends Component {
   call(data) {
     const { dispatch } = this.props;
     console.log(data, "csv data")
-    if (data.length > 0){
+    if (data.length > 0) {
       const fields = Object.keys(data[0]);
       data = data.map((d, i) => Object.assign({}, d, { id: i }));
       dispatch({ type: SCOPE_DOWNLOAD, payload: data });
-      dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
-      dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
-      dispatch({type: SELECT_FEATURE_SET, payload: {}})
-  
+      dispatch({ type: SCOPE_SELECTED_FEATURES, payload: [] })
+      dispatch({ type: SCOPE_SELECT, payload: { data: {}, temp: false } })
+      dispatch({ type: SELECT_FEATURE_SET, payload: {} })
+
       // dispatch({type: SCOPE_SELECT, payload: scope[id]})
       const types = {};
       let designHours = 0;
       let engineerHours = 0;
-  
+
       const index = elasticlunr(function () {
         fields.map((f) => {
           this.addField(f);
         });
       });
-  
+
       data.forEach((s, i) => {
         index.addDoc(s);
         designHours += Number(s['Design Estimate (Resource Hours)']) || 0;
@@ -194,14 +213,14 @@ class App extends Component {
       dispatch({ type: SCOPE_SUMMARY, payload: { designHours: Math.round(designHours * 100) / 100, engineerHours: Math.round(engineerHours * 100) / 100, billable: 0 } });
     } else {
       dispatch({ type: SCOPE_DOWNLOAD, payload: [] });
-      dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })
-      dispatch({type: SCOPE_SELECT, payload: {data: {}, temp: false }})
-      dispatch({type: SELECT_FEATURE_SET, payload: {}})
+      dispatch({ type: SCOPE_SELECTED_FEATURES, payload: [] })
+      dispatch({ type: SCOPE_SELECT, payload: { data: {}, temp: false } })
+      dispatch({ type: SELECT_FEATURE_SET, payload: {} })
       dispatch({ type: SCOPE_TREE, payload: {} });
-      dispatch({ type: SCOPE_SUMMARY, payload: { designHours: 0, engineerHours:0, billable: 0 } });
+      dispatch({ type: SCOPE_SUMMARY, payload: { designHours: 0, engineerHours: 0, billable: 0 } });
     }
-
-
+      
+     this.getLibrary()
    
   }
 
@@ -232,13 +251,94 @@ class App extends Component {
     return match;
   }
 
+  async getLibrary() {
+    const bucket = 'sh-scoping-scopes';
+    let { scopeToken } = this.props.token
+    let option = {
+      headers: {
+        Authorization: `Bearer ${scopeToken}`
+      }
+    }
+    const config = {
+      download: false,
+      header: true,
+      skipEmptyLines: true,
+      delimiter: ',',
+      // preview: 100,
+      complete: ({ data }) => this.callLibrary(data)
+    };
+    // console.log(scope, "scope bro")
+
+    let csv = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o/library.csv?alt=media`, option)
+    console.log(csv, "library please work")
+    Papa.parse(csv.data, config);
+
+  }
+
+  async callLibrary(data) {
+    const { dispatch, scope } = this.props;
+    console.log(data, "csv library data")
+    let addToIndex = Object.keys(this.index).length > 0;
+    if (data.length > 0) {
+      const fields = Object.keys(data[0]);
+      data = data.map((d, i) => Object.assign({}, d, { id: i, library: true }));
+      dispatch({ type: LIBRARY_DOWNLOAD, payload: data })
+
+      // dispatch({type: SCOPE_SELECT, payload: scope[id]})
+      const types = {};
+
+      // const index = elasticlunr(function () {
+      //   fields.map((f) => {
+      //     this.addField(f);
+      //   });
+      // });
+
+      data.forEach((s, i) => {
+        if (addToIndex) {
+          this.index.addDoc(s);
+        }
+        if (!types.hasOwnProperty(s.SOURCE)) {
+          types[s.SOURCE] = {
+            featureSet: [
+              {
+                name: s['Feature set'],
+                features: [
+                  {
+                    feature: s.Feature, id: i,
+                  },
+                ],
+              },
+            ],
+          };
+        } else {
+          const pos = types[s.SOURCE].featureSet.map(e => e.name).indexOf(s['Feature set']);
+          if (pos === -1) {
+            types[s.SOURCE].featureSet = [...types[s.SOURCE].featureSet, { name: s['Feature set'], features: [{ feature: [s.Feature], id: i }] }];
+          } else {
+            types[s.SOURCE].featureSet[pos].features = [...types[s.SOURCE].featureSet[pos].features, { feature: s.Feature, id: i }];
+          }
+        }
+      });
+      // this.index = index;
+      dispatch({ type: LIBRARY_TREE, payload: types })
+    } else {
+      dispatch({ type: LIBRARY_DOWNLOAD, payload: [] })
+      dispatch({ type: LIBRARY_TREE, payload: {} })
+
+    }
+
+
+  }
+
   render() {
     return (
       <div>
         <div>
           <Header location={this.props.location} />
           <Switch>
-            <Route exact path="/" component={Entry} />
+            <Route exact
+              path="/"
+              component={Entry} />
             <Route
               exact
               path="/project"
@@ -247,7 +347,7 @@ class App extends Component {
             <Route
               exact
               path="/dashboard"
-              component={() => <Dashboard call={this.call}/>}
+              component={() => <Dashboard call={this.call} />}
             />
             <Route component={NotFound} />
           </Switch>

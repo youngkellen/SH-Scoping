@@ -9,7 +9,7 @@ import SearchEntry from "../Search/SearchEntry";
 import { SCOPE_SELECT, SCOPE_SELECTED_FEATURES, SCOPE_SEARCH, SELECT_FEATURE_SET, SELECT_SCROLL } from "../../constants/actionTypes";
 
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope.scope, tree: state.scope.tree, searchText: state.scope.search })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope.scope, tree: state.scope.tree, searchText: state.scope.search, library: state.library })
 
 class Search extends Component {
   constructor() {
@@ -62,7 +62,7 @@ class Search extends Component {
     dispatch({type: SCOPE_SEARCH, payload: value})
     console.log(match, "match")
     match = match.map(m => {
-      return { key: m.id, source: m.SOURCE, featureSet: m["Feature set"], text: `${m.SOURCE} - ${m["Feature set"]} - ${m.Feature} - ${m["Feature description"]}` }
+      return { key: m.id, source: m.SOURCE, featureSet: m["Feature set"], library: m.library, text: `${m.SOURCE} - ${m["Feature set"]} - ${m.Feature} - ${m["Feature description"]}` }
     })
     this.setState({
       match,
@@ -74,10 +74,16 @@ class Search extends Component {
   }
   
 
-  handleClick(id, source, set){
-    let { dispatch, scope, tree } = this.props;
+  handleClick(id, source, set, inLibrary){
+    let { dispatch, scope, tree, library } = this.props;
     //vconsole.log(id)
-    let { featureSet } = tree[source]
+    let featureSet;
+    if (inLibrary){
+      featureSet = library.tree[source].featureSet
+    } else {
+      featureSet = tree[source].featureSet
+    }
+    // let { featureSet } = tree[source]
     // console.log(source, "source")
     // console.log(tree[source], "tree")
     // console.log(set, "feature")
@@ -90,14 +96,23 @@ class Search extends Component {
       }
     }
 
-    let data = scope[id]
-    
+    let data;
+
+    if (inLibrary){
+      data = library.scope[id]
+      dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features.slice().map(f => Object.assign({}, f, {temp: true, library: true}))})
+      dispatch({type: SCOPE_SELECT, payload: {data, temp: true, library: true }})
+      dispatch({type: SELECT_FEATURE_SET, payload: {fs: data["Feature set"], type: data.SOURCE }})
+    } else {
+      data = scope[id]
+      dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
+      dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
+      dispatch({type: SELECT_FEATURE_SET, payload: {fs: data["Feature set"], type: data.SOURCE }})
+    }
     // console.log(features, "features in search inde")
     dispatch({type: SELECT_SCROLL, payload: true })
 
-    dispatch({type: SCOPE_SELECTED_FEATURES, payload: features.features})
-    dispatch({type: SCOPE_SELECT, payload: {data, temp: false }})
-    dispatch({type: SELECT_FEATURE_SET, payload: {fs: data["Feature set"], type: data.SOURCE }})
+  
 
     this.setState({showResults: false})
   }
@@ -120,7 +135,7 @@ class Search extends Component {
             />
             <div className="search-entries" style={showResults && inputValue && match.length ? {display: "block"}: {display: "none"}} onMouseLeave={() => this.setState({showResults: false})} >
               <ul>
-                {match.map(m => <SearchEntry key={m.key} search={searchText} featureSet={m.featureSet} source={m.source} name={m.text} id={m.key} handleClick={this.handleClick}/>)}
+                {match.map(m => <SearchEntry key={m.key} search={searchText} library={m.library} featureSet={m.featureSet} source={m.source} name={m.text} id={m.key} handleClick={this.handleClick}/>)}
               </ul>
             </div>
           </div>

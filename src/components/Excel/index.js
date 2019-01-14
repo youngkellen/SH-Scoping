@@ -197,7 +197,7 @@ class Excel extends Component {
     }
 
     listenScrollEvent(val) {
-        console.log(val)
+        // console.log(val)
     }
 
     renderOldTable() {

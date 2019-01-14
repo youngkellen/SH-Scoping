@@ -5164,6 +5164,8 @@ a.text-danger:focus, a.text-danger:hover {
         background-color: #f1f1f1; }
       .builder .content ul .temp-background {
         background-color: yellow; }
+      .builder .content ul .library-background {
+        background-color: orange; }
       .builder .content ul li {
         border-bottom: solid #aaa 2px;
         background-color: #ececec;
@@ -5257,6 +5259,8 @@ a.text-danger:focus, a.text-danger:hover {
       list-style-type: none; }
       .builder .features ul .temp-background {
         background-color: yellow; }
+      .builder .features ul .library-background {
+        background-color: orange; }
       .builder .features ul li {
         border-bottom: solid #aaa 2px;
         border-left: none;
