@@ -550,7 +550,7 @@ class Variant extends Component {
         // console.log(post, "post csv")
         // console.log(jsonPost,"json Post")
         if (post ){
-        alert("saved")
+        alert("Added to Library")
         }
     }
 

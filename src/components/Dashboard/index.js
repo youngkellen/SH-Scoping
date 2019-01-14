@@ -211,7 +211,7 @@ class Dashboard extends Component {
               <div className="row" style={{marginTop: "30px"}}>
                 <p>By platform</p>
                 <div  >
-                  <p><input type="checkbox" value="ios" name="iOS" onChange={(e) => this.handlePlatformFilter(e.target.value)}/>iOS</p>
+                  <p><input type="checkbox" value="ios" name="iOS" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> iOS</p>
                   <p><input type="checkbox" value="android" name="Android" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Android</p>
                   <p><input type="checkbox" value="hybrid" name="Hybrid" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Hybrid</p>
                   <p><input type="checkbox" value="web" name="Web" onChange={(e) => this.handlePlatformFilter(e.target.value)}/> Web</p>
