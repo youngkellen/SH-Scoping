@@ -7,7 +7,7 @@ import { TEMPSCOPE_ADD, TEMPSCOPE_TREE } from '../../constants/actionTypes';
 import newRow from "../../helper/newRow"
 import buildTree from "../../helper/buildTree"
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope, tempScope: state.tempScope })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, scope: state.scope, tempScope: state.tempScope, library: state.library})
 
 class FeatureSets extends PureComponent {
   state = {
@@ -74,6 +74,20 @@ class FeatureSets extends PureComponent {
    
   }
 
+  renderLibraryTypes(){
+    let { mode, library } = this.props;
+    if (mode === "search"){
+      let libraryTypes = Object.keys(library.tree)
+      console.log(library.scope, "library library")
+      if (libraryTypes){
+        return (
+          libraryTypes.map((type, i)=> <Type key={i} id={i} type={type} featureSets={library.tree[type]} temp library fs/>)
+        )
+      }
+     
+    }
+  }
+
   render() {
     let { viewMode } = this.props;
     let { tempType } = this.state;
@@ -82,6 +96,7 @@ class FeatureSets extends PureComponent {
     let height = viewMode.split ? "40vh" : "90vh";
     let types = Object.keys(tree)
     let tempTypes = Object.keys(tempTree)
+   
     // console.log(types, "types sets")
     return (
       <div className="row" style={{ minWidth: 200 }}>
@@ -94,6 +109,7 @@ class FeatureSets extends PureComponent {
            {tempType.length > 1 ? "" : tempType.map(i => <NewType key={i} id={i} setToTempScope={this.setToTempScope}/>) }
            {this.renderTempTypes(tempTypes, types)}
            {types.map((type,i) => <Type key={i} id={i} type={type} featureSets={tree[type]} tempSet={tempTree[type]} fs/>)}
+           {this.renderLibraryTypes()}
           </div>
 
         </div>

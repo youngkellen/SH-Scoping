@@ -6,8 +6,11 @@ import newRow from "../../helper/newRow";
 import buildTree from "../../helper/buildTree";
 import { TEMPSCOPE_SCOPE_EDIT, SCOPE_SUMMARY, SCOPE_SCOPE_EDIT, TEMPSCOPE_TREE, SCOPE_TREE, SCOPE_SELECT, TEMPSCOPE_SCOPE_REMOVE, SCOPE_ADD, SCOPE_DOWNLOAD, SCOPE_SELECTED_FEATURES } from "../../constants/actionTypes"
 import getEngineerHours from "../../helper/scopeSummary";
+import Papa from 'papaparse';
+import axios from 'axios';
+import { stat } from "fs";
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp, scope: state.scope, tempScope: state.tempScope, scopeSummary: state.scope.scopeSummary });
+const mapStatetoProps = state => ({ viewMode: state.viewMode, search: state.scope.search, temp: state.scope.selected.temp, scope: state.scope, tempScope: state.tempScope, scopeSummary: state.scope.scopeSummary, scopeToken: state.token.scopeToken, library: state.library });
 
 class Variant extends Component {
     constructor(props) {
@@ -48,6 +51,7 @@ class Variant extends Component {
         this.handleQuote = this.handleQuote.bind(this);
         this.handleAddSummary = this.handleAddSummary.bind(this);
         this.handleDeductSummary = this.handleDeductSummary.bind(this);
+        this.addToLibrary = this.addToLibrary.bind(this);
     }
 
     componentDidMount(){
@@ -519,6 +523,37 @@ class Variant extends Component {
         }
     }
 
+    async addToLibrary(data){
+        let copy = Object.assign({}, data, {"Include in Scope?": ""})
+        delete copy.id 
+        const { scopeToken, library } = this.props;
+        const bucket = 'sh-scoping-scopes';
+        let option = {
+            headers: {
+                Authorization: `Bearer ${scopeToken}`,
+                "Content-Type": "text/csv"
+            }
+        }
+        
+
+
+        library.scope = [ ...library.scope, copy]
+        console.log(library.scope, "library scope")
+        console.log(copy, "data in scope")
+        const csv = Papa.unparse(library.scope);
+        console.log(csv, "csv from library")
+        // let csvContent = "data:text/csv;charset=utf-8," + csv
+        // let encodedUri = encodeURI(csvContent);
+
+        let link = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=library.csv`
+        let post = await axios.post(link, csv, option)
+        // console.log(post, "post csv")
+        // console.log(jsonPost,"json Post")
+        if (post ){
+        alert("saved")
+        }
+    }
+
     searchVariant(){
         let { menuClick, estimate, data } = this.state;
         let { search } = this.props;
@@ -661,7 +696,7 @@ class Variant extends Component {
     
                                     />
                                     <div className="dropdown-menu dropdown-menu-right" style={menuClick ? { display: "block" } : { display: "none" }}>
-                                        <a className="dropdown-item">Add To Library</a>
+                                        <a className="dropdown-item" onClick={() => this.addToLibrary(data)}>Add To Library</a>
                                         <a className="dropdown-item">Update in Library</a>
                                     </div>
                                 </div>

@@ -171,13 +171,15 @@ $quote-color: #7ed321;
           .temp-background {
             background-color: yellow;
           }
+          .library-background {
+            background-color: orange;
+          }
           li {
               border-bottom: solid #aaa 2px;
               background-color: $scope-gray;
               border-radius: 25px;
               padding-left: 10px;
               cursor: pointer;
-              
              
           }
           li:hover{
@@ -287,6 +289,9 @@ $quote-color: #7ed321;
           list-style-type: none;
           .temp-background {
             background-color: yellow;
+          }
+          .library-background {
+            background-color: orange;
           }
           li {
             border-bottom: solid #aaa 2px;

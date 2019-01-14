@@ -82,20 +82,21 @@ class Type extends PureComponent {
         }
     }
 
-    handleFeatures(features, temp, name) {
+    handleFeatures(features, temp, name, library) {
         // passed down as prop to Set. Set handles the click event
+        // console.log(library, "hf library")
         let { dispatch, type} = this.props;
-        console.log(features, "features boss")
+        // console.log(features, "features boss")
         if (!features){
-            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: [{feature: [], type, fs: name}] })
+            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: [{feature: [], type, fs: name, temp: false,  library: false}] })
             return
         }
         if (temp){
-            let tempFeatures = features.slice().map(f => Object.assign({}, f, {temp: true, type, fs: name}))
-            console.log(tempFeatures, "temp features")
+            let tempFeatures = features.slice().map(f => Object.assign({}, f, {temp: true, type, fs: name, library: library}))
+            // console.log(tempFeatures, "temp features")
             dispatch({ type: SCOPE_SELECTED_FEATURES, payload: tempFeatures })
         } else {
-            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: features.map(f => Object.assign({}, f, {temp: true, type, fs: name})) })
+            dispatch({ type: SCOPE_SELECTED_FEATURES, payload: features.map(f => Object.assign({}, f, {temp: false, type, fs: name, library: false})) })
         }
         dispatch({type: SELECT_FEATURE_SET, payload: {fs: name, type }})
         dispatch({type: SELECT_SCROLL, payload: false })
@@ -116,8 +117,8 @@ class Type extends PureComponent {
     }
 
     async setToTempScope(id, source, fs) {
-        console.log(source, "source fs")
-        console.log(fs, "fs bro")
+        // console.log(source, "source fs")
+        // console.log(fs, "fs bro")
         let { tempFS } = this.state;
         let { dispatch, tempScope, temp } = this.props;
         tempFS.splice(id, 1)
@@ -144,10 +145,10 @@ class Type extends PureComponent {
         let { type } = this.props;
         let { tempFS } = this.state;
         if (tempFS && tempFS.length < 2){
-        this.setState(prevState => ({
-            tempFS: [...prevState.tempFS, {type}]
-        }))
-    }
+            this.setState(prevState => ({
+                tempFS: [...prevState.tempFS, {type}]
+            }))
+        }
     }
 
     renderTempSet(){
@@ -155,21 +156,21 @@ class Type extends PureComponent {
         let { tempSet, type, search, featureSets, clicked } = this.props;
         let { featureSet } = featureSets;
         if (tempSet){
-            console.log(tempSet, "temp Set bro")
-            console.log(featureSet, "feature set bro")
+            // console.log(tempSet, "temp Set bro")
+            // console.log(featureSet, "feature set bro")
             let uniqueTempSet = tempSet.featureSet.filter(fs => {
                 let test = featureSet.map(f=>f.name)
-                console.log(test, "test")
-                console.log(fs.name, "fs")
-                console.log(test.includes(fs.name))
+                // console.log(test, "test")
+                // console.log(fs.name, "fs")
+                // console.log(test.includes(fs.name))
                 if (!test.includes(fs.name)) {
                     return fs
                 }
             })
-            console.log(uniqueTempSet, "unique")
+            // console.log(uniqueTempSet, "unique")
             if (uniqueTempSet.length > 0){
                 return (
-                    uniqueTempSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} clicked={clicked}selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={tempSet.featureSet} handleFeature={this.handleFeatures} temp/>)
+                    uniqueTempSet.map((set, i) => <Set key={i} inTemp={this.props.selected.temp} inLibrary={this.props.selected.library} id={set.id} type={type} search={search} clicked={clicked} selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={tempSet.featureSet} handleFeature={this.handleFeatures} temp />)
                 )
             } else {
                 return null
@@ -198,14 +199,14 @@ class Type extends PureComponent {
         }
         return (
             <div className="row" id={`type${id}`} >
-                <button style={this.props.temp ? { backgroundColor: "yellow" } : {}} className="collapsible" onClick={() => this.setState({ selected: !this.state.selected })}>
+                <button style={this.props.temp ? this.props.library ? { backgroundColor: "orange" } : { backgroundColor: "yellow" } : {}} className="collapsible" onClick={() => this.setState({ selected: !this.state.selected })}>
                     <span dangerouslySetInnerHTML={{ __html: searchHighlight(type, search) }} />
                     {`  ${featureSet.filter(f=>f.name).length}`}
                     <div className={selected ? "arrow-up" : "arrow-down"} />
                 </button>
                 <div className="content" style={selected ? { display: "block" } : { display: "none" }}>
                     <ul>
-                        {featureSet.map((set, i) => <Set key={i} id={set.id} type={type} search={search} clicked={clicked} selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={set.features} handleFeature={this.handleFeatures} temp={this.props.temp} />)}
+                        {featureSet.map((set, i) => <Set key={i} id={set.id} inTemp={this.props.selected.temp} inLibrary={this.props.selected.library} type={type} search={search} clicked={clicked} selectedType={this.props.selected.data.SOURCE} name={set.name} selectedSet={this.props.selected.data["Feature set"]} features={set.features} handleFeature={this.handleFeatures} temp={this.props.temp} library={this.props.library}/>)}
                         {this.renderTempSet()}
                         {!tempFS > 1 ? "" : tempFS.map((t, i) => <NewFS key={i} id={i} type={t.type} setToTempScope={this.setToTempScope} />)}
                         {this.renderAddFS()}

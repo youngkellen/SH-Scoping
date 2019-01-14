@@ -146,9 +146,9 @@ class Header extends React.Component {
               <li className="nav-item">
                 <button className="btn btn-outline-primary btn-round btn-white " onClick={this.saveCSV}>Save</button>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <button className="btn btn-outline-primary btn-round btn-white " onClick={() => this.modalChange()}>Create</button>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className="navbar-brand navbar-right mode-select" style={{ marginLeft: "100px", position: "relative" }}>

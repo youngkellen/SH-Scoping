@@ -7,7 +7,7 @@ import newRow from "../../helper/newRow"
 import buildTree from "../../helper/buildTree"
 import NewFeature from "../Builder/NewFeature"
 
-const mapStatetoProps = state => ({ viewMode: state.viewMode, features: state.scope.features, scope: state.scope.scope, search: state.scope.search, selected: state.scope.selected, tempScope: state.tempScope })
+const mapStatetoProps = state => ({ viewMode: state.viewMode, features: state.scope.features, scope: state.scope.scope, search: state.scope.search, selected: state.scope.selected, tempScope: state.tempScope, libraryScope: state.library })
 
 class Features extends Component {
   constructor(){
@@ -21,6 +21,7 @@ class Features extends Component {
   }
 
   componentDidMount(){
+    console.log(this.props, "features props")
     let { mode } = this.props
    
   }
@@ -73,22 +74,40 @@ class Features extends Component {
    
   }
 
-  handleClick(id, temp){
-    let { dispatch, scope, tempScope } = this.props;
+  handleClick(id, temp, library){
+    let { dispatch, scope, tempScope, libraryScope } = this.props;
     if (!temp){
-      dispatch({type: SCOPE_SELECT, payload: {data: scope[id], temp: false }})
+      dispatch({type: SCOPE_SELECT, payload: {data: scope[id], temp: false, library: false }})
     } else {
-      dispatch({type: SCOPE_SELECT, payload: {data: tempScope.tempScope[id], temp: true }})
+      if (library){
+        dispatch({type: SCOPE_SELECT, payload: {data: libraryScope.scope[id], temp: true, library: true }})
+      } else {
+        dispatch({type: SCOPE_SELECT, payload: {data: tempScope.tempScope[id], temp: true, library: false }})
+      }
     }
   }
 
   renderFeatures(){
     let { features, scope, search, selected } = this.props;
-    console.log(features, "boo")
-    if (features && features[0] && features[0].feature && features[0].feature[0]){
+    console.log(features, "features in render features")
+    if (features && features[0] && !features[0].temp  && features[0].feature && features[0].feature[0]){
       console.log(features[0].feature, "should not be empty")
       return (
-        features.map(feature => <Feature key={feature.id} search={search} inScope={scope[feature.id]["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp}/>)
+        features.map(feature => <Feature key={feature.id} search={search} inScope={scope[feature.id]["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} library={feature.library} temp={feature.library} inLibrary={selected.library} />)
+      )
+    } else {
+      return null
+    }
+  }
+s
+  renderLibraryFeatures(){
+    let { features, scope, search, selected } = this.props;
+    console.log(features, "features in render features library")
+
+    if (features && features[0] && features[0].library  && features[0].feature && features[0].feature[0]){
+      console.log(features[0].feature, "should not be empty")
+      return (
+        features.map(feature => <Feature key={feature.id} search={search} inScope={false} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} inLibrary={selected.library} library={feature.library} temp={feature.library}/>)
       )
     } else {
       return null
@@ -98,7 +117,7 @@ class Features extends Component {
   renderTempFeatures(){
     // render temp features that are being made
     let { tempScope, features, search, selected } = this.props;
-    if (features && features[0] && features[0].type && tempScope.tempTree[features[0].type]){
+    if (features && features[0] && features[0].type && !features[0].library && tempScope.tempTree[features[0].type]){
       let { type, fs } = features[0]
       let { featureSet } = tempScope.tempTree[type]
       // console.log(featureSet, "feature set extracted")
@@ -110,7 +129,7 @@ class Features extends Component {
         let check = features.filter(f => f.feature).length
         let checkTwo = features[features.length - 1].feature
         if (check && checkTwo && checkTwo[0]){
-          return features.map(feature => <Feature key={feature.id} search={search} inScope={feature["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} temp/>)
+          return features.map(feature => <Feature key={feature.id} search={search} inScope={feature["Include in Scope?"]} id={feature.id} handleFeature={this.handleClick} feature={feature.feature} selectedId={selected.data.id} tempSelect={selected.temp} temp library={feature.library} inLibrary={selected.library} />)
         } else {
           return null
         }
@@ -123,7 +142,7 @@ class Features extends Component {
   }
 
   renderEmpty(){
-    if (!this.renderFeatures() && !this.renderTempFeatures()){
+    if (!this.renderFeatures() && !this.renderTempFeatures() && !this.renderLibraryFeatures()){
       return <li>empty</li>
     } else {
       return null
@@ -150,6 +169,7 @@ class Features extends Component {
              {this.renderFeatures()}
              {this.renderTempFeatures()}
              {this.renderEmpty()}
+             {this.renderLibraryFeatures()}
             </ul>
           </div>
         </div>

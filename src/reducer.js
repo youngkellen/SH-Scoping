@@ -4,6 +4,7 @@ import scope from './reducers/scope';
 import tempScope from './reducers/tempScope';
 import exportCSV from './reducers/exportCSV';
 import token from './reducers/token';
+import library from './reducers/library';
 import selectHelper from './reducers/selectHelper';
 import dashboard from './reducers/dashboard';
 
@@ -19,6 +20,7 @@ export default combineReducers({
   token,
   selectHelper,
   dashboard,
+  library,
   router: routerReducer
 });
 
