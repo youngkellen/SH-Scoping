@@ -65,7 +65,7 @@ renderMode() {
     )
   } else if (mode === "search"  && !split) {
     return (
-      <Search search={this.props.search}/>
+      <Search search={this.props.search} reIndexSearch={this.props.reIndexSearch}/>
     )
   }  else if (split){
 

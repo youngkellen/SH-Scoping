@@ -352,12 +352,12 @@ class Variant extends Component {
     }
 
     handleRemoveFromScope(){
-        let { scope, reindexSearch, dispatch } = this.props;
+        let { scope, reIndexSearch, dispatch } = this.props;
         let { data } = this.state;
         let newScope = scope.scope.filter(s => s.id !== data.id)
         newScope = newScope.map((s,i) => {s.id = i; return s})
         this.handleDeductSummary()
-        this.props.reIndexSearch(newScope)
+        reIndexSearch(newScope)
         dispatch({ type: SCOPE_DOWNLOAD, payload: newScope})
         dispatch({type: SCOPE_TREE, payload: buildTree(newScope)})
         dispatch({type: SCOPE_SELECTED_FEATURES, payload: [] })

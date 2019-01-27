@@ -155,7 +155,7 @@ class Search extends Component {
                 secondaryInitialSize={20}
               >
                 <Features mode={"search"} />
-                <FeatureVariants mode={"search"} />
+                <FeatureVariants mode={"search"} reIndexSearch={this.props.reIndexSearch}/>
               </SplitterLayout>
             </SplitterLayout>
           </div>
