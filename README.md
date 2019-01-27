@@ -22,7 +22,7 @@ https://cloud.google.com/storage/docs/object-versioning?hl=ar
 https://cloud.google.com/storage/docs/json_api/v1/
 
 The scopes are contained in the GCP bucket `sh-scoping-scopes`. The project is `sh-scoping`.
-Each top level object in the GCP bucket is a folder that contains two files, a csv and a json for the details of the scope.
+Each top level object in the GCP bucket is a folder that contains two files, a csv and a json for the details of the scope. For example, the project OC will have a OC folder, and two files in it, OC.csv, and scope.json.
 Both the csv and json must be updated during any write, or else bugs will happen!!!
 the json file must be named: `scope.json`
 
@@ -33,6 +33,8 @@ Allow up to a minute for eventual write/read consistency with creating new versi
 
 Delete bucket content with versions in gcp terminal using: gsutil -m rm -rf gs://sh-scoping-scopes/
 Make sure to reenable versioning after deleting
+
+Make sure there is a `library.csv` in google cloud. This will be in the root folder of `sh-scoping-scopes`.
 
 ## Functionality overview
 

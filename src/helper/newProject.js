@@ -1,6 +1,6 @@
 export default class newProject {
     constructor(scope, json) {
-        if (scope.length > 0 && scope[0].name.split("/").length > 1){
+        if (scope.length > 0 && scope[0] && scope[0].name && scope[0].name.split("/").length > 1){
             this.scope = scope[0].name.split("/")[0]
             this.versions = scope.map((s,i) => {
                 return { 

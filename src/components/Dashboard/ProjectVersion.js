@@ -57,7 +57,7 @@ class ProjectVersion extends Component {
 
     async duplicateCSV(link, name, downloadLink, json) {
         // console.log(link, "link zelda")
-        // console.log(downloadLink, "download")
+        // console.log(downloadLink, "download link in duplicate")
         // console.log(json, "json")
         const bucket = 'sh-scoping-scopes';
         const { scopeToken, dispatch } = this.props;
@@ -73,14 +73,16 @@ class ProjectVersion extends Component {
             }
         }
         let csv = await axios.get(link, option)
+        // console.log(csv, "csv in pv")
         if (csv && csv.data) {
             let csvLink = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${downloadLink}`
             let jsonLink = `https://www.googleapis.com/upload/storage/v1/b/${bucket}/o?uploadType=media&name=${downloadLink.split("/")[0]}/scope.json`
-            // console.log(jsonLink, "json Link")
-            // console.log(json, "json my son")
+            console.log(jsonLink, "json Link")
+            console.log(json, "json my son")
             let post = await axios.post(csvLink, csv.data, option)
             let jsonPost = await axios.post(jsonLink, json, jsonOption)
             if (post && jsonPost) {
+                alert("Duplicated. Please wait for up to a minute the duplicate")
                 setTimeout(window.location.reload(), 1000)
             } else {
                 alert("error")
@@ -198,7 +200,8 @@ class ProjectVersion extends Component {
                 Platforms: Array.isArray(platforms) ? platforms : platforms.split(" "),
                 Approve: approve,
                 Types: Array.isArray(types) ? types : types.split(", "),
-                Description: description
+                Description: description,
+                Project: downloadLink.split("/")[0]
 
             }
             const bucket = 'sh-scoping-scopes';
@@ -223,6 +226,7 @@ class ProjectVersion extends Component {
                 let post = await axios.post(csvLink, csv.data, option)
                 let jsonPost = await axios.post(jsonLink, json, jsonOption)
                 if (post && jsonPost) {
+                    alert("Edited. Please wait for up to a minute the edit")
                     setTimeout(window.location.reload(), 1000)
                 } else {
                     alert("error")

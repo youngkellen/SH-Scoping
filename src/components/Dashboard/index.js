@@ -40,7 +40,7 @@ class Dashboard extends Component {
     }
     const bucket = 'sh-scoping-scopes';
     let scopeObject = await axios.get(`https://www.googleapis.com/storage/v1/b/${bucket}/o?versions=true`, option)
-    // console.log(scopeObject, "scope object")
+    console.log(scopeObject, "scope object")
     let scopeVersions = scopeObject.data.items.filter(i => i.size != "0" && !i.name.includes("json") && i.timeDeleted && i.name.split("/").length > 1)
     let jsonVersions = scopeObject.data.items.filter(i => i.size != "0" && i.name.includes("json") && i.timeDeleted && i.name.split("/").length > 1)
 
@@ -93,10 +93,11 @@ class Dashboard extends Component {
     const { scopeToken, token } = this.props.token;
     if ( projectDescription && projectName && projectPlatforms && projectTypes) {
       let json = {
-        "Platforms" : projectPlatforms.split(" "),
-        "Types" : projectTypes.split(" "),
+        "Platforms" : projectPlatforms.split(" ").filter(p => p),
+        "Types" : projectTypes.split(" ").filter(t => t),
         "Approve": approve,
-        "Description": projectDescription
+        "Description": projectDescription,
+        "Project": projectName
       }
       let csv = "SOURCE,Include in Scope?,Platform,Feature set,Feature,Feature description,Design Estimate (Resource Hours),Hybrid Engineering,Web Engineering Estimate (Resource Hours),iOS Engineering Estimate (Resource Hours),Android Engineering Estimate (Resource Hours),Backend Engineering Estimate (Resource Hours),Magento Engineering,QA Estimate (Resource Hours),Assumptions,Notes,Type"
       
@@ -126,6 +127,7 @@ class Dashboard extends Component {
       if (post && jsonPost){
         alert("Submitted. Please allow up to a minute to see the new project.")
         // window.location.reload(); 
+        this.setState({ newProject: false })
       }
     } else {
       alert("Please Complete Form")
@@ -186,6 +188,8 @@ class Dashboard extends Component {
 
   render() {
     let { scopeVersions, jsonVersions, newProject, sortProject, platformFilter, search } = this.state;
+    console.log(scopeVersions, "scope v")
+    console.log(jsonVersions, "json v")
     return (
       <div className="dashboard">
         <div className="col-md-12" style={{ height: "100vh" }}>
