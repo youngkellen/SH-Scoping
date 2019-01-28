@@ -184,7 +184,7 @@ class App extends Component {
 
       data.forEach((s, i) => {
         index.addDoc(s);
-        designHours += Number(s['Design Estimate (Resource Hours)']) || 0;
+        designHours += s["Include in Scope?"] ? Number(s['Design Estimate (Resource Hours)']) : 0;
         engineerHours = getEngineerHours(engineerHours, s);
         if (!types.hasOwnProperty(s.SOURCE)) {
           types[s.SOURCE] = {
@@ -326,8 +326,6 @@ class App extends Component {
       dispatch({ type: LIBRARY_TREE, payload: {} })
 
     }
-
-
   }
 
   render() {
