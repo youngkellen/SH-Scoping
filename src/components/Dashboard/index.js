@@ -188,8 +188,8 @@ class Dashboard extends Component {
 
   render() {
     let { scopeVersions, jsonVersions, newProject, sortProject, platformFilter, search } = this.state;
-    console.log(scopeVersions, "scope v")
-    console.log(jsonVersions, "json v")
+    // console.log(scopeVersions, "scope v")
+    // console.log(jsonVersions, "json v")
     return (
       <div className="dashboard">
         <div className="col-md-12" style={{ height: "100vh" }}>

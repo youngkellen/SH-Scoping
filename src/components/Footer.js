@@ -48,7 +48,7 @@ class Footer extends React.Component {
     handleExport(){
         let { dispatch, scope } = this.props;
         const csv = Papa.unparse(scope);
-        console.log(csv, "csv")
+        // console.log(csv, "csv")
         dispatch({type: EXPORT_CSV, payload: true})
         let csvContent = "data:text/csv;charset=utf-8," + csv
         let encodedUri = encodeURI(csvContent);
@@ -59,7 +59,7 @@ class Footer extends React.Component {
     render() {
         let { mode, split, full } = this.props.viewMode;
         let { scopeSummary } = this.props;
-        console.log(this.props, "footer props")
+        // console.log(this.props, "footer props")
         let buttonBlue = "#4990e2";
         return (
             <div className="footer">

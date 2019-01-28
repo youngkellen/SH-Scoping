@@ -39,9 +39,9 @@ class Project extends Component {
 
   getHeight(){
     let length = document.getElementsByClassName("layout-pane").length
-    console.log(length, "length")
+    // console.log(length, "length")
     let height = document.getElementsByClassName("layout-pane")[length - 1].style.height
-    console.log(height, "height")
+    // console.log(height, "height")
     this.setState({
       excelHeight: Number(height.replace(/\d+% ?/g, ""))
 
@@ -57,7 +57,7 @@ class Project extends Component {
 renderMode() {
   const { mode, split, full } = this.props.viewMode;
   const { exportCSV, dispatch } = this.props;
-  console.log(mode, "mode bro")
+  // console.log(mode, "mode bro")
 
   if (mode === "builder" && !split) {
     return (

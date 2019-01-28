@@ -18,7 +18,7 @@ class FeatureVariants extends Component {
   }
 
   componentDidMount(){
-    console.log(this.props, "fv props")
+    // console.log(this.props, "fv props")
     let { selected } = this.props;
     this.setState({
       variants: [selected.data]

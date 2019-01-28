@@ -6,7 +6,7 @@ class SearchEntry extends Component {
     constructor(props){
         super(props)
         this.handleClick = this.handleClick.bind(this);
-        console.log(props, "props in search entry")
+        // console.log(props, "props in search entry")
     }
 
 

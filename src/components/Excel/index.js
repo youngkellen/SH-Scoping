@@ -203,10 +203,10 @@ class Excel extends Component {
     renderOldTable() {
         let { excelHeight, viewMode } = this.props;
         let { full } = viewMode;
-        console.log(excelHeight, "excel Height")
+        // console.log(excelHeight, "excel Height")
         // let height = excelHeight ? parseInt(excelHeight.replace(/px/,"")) * 0.8 : full ? 500 : 250
         let height = excelHeight ? excelHeight * 0.8 : full ? 80 : 40
-        console.log(height, "new height")
+        // console.log(height, "new height")
         return (
             <div className="excel_table" id="excel_table">
                 <div className="row"  >
